@@ -34,7 +34,6 @@
     animation-name: br_saved_anim;
     animation-duration: 0.2s;
     transition: background-color 0.6s;
-    transition: box-shadow 0.6s;
 }
 @keyframes br_saved_anim {
     from {
@@ -112,21 +111,6 @@
     height: 80px;
     position: relative;
     z-index: 1000;
-}
-
-.br_framework_settings header .br_logo_white {
-    width: 130px;
-    height: 60px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 10px;
-    text-align: center;
-}
-
-.br_framework_settings header .br_logo_white img {
-    max-width: 100%;
-    max-height: 100%;
 }
 
 .br_framework_settings header .br_plugin_name {
@@ -323,10 +307,10 @@
 }
 
 .br_framework_settings .br_colorpicker {
-    width: 2em; 
-    height: 2em; 
-    border: 2px solid #009688; 
-    position: relative; 
+    width: 2em;
+    height: 2em;
+    border: 2px solid #009688;
+    position: relative;
     display: inline-block;
     padding: 6px;
     cursor: pointer;
@@ -337,7 +321,7 @@
 }
 
 .br_framework_settings .br_colorpicker:hover {
-    border: 2px solid #00beb0; 
+    border: 2px solid #00beb0;
 }
 
 .br_framework_settings .br_colorpicker ~ .br_colorpicker_default {
@@ -787,9 +771,6 @@
     clear: both;
 }
 
-
-
-
 /* Responsive styles */
 
 @media screen and (max-width: 900px) {
@@ -808,9 +789,6 @@
 }
 
 @media screen and (max-width: 782px) {
-    .br_framework_settings header .br_logo_white {
-        width: 60px;
-    }
 
     .br_framework_settings header .br_plugin_name {
         padding-left: 80px;

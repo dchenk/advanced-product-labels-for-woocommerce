@@ -1,12 +1,15 @@
 <?php
 define( "BeRocket_products_label_domain", 'BeRocket_products_label_domain');
 define( "products_label_TEMPLATE_PATH", plugin_dir_path( __FILE__ ) . "templates/" );
+
 load_plugin_textdomain('BeRocket_products_label_domain', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
+
 require_once(plugin_dir_path( __FILE__ ).'berocket/framework.php');
-foreach (glob(plugin_dir_path( __FILE__ ) . "includes/compatibility/*.php") as $filename)
-{
+
+foreach (glob(plugin_dir_path( __FILE__ ) . "includes/compatibility/*.php") as $filename) {
     include_once($filename);
 }
+
 /**
  * Class BeRocket_products_label
  * REPLACE
@@ -262,7 +265,7 @@ class BeRocket_products_label extends BeRocket_Framework {
             'Time left for discount type of Label',
             'Product attribute type of Label',
             'Template for labels',
-            'More options for stilization'
+            'More options for stylization'
         );
 
         $this->framework_data['fontawesome_frontend'] = true;
@@ -321,14 +324,14 @@ class BeRocket_products_label extends BeRocket_Framework {
             $product_hook_label = explode('+', $product_hook_label);
             add_action( $product_hook_label[0], array( $this, 'set_label_label'), $product_hook_label[1] );
         }
-        wp_register_style( 'berocket_products_label_style', 
-            plugins_url( 'css/frontend.css', __FILE__ ), 
-            "", 
+        wp_register_style( 'berocket_products_label_style',
+            plugins_url( 'css/frontend.css', __FILE__ ),
+            "",
             BeRocket_products_label_version );
         wp_enqueue_style( 'berocket_products_label_style' );
-        wp_register_style( 'berocket_tippy', 
-            plugins_url( 'css/tippy.css', __FILE__ ), 
-            "", 
+        wp_register_style( 'berocket_tippy',
+            plugins_url( 'css/tippy.css', __FILE__ ),
+            "",
             BeRocket_products_label_version );
         wp_register_script( 'berocket_tippy', plugins_url( 'js/tippy.min.js',  __FILE__ ), array('jquery'), $this->info['version'] );
 
@@ -401,7 +404,7 @@ class BeRocket_products_label extends BeRocket_Framework {
                     }
                 }
             }
-            if( ( ! empty($label_type['text']) && $label_type['text'] != 'Label' ) 
+            if( ( ! empty($label_type['text']) && $label_type['text'] != 'Label' )
              || ( ! empty($label_type['content_type']) && $label_type['content_type'] != 'text' ) ) {
                 $this->show_label_on_product($label_type, $product);
             }
@@ -423,7 +426,7 @@ class BeRocket_products_label extends BeRocket_Framework {
                 'post_parent'      => '',
                 'author'	   => '',
                 'post_status'      => 'publish',
-                'suppress_filters' => false 
+                'suppress_filters' => false
             );
             $posts_array = get_posts( $args );
             foreach($posts_array as $label) {
@@ -915,31 +918,3 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 new BeRocket_products_label;
 
-berocket_admin_notices::generate_subscribe_notice();
-
-/**
- * Creating admin notice if it not added already
- * /
-new berocket_admin_notices(array(
-    'start' => 1529578800, // timestamp when notice start
-    'end'   => 1529611200, // timestamp when notice end
-    'name'  => 'SALE_LABELS_2018', //notice name must be unique for this time period
-    'html'  => 'Save <strong>$20</strong> with <strong>Premium Product Labels</strong> today!
-             &nbsp; <span>Get your <strong class="red">44% discount</strong> now!</span>
-             <a class="berocket_button" href="https://berocket.com/product/woocommerce-advanced-product-labels" target="_blank">Save $20</a>
-            ', //text or html code as content of notice
-    'righthtml'  => '<a class="berocket_no_thanks">No thanks</a>', //content in the right block, this is default value. This html code must be added to all notices
-    'rightwidth'  => 80, //width of right content is static and will be as this value. berocket_no_thanks block is 60px and 20px is additional
-    'nothankswidth'  => 60, //berocket_no_thanks width. set to 0 if block doesn't uses. Or set to any other value if uses other text inside berocket_no_thanks
-    'contentwidth'  => 910, //width that uses for mediaquery is image + contentwidth + rightwidth + 210 other elements
-    'subscribe'  => false, //add subscribe form to the righthtml
-    'priority'  => 7, //priority of notice. 1-5 is main priority and displays on settings page always
-    'height'  => 50, //height of notice. image will be scaled
-    'repeat'  => '+1 week', //repeat notice after some time. time can use any values that accept function strtotime
-    'repeatcount'  => 4, //repeat count. how many times notice will be displayed after close
-    'image'  => array(
-        'local' => plugin_dir_url( __FILE__ ) . 'images/44p_sale.jpg', //notice will be used this image directly
-    ),
-));
-
-/**/

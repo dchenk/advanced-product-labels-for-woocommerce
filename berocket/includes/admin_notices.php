@@ -342,7 +342,7 @@ if( ! class_exists( 'berocket_admin_notices' ) ) {
                 unset($original_notice['start'], $original_notice['closed'], $original_notice['repeatcount']);
                 $notice = array_merge($notice, $original_notice);
             }
-            
+
             if( $notice !== false ) {
                 self::echo_notice($notice);
             }
@@ -379,7 +379,7 @@ if( ! class_exists( 'berocket_admin_notices' ) ) {
                     $time  = $time%60;
                     $time_left_str .= sprintf("%02d", $minutes) . ":";
                 }
-                
+
                 $time_left_str .= sprintf("%02d", $time);
                 $notice['rightwidth'] += 60;
                 $notice['righthtml'] .= '<div class="berocket_time_left_block">Left<br><span class="berocket_time_left" data-time="' . $time_left . '">' . $time_left_str . '</span></div>';
@@ -391,7 +391,7 @@ if( ! class_exists( 'berocket_admin_notices' ) ) {
                 } else {
                     $user_email = '';
                 }
-                $notice['righthtml'] = 
+                $notice['righthtml'] =
                 '<form class="berocket_subscribe_form" method="POST" action="' . admin_url( 'admin-ajax.php' ) . '">
                     <input type="hidden" name="berocket_action" value="berocket_subscribe_email">
                     <input class="berocket_subscribe_email" type="email" name="email" value="' . $user_email . '">
@@ -763,18 +763,6 @@ if( ! class_exists( 'berocket_admin_notices' ) ) {
             }
             wp_die();
         }
-        public static function generate_subscribe_notice() {
-            new berocket_admin_notices(array(
-                'start' => 0,
-                'end'   => 0,
-                'name'  => 'subscribe',
-                'html'  => 'Subscribe to get latest BeRocket news and updates, plugin recommendations and configuration help, promotional email with discount codes.',
-                'subscribe'  => true,
-                'image'  => array(
-                    'local' => plugin_dir_url( __FILE__ ) . '../images/ad_white_on_orange.png',
-                ),
-            ));
-        }
     }
     add_action( 'admin_notices', array('berocket_admin_notices', 'display_admin_notice') );
     add_action( 'wp_ajax_berocket_admin_close_notice', array('berocket_admin_notices', 'close_notice') );
@@ -880,7 +868,7 @@ if( ! class_exists( 'berocket_admin_notices_rate_stars' ) ) {
                         float: right;
                         padding-left: 20px;
                         display: inline-block;
-                        
+
                     }
                     .berocket-rate-stars .brfeature_show_mobile {
                         display: none;

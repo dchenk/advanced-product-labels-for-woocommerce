@@ -1,6 +1,7 @@
 <?php
 
 class berocket_admin_notices {
+
 	public $find_names;
 	public $notice_exist = false;
 	public static $last_time = '-24 hours';
@@ -364,23 +365,7 @@ class berocket_admin_notices {
 			$notice['rightwidth'] += 60;
 			$notice['righthtml'] .= '<div class="berocket_time_left_block">Left<br><span class="berocket_time_left" data-time="' . $time_left . '">' . $time_left_str . '</span></div>';
 		}
-		if (! empty($notice['subscribe'])) {
-			$user_email = wp_get_current_user();
-			if (isset($user_email->user_email)) {
-				$user_email = $user_email->user_email;
-			} else {
-				$user_email = '';
-			}
-			$notice['righthtml'] =
-			'<form class="berocket_subscribe_form" method="POST" action="' . admin_url('admin-ajax.php') . '">
-				<input type="hidden" name="berocket_action" value="berocket_subscribe_email">
-				<input class="berocket_subscribe_email" type="email" name="email" value="' . $user_email . '">
-				<input type="submit" class="button-primary button berocket_notice_submit" value="Subscribe">
-			</form>' . $notice['righthtml'];
-			$notice['rightwidth'] += 300;
-		}
-		echo '
-			<div class="notice berocket_admin_notice berocket_admin_notice_', self::$notice_index, '" data-notice=\'', json_encode($notice_data), '\'>',
+		echo '<div class="notice berocket_admin_notice berocket_admin_notice_', self::$notice_index, '" data-notice=\'', json_encode($notice_data), '\'>',
 				(empty($notice['image']['local']) ? '' : '<img class="berocket_notice_img" src="' . $notice['image']['local'] . '">'),
 				(empty($notice['righthtml']) ? '' :
 				'<div class="berocket_notice_right_content">
@@ -558,7 +543,6 @@ class berocket_admin_notices {
 		}
 		echo '</script>';
 		self::echo_styles();
-		self::echo_jquery_functions();
 	}
 
 	public static function echo_styles() {
@@ -577,9 +561,6 @@ class berocket_admin_notices {
 				vertical-align: middle;
 				height: 100%;
 				width: 0px;
-			}
-			.berocket_admin_notice .berocket_no_thanks:hover {
-				opacity: 1;
 			}
 			.berocket_admin_notice .berocket_time_left_block {
 				display: inline-block;
@@ -616,109 +597,7 @@ class berocket_admin_notices {
 		}
 	}
 
-	public static function echo_jquery_functions() {
-		if (! self::$jquery_script_exist) {
-			self::$jquery_script_exist = true; ?>
-			<script>
-				jQuery(document).on("berocket_incorrect_email", ".berocket_admin_notice", function(){
-					jQuery(this).find(".berocket_subscribe_form").addClass("form-invalid");
-				});
-				jQuery(document).on("change", ".berocket_admin_notice", function(){
-					jQuery(this).find(".berocket_subscribe_form").removeClass("form-invalid");
-				});
-				var berocket_email_submited = false;
-				jQuery(document).on("submit berocket_subscribe_send", ".berocket_subscribe_form", function(event){
-					event.preventDefault();
-					event.stopPropagation();
-					var $this = jQuery(this);
-					var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-					var email = $this.find("[name=email]").val();
-					if( ! re.test(email) ) {
-						$this.trigger("berocket_incorrect_email");
-						return false;
-					}
-					if( ! berocket_email_submited ) {
-						berocket_email_submited = true;
-						if( $this.is("form") ) {
-							var data = $this.serialize();
-							data = data+"&action="+$this.find("[name=\'berocket_action\']").val();
-						} else {
-							if( jQuery(".berocket_plugin_id_subscribe").length ) {
-								var data = {email:email, action: $this.find("[name=\'berocket_action\']").val(), plugin:jQuery(".berocket_plugin_id_subscribe").val()};
-							} else {
-								var data = {email:email, action: $this.find("[name=\'berocket_action\']").val()};
-							}
-						}
-						var url = $this.attr("action");
-						$this.trigger("berocket_subscribing");
-						jQuery.post(url, data, function(data){
-							$this.trigger("berocket_subscribed");
-						}).fail(function(){
-							$this.trigger("berocket_not_subscribed");
-						});
-					}
-				});
-				jQuery(document).on("berocket_incorrect_email", ".berocket_subscribe", function(event) {
-					event.preventDefault();
-					jQuery(this).addClass("form-invalid").find(".error").show();
-				});
-				jQuery(document).on("keyup", ".berocket_subscribe.berocket_subscribe_form .berocket_subscribe_email", function(event) {
-					var keyCode = event.keyCode || event.which;
-					if (keyCode === 13) {
-						event.preventDefault();
-						jQuery(this).parents(".berocket_subscribe_form").trigger("berocket_subscribe_send");
-						return false;
-					}
-				});
-			</script><?php
-		}
-	}
-
-	public static function close_notice($notice = false) {
-
-		if (($notice == false || ! is_array($notice)) && ! empty($_POST['notice'])) {
-			$notice = sanitize_textarea_field($_POST['notice']);
-		}
-
-		if (empty($notice) || !is_array($notice)) {
-			wp_die();
-		}
-
-		if (
-			(empty($notice['start']) && $notice['start'] !== '0') ||
-			(empty($notice['end']) && $notice['end'] !== '0') ||
-			(empty($notice['priority']) && $notice['priority'] !== '0') ||
-			empty($notice['name'])
-		) {
-			$notice = self::get_notice();
-		}
-
-		$find_names = [$notice['priority'], $notice['end'], $notice['start'], $notice['name']];
-		$current_notice = self::get_notice_by_path($find_names);
-		if (isset($current_notice)) {
-			if ($current_notice['end'] < strtotime(self::$end_soon_time)) {
-				$current_notice['closed'] = 2;
-			} else {
-				$current_notice['closed'] = 1;
-			}
-			if ($current_notice['closed'] < 2 && ! empty($current_notice['repeat']) && ! empty($current_notice['repeatcount']) && (! self::$subscribed || ! $current_notice['subscribe'])) {
-				$new_notice = $current_notice;
-				if (empty($current_notice['original'])) {
-					$new_notice['original'] = $find_names;
-				}
-				$new_notice['repeatcount'] = $current_notice['repeatcount'] - 1;
-				$new_notice['start'] = strtotime($current_notice['repeat']);
-				$new_notice['closed'] = 0;
-				self::set_notice_by_path($new_notice);
-			}
-			self::set_notice_by_path($current_notice, true);
-		}
-		update_option('berocket_last_close_notices_time', time());
-		wp_die();
-	}
-
 }
 
 add_action('admin_notices', ['berocket_admin_notices', 'display_admin_notice']);
-add_action('wp_ajax_berocket_admin_close_notice', ['berocket_admin_notices', 'close_notice']);
 

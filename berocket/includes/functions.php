@@ -1,40 +1,6 @@
 <?php
 
-if (! function_exists('br_get_woocommerce_version')) {
-	/**
-	 * Public function to get WooCommerce version
-	 *
-	 * @return NULL|float
-	 */
-	function br_get_woocommerce_version() {
-		if (! function_exists('get_plugins')) {
-			require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-		}
-
-		$plugin_folder = get_plugins('/woocommerce');
-		$plugin_file = 'woocommerce.php';
-
-		if (isset($plugin_folder[$plugin_file]['Version'])) {
-			return $plugin_folder[$plugin_file]['Version'];
-		}
-
-		return null;
-	}
-}
-
-if (! function_exists('br_woocommerce_version_check')) {
-	function br_woocommerce_version_check($version = '2.7') {
-		$wc_version = br_get_woocommerce_version();
-		if ($wc_version !== null) {
-			if (version_compare($wc_version, $version, ">=")) {
-				return true;
-			}
-		}
-		return false;
-	}
-}
-
-if (! function_exists('br_wc_get_product_id')) {
+if (!function_exists('br_wc_get_product_id')) {
 	function br_wc_get_product_id($product) {
 		if (method_exists($product, 'get_id')) {
 			return $product->get_id();
@@ -43,83 +9,34 @@ if (! function_exists('br_wc_get_product_id')) {
 	}
 }
 
-if (! function_exists('br_wc_get_product_post')) {
+if (!function_exists('br_wc_get_product_post')) {
 	function br_wc_get_product_post($product) {
 		$product_id = br_wc_get_product_id($product);
 		return get_post($product_id);
 	}
 }
 
-if (! function_exists('br_wc_get_product_attr')) {
-	function br_wc_get_product_attr($product, $attr, $data = '') {
-		switch ($attr) {
-			case 'child':
-				if (function_exists('wc_get_product')) {
-					$return = wc_get_product($data);
-				} else {
-					$return = $product->get_child($data);
-				}
-				break;
-			default:
-				if (method_exists($product, 'get_' . $attr)) {
-					$return = $product->{'get_' . $attr}('edit');
-				} else {
-					$return = $product->{$attr};
-				}
-				break;
+/**
+ * @param $product WC_Product
+ * @param $attr
+ * @param string $data
+ * @return null|WC_Product
+ */
+function br_wc_get_product_attr($product, $attr, $data = '') {
+	if ($attr === 'child') {
+		if (function_exists('wc_get_product')) {
+			return wc_get_product($data);
 		}
-		return $return;
+	} else {
+		if (method_exists($product, 'get_' . $attr)) {
+			return $product->{'get_' . $attr}('edit');
+		}
+		return $product->{$attr};
 	}
+	return null;
 }
 
-if (! function_exists('br_is_plugin_active')) {
-	/**
-	 * Public function to add to plugin settings buttons to upload or select icons
-	 *
-	 * @var $plugin_name - should be class name without BeRocket_ part
-	 *
-	 * @return boolean
-	 */
-	function br_is_plugin_active($plugin_name, $version = '1.0.0.0', $version_end = '9.9.9.9') {
-		if (defined("BeRocket_" . $plugin_name . "_version") &&
-			 constant("BeRocket_" . $plugin_name . "_version") >= $version &&
-			 constant("BeRocket_" . $plugin_name . "_version") <= $version_end
-		) {
-			return true;
-		}
-
-		return false;
-	}
-}
-
-if (! function_exists('berocket_insert_to_array')) {
-	/**
-	 * Public function to select color
-	 *
-	 * @param array $array - array with options
-	 * @param string $key_in_array - key in array where additional options must be added
-	 * @param array $array_to_insert - array with additional options
-	 * @param boolean $before - insert additional options before option with key $key_in_array
-	 *
-	 * @return string html code with all needed blocks and buttons
-	 */
-	function berocket_insert_to_array($array, $key_in_array, $array_to_insert, $before = false) {
-		$position = array_search($key_in_array, array_keys($array), true);
-		if ($position !== false) {
-			if (! $before) {
-				$position++;
-			}
-			$array = array_merge(
-				array_slice($array, 0, $position, true),
-								$array_to_insert,
-								array_slice($array, $position, null, true)
-			);
-		}
-		return $array;
-	}
-}
-
-if (! function_exists('br_color_picker')) {
+if (!function_exists('br_color_picker')) {
 	/**
 	 * Public function to select color
 	 *
@@ -316,45 +233,42 @@ if (!function_exists('br_get_value_from_array')) {
 if (!function_exists('berocket_sanitize_array')) {
 	function berocket_sanitize_array($array) {
 		if (is_array($array)) {
-			$array = array_map('berocket_sanitize_array', $array);
-		} else {
-			$filtered = wp_check_invalid_utf8($array);
-
-			// Remove any attribute starting with "on" or xmlns
-			$filtered = preg_replace('#(<[^>]+?[\x00-\x20"\'])(?:on|xmlns)[^>]*+>#iu', '$1>', $filtered);
-
-			// Remove javascript: and vbscript: protocols
-			$filtered = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([`\'"]*)[\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu', '$1=$2nojavascript...', $filtered);
-			$filtered = preg_replace('#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu', '$1=$2novbscript...', $filtered);
-			$filtered = preg_replace('#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*-moz-binding[\x00-\x20]*:#u', '$1=$2nomozbinding...', $filtered);
-
-			// Only works in IE: <span style="width: expression(alert('Ping!'));"></span>
-			$filtered = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?expression[\x00-\x20]*\([^>]*+>#i', '$1>', $filtered);
-			$filtered = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?behaviour[\x00-\x20]*\([^>]*+>#i', '$1>', $filtered);
-			$filtered = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*+>#iu', '$1>', $filtered);
-
-			// Remove namespaced elements (we do not need them)
-			$data = preg_replace('#</*\w+:\w[^>]*+>#i', '', $filtered);
-
-			do {
-				// Remove really unwanted tags
-				$old_data = $filtered;
-				$filtered = preg_replace('#</*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|i(?:frame|layer)|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|title|xml)[^>]*+>#i', '', $filtered);
-			} while ($old_data !== $filtered);
-
-			$found = false;
-			while (preg_match('/%[a-f0-9]{2}/i', $filtered, $match)) {
-				$filtered = str_replace($match[0], '', $filtered);
-				$found = true;
-			}
-
-			if ($found) {
-				// Strip out the whitespace that may now exist after removing the octets.
-				$filtered = preg_replace('/ +/', ' ', $filtered);
-			}
-			$array = $filtered;
+			return array_map('berocket_sanitize_array', $array);
 		}
-		return $array;
+
+		$filtered = wp_check_invalid_utf8($array);
+
+		// Remove any attribute starting with "on" or xmlns
+		$filtered = preg_replace('#(<[^>]+?[\x00-\x20"\'])(?:on|xmlns)[^>]*+>#iu', '$1>', $filtered);
+
+		// Remove javascript: and vbscript: protocols
+		$filtered = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([`\'"]*)[\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu', '$1=$2nojavascript...', $filtered);
+		$filtered = preg_replace('#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu', '$1=$2novbscript...', $filtered);
+		$filtered = preg_replace('#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*-moz-binding[\x00-\x20]*:#u', '$1=$2nomozbinding...', $filtered);
+
+		// Only works in IE: <span style="width: expression(alert('Ping!'));"></span>
+		$filtered = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?expression[\x00-\x20]*\([^>]*+>#i', '$1>', $filtered);
+		$filtered = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?behaviour[\x00-\x20]*\([^>]*+>#i', '$1>', $filtered);
+		$filtered = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*+>#iu', '$1>', $filtered);
+
+		do {
+			// Remove unwanted tags
+			$old_data = $filtered;
+			$filtered = preg_replace('#</*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|i(?:frame|layer)|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|title|xml)[^>]*+>#i', '', $filtered);
+		} while ($old_data !== $filtered);
+
+		$found = false;
+		while (preg_match('/%[a-f0-9]{2}/i', $filtered, $match)) {
+			$filtered = str_replace($match[0], '', $filtered);
+			$found = true;
+		}
+
+		if ($found) {
+			// Strip out the whitespace that may now exist after removing the octets.
+			$filtered = preg_replace('/ +/', ' ', $filtered);
+		}
+
+		return $filtered;
 	}
 }
 

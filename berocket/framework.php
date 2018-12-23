@@ -215,21 +215,21 @@ if (!class_exists('BeRocket_Framework')) {
 
 			if (is_admin()) {
 				wp_enqueue_style('font-awesome');
-			} elseif (! empty($this->framework_data['fontawesome_frontend'])) {
+			} elseif (!empty($this->framework_data['fontawesome_frontend'])) {
 				$this->enqueue_fontawesome();
 			}
 
 			wp_add_inline_script(
 				$this->cc->info['plugin_name'] . "_execute_func",
 				";
-                (function ($){
-                    $(document).ready( function () {
+                (function($) {
+                    $(document).ready(function() {
                         " . $this->cc->info['plugin_name'] . "_execute_func( the_" . $this->cc->info['plugin_name'] . "_js_data.script.js_page_load );
                     });
                 })(jQuery);
 
                 function " . $this->cc->info['plugin_name'] . "_execute_func ( func ) {
-                    if( the_" . $this->cc->info['plugin_name'] . "_js_data.script != 'undefined'
+                    if (the_" . $this->cc->info['plugin_name'] . "_js_data.script != 'undefined'
                         && the_" . $this->cc->info['plugin_name'] . "_js_data.script != null
                         && typeof func != 'undefined'
                         && func.length > 0 ) {

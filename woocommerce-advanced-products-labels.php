@@ -293,14 +293,10 @@ class BeRocket_products_label extends BeRocket_Framework {
 	}
 
 	public function init() {
+		parent::init();
+
 		load_plugin_textdomain('BeRocket_products_label_domain', false, plugin_basename(__DIR__) . '/languages');
 
-		$theme = wp_get_theme();
-		$theme = ($theme->offsetGet('Parent Theme') ? $theme->offsetGet('Parent Theme') : $theme->Name);
-		if (strpos($theme, 'LEGENDA') !== false) {
-			$this->defaults['shop_hook'] = 'woocommerce_before_shop_loop_item+5';
-		}
-		parent::init();
 		$options = $this->get_option();
 		$shop_hook = $options['shop_hook'];
 		$shop_hook = explode('+', $shop_hook);
@@ -324,19 +320,21 @@ class BeRocket_products_label extends BeRocket_Framework {
 			$product_hook_label = explode('+', $product_hook_label);
 			add_action($product_hook_label[0], [$this, 'set_label_label'], $product_hook_label[1]);
 		}
-		wp_register_style(
+
+		wp_enqueue_style(
 			'berocket_products_label_style',
 			plugins_url('css/frontend.css', __FILE__),
 			'',
 			BeRocket_products_label_version
 		);
-		wp_enqueue_style('berocket_products_label_style');
+
 		wp_register_style(
 			'berocket_tippy',
 			plugins_url('css/tippy.css', __FILE__),
 			'',
 			BeRocket_products_label_version
 		);
+
 		wp_register_script('berocket_tippy', plugins_url('js/tippy.min.js', __FILE__), ['jquery'], $this->info['version']);
 
 		if (is_admin()) {

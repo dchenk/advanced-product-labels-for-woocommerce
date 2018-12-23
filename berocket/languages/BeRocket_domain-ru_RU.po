@@ -1,0 +1,78 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BeRocket framework\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-29 10:15+0000\n"
+"PO-Revision-Date: 2017-11-29 10:21+0000\n"
+"Last-Translator: 123 124 <djcrazysait@mail.ru>\n"
+"Language-Team: Russian\n"
+"Language: ru-RU\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
+"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco - https://localise.biz/"
+
+#: berocket/framework.php:145
+msgid "View Plugin Settings"
+msgstr "Показать Настройки Плагина"
+
+#: berocket/framework.php:146 berocket/framework.php:287
+#: berocket/templates/settings.php:14
+msgid "Settings"
+msgstr "Настройки"
+
+#: berocket/framework.php:161
+msgid "View Plugin Documentation"
+msgstr "Показать Документацию Плагина"
+
+#: berocket/framework.php:162
+msgid "Docs"
+msgstr "Документация"
+
+#: berocket/framework.php:164
+msgid "View Premium Version Page"
+msgstr "Показать Страницу Премиум Версии"
+
+#: berocket/framework.php:165
+msgid "Premium Version"
+msgstr "Премиум Версия"
+
+#: berocket/framework.php:495
+msgid "Plugin key"
+msgstr "Ключ плагина"
+
+#: berocket/framework.php:501
+msgid "Key for plugin from BeRocket.com"
+msgstr "Ключ для плагина с сайта BeRocket.com"
+
+#: berocket/framework.php:583
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: berocket/includes/functions.php:148
+msgid "Default"
+msgstr "Стандартные"
+
+#: berocket/includes/functions.php:175 berocket/includes/functions.php:225
+#: berocket/includes/functions.php:336
+msgid "Upload"
+msgstr "Загрузить"
+
+#: berocket/includes/functions.php:177 berocket/includes/functions.php:228
+#: berocket/includes/functions.php:259 berocket/includes/functions.php:339
+msgid "Remove"
+msgstr "Убрать"
+
+#: berocket/includes/functions.php:226 berocket/includes/functions.php:257
+msgid "Font Awesome"
+msgstr "Font Awesome"
+
+#: berocket/includes/functions.php:285
+msgid "Enter 3 or more characters"
+msgstr "Введите 3 или больше символа"
+
+#: berocket/includes/functions.php:331
+msgid "Font awesome"
+msgstr "Font awesome"

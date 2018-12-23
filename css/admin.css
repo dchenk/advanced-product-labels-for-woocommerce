@@ -1,0 +1,459 @@
+
+/*****************************************************************/
+/*                    TEMPLATES STYLES                           */
+/*****************************************************************/
+
+.br_framework_settings .framework-form-table > tbody > tr > td.br_label_css_templates,
+.br_framework_settings .framework-form-table > thead > tr > td.br_label_css_templates,
+.br_framework_settings .framework-form-table > tfoot > tr > td.br_label_css_templates,
+.br_framework_settings .framework-form-table > tr > td.br_label_css_templates {
+    width: 75%;
+}
+
+.br_framework_settings ul.br_template_select {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+}
+
+.br_framework_settings .br_template_select li {
+    width: 19.2%;
+    margin: 0 1% 0 0;
+    float: left;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.br_framework_settings .br_template_select li label {
+    display: block;
+    border: 3px solid #f0f0f0;
+    border-radius: 3px;
+    padding: 10px;
+    height: auto;
+    cursor: pointer;
+    transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.br_framework_settings .br_template_select li label:hover {
+    border-color: #e8ebf1;
+}
+
+.br_framework_settings .br_template_select li label > span {
+    position: relative;
+    display: block;
+}
+
+.br_framework_settings .br_template_select li label img {
+    width: 100%;
+    display: block;
+    max-width: 120px;
+    margin: 0 auto;
+}
+
+.br_framework_settings .br_template_select li input {
+    display: none;
+}
+
+.br_framework_settings .br_template_select li input:checked + label {
+    border-color: #4fd1cd;
+}
+
+
+/* preview label styles */
+.br_framework_settings .br_template_select li label > span span {
+    position: absolute;
+    display: block;
+    background-color: #4fd1cd;
+    color: white;
+    text-align: center;
+    right: 0;
+}
+.br_framework_settings .br_template_select li label > span span:before,
+.br_framework_settings .br_template_select li label > span span:after {
+    content: "";
+    position: absolute;
+    display: block;
+}
+.br_framework_settings .br_template_select li label > span span b {
+    position: relative;
+    z-index: 100;
+}
+.br_framework_settings .br_template_select li label > span span i {
+    background-color: #4fd1cd;
+    display: block;
+    position: absolute;
+}
+.br_framework_settings .br_template_select li label > span span i:after,
+.br_framework_settings .br_template_select li label > span span i:before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+}
+
+/* css preview */
+.br_framework_settings .br_template_select li label.css-1 > span span {
+    width: 50px;
+    height: 30px;
+    border-radius: 3px;
+    line-height: 30px;
+    top: 0;
+}
+.br_framework_settings .br_template_select li label.css-2 > span span {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    line-height: 40px;
+    top: 0;
+}
+.br_framework_settings .br_template_select li label.css-3 > span span {
+    width: 46px;
+    height: 33px;
+    border-radius: 50%;
+    line-height: 32px;
+    top: 0;
+}
+.br_framework_settings .br_template_select li label.css-4 > span span {
+    width: 40px;
+    height: 40px;
+    border-radius: 0;
+    line-height: 40px;
+    top: 0;
+}
+.br_framework_settings .br_template_select li label.css-5 > span span {
+    width: 50px;
+    height: 30px;
+    border-radius: 0;
+    line-height: 30px;
+    top: 0;
+}
+.br_framework_settings .br_template_select li label.css-6 > span span {
+    width: 50px;
+    height: 40px;
+    border-radius: 0;
+    line-height: 36px;
+    top: 0;
+    background-color: transparent;
+}
+.br_framework_settings .br_template_select li label.css-6 > span span:before {
+    width: 0;
+    height: 0;
+    top: 16px;
+    background-color: transparent;
+    border: 25px solid transparent;
+    border-top: 35px solid #4fd1cd;
+}
+.br_framework_settings .br_template_select li label.css-6 > span span i {
+    width: 18px;
+    height: 16px;
+    margin: 0 auto;
+    left: calc(50% - 9px);
+}
+.br_framework_settings .br_template_select li label.css-6 > span span i:before {
+    top: 5px;
+    left: 7px;
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    background-color: #4fd1cd;
+    border: 11px solid transparent;
+    border-top: 11px solid #4fd1cd;
+}
+.br_framework_settings .br_template_select li label.css-6 > span span i:after {
+    top: 5px;
+    right: 7px;
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    background-color: #4fd1cd;
+    border: 11px solid transparent;
+    border-top: 11px solid #4fd1cd;
+}
+.br_framework_settings .br_template_select li label.css-7 > span span {
+    line-height: 38px;
+    height: 38px;
+    width: 38px;
+}
+.br_framework_settings .br_template_select li label.css-7 > span span i,
+.br_framework_settings .br_template_select li label.css-7 > span span i:before,
+.br_framework_settings .br_template_select li label.css-7 > span span i:after {
+    height: 38px;
+    width: 38px;
+    background-color: #4fd1cd;
+}
+.br_framework_settings .br_template_select li label.css-7 > span span i:before {
+    -moz-transform: rotate(-30deg);
+    -ms-transform: rotate(-30deg);
+    -webkit-transform: rotate(-30deg);
+    -o-transform: rotate(-30deg);
+    transform: rotate(-30deg);
+}
+.br_framework_settings .br_template_select li label.css-7 > span span i:after {
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -o-transform: rotate(-60deg);
+    transform: rotate(-60deg);
+}
+.br_framework_settings .br_template_select li label.css-8 > span span {
+    width: 40px;
+    height: 30px;
+    border-radius: 0;
+    line-height: 33px;
+    top: 0;
+}
+.br_framework_settings .br_template_select li label.css-8 > span span i:after {
+    top: 10px;
+    left: 0;
+    background-color: transparent;
+    border: 20px solid #4fd1cd;
+    border-bottom: 20px solid transparent;
+}
+.br_framework_settings .br_template_select li label.css-9 > span span {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    line-height: 40px;
+    top: 0;
+}
+.br_framework_settings .br_template_select li label.css-9 > span span i:before {
+    top: 23px;
+    left: -5px;
+    background-color: transparent;
+    border: 18px solid transparent;
+    border-right: 20px solid #4fd1cd;
+    -moz-transform: rotate(-10deg);
+    -ms-transform: rotate(-10deg);
+    -webkit-transform: rotate(-10deg);
+    -o-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+}
+.br_framework_settings .br_template_select li label.css-9 > span span i:after {
+    top: 23px;
+    left: 6px;
+    background-color: transparent;
+    border: 18px solid transparent;
+    border-left: 20px solid #4fd1cd;
+    -moz-transform: rotate(10deg);
+    -ms-transform: rotate(10deg);
+    -webkit-transform: rotate(10deg);
+    -o-transform: rotate(10deg);
+    transform: rotate(10deg);
+}
+.br_framework_settings .br_template_select li label.css-10 > span span {
+    width: 40px;
+    height: 40px;
+    border-radius: 0;
+    line-height: 40px;
+    background-color: transparent;
+}
+.br_framework_settings .br_template_select li label.css-10 > span span:before {
+    width: 40px;
+    height: 40px;
+    border-radius: 0;
+    line-height: 40px;
+    top: 0;
+    background-color: #4fd1cd;
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.br_framework_settings .br_template_select li label.css-11 > span span {
+    width: 68px;
+    height: 68px;
+    border-radius: 0;
+    line-height: 39px;
+    top: 0;
+    background-color: transparent;
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.br_framework_settings .br_template_select li label.css-11 > span span:before {
+    width: 0;
+    height: 0;
+    border-radius: 0;
+    line-height: 40px;
+    top: -37px;
+    border: 34px solid transparent;
+    border-bottom: 34px solid #4fd1cd;
+}
+
+/* image preview */
+.br_framework_settings .br_template_select li label.template-preview-image > span span b,
+.br_framework_settings .br_template_select li label.template-preview-image > span span i {
+    display: none;
+}
+.br_framework_settings .br_template_select li label.template-preview-image > span span {
+    height: 60px;
+    width: 60px;
+    top: 8px;
+    right: 8px;
+}
+.br_framework_settings .br_template_select li label.image-1 > span span {
+    background: transparent url('../images/templates/image-1.png') no-repeat right top/contain;
+}
+.br_framework_settings .br_template_select li label.image-2 > span span {
+    background: transparent url('../images/templates/image-2.png') no-repeat right top/contain;
+}
+.br_framework_settings .br_template_select li label.image-3 > span span {
+    background: transparent url('../images/templates/image-3.png') no-repeat right top/contain;
+    top: 0;
+}
+.br_framework_settings .br_template_select li label.image-4 > span span {
+    background: transparent url('../images/templates/image-4.png') no-repeat right top/contain;
+    top: -5px;
+    right: -5px;
+}
+.br_framework_settings .br_template_select li label.image-5 > span span {
+    background: transparent url('../images/templates/image-5.png') no-repeat right top/contain;
+    top: -5px;
+    right: -5px;
+}
+.br_framework_settings .br_template_select li label.image-6 > span span {
+    background: transparent url('../images/templates/image-6.png') no-repeat right top/contain;
+    top: 0;
+    right: -15px;
+}
+.br_framework_settings .br_template_select li label.image-7 > span span {
+    background: transparent url('../images/templates/image-7.png') no-repeat right top/contain;
+    height: 80px;
+    top: -5px;
+}
+.br_framework_settings .br_template_select li label.image-8 > span span {
+    background: transparent url('../images/templates/image-8.png') no-repeat right top/contain;
+    height: 100px;
+    top: -5px;
+    right: 10px;
+}
+.br_framework_settings .br_template_select li label.image-9 > span span {
+    background: transparent url('../images/templates/image-9.png') no-repeat right top/contain;
+    top: -10px;
+    right: -10px;
+}
+.br_framework_settings .br_template_select li label.image-10 > span span {
+    background: transparent url('../images/templates/image-10.png') no-repeat right top/contain;
+    right: -25px;
+    top: 12px;
+}
+.br_framework_settings .br_template_select li label.image-11 > span span {
+    background: transparent url('../images/templates/image-11.png') no-repeat right top/contain;
+    right: -25px;
+}
+.br_framework_settings .br_template_select li label.image-12 > span span {
+    background: transparent url('../images/templates/image-12.png') no-repeat right top/contain;
+    top: 4px;
+    right: 4px;
+    height: 90px;
+    width: 90px;
+}
+.br_framework_settings .br_template_select li label.image-13 > span span {
+    background: transparent url('../images/templates/image-13.png') no-repeat right top/contain;
+    top: 4px;
+    right: 4px;
+    height: 90px;
+    width: 90px;
+}
+.br_framework_settings .br_template_select li label.image-14 > span span {
+    background: transparent url('../images/templates/image-14.png') no-repeat right top/contain;
+    top: 4px;
+    right: 4px;
+    height: 80px;
+    width: 80px;
+}
+
+
+/*****************************************************************/
+/*                PREVIEW WITH TEMPLATE STYLES                   */
+/*****************************************************************/
+.berocket_label_preview > span {
+    display: none;
+}
+
+.berocket_label_preview.template-css-1 > span {
+    display: block;
+}
+
+.br_framework_settings .br_template_select li label > span span {
+    position: absolute;
+    display: block;
+    background-color: #4fd1cd;
+    color: white;
+    text-align: center;
+    right: 0;
+}
+.br_framework_settings .br_template_select li label > span span:before,
+.br_framework_settings .br_template_select li label > span span:after {
+    content: "";
+    position: absolute;
+    display: block;
+}
+.br_framework_settings .br_template_select li label > span span b {
+    position: relative;
+    z-index: 100;
+}
+.br_framework_settings .br_template_select li label > span span i {
+    background-color: #4fd1cd;
+    display: block;
+    position: absolute;
+}
+.br_framework_settings .br_template_select li label > span span i:after,
+.br_framework_settings .br_template_select li label > span span i:before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+}
+
+
+
+/*****************************************************************/
+/*                     COMMON STYLES                             */
+/*****************************************************************/
+.clear-both {
+    clear: both;
+}
+.br_framework_settings .clear {
+    clear: both !important;
+    float: none !important;
+    width: 0 !important;
+}
+
+.br_settings_vtab {
+    cursor: pointer;
+    background-color: #e7e7e7;
+    padding: 10px 15px;
+    border: 1px solid #bbb;
+}
+.br_settings_vtab.active {
+    background-color: #ddd;
+}
+.br_settings_vtab-content {
+    display: none;
+    min-height: 182px;
+}
+.br_settings_vtab-content.active {
+    display: block;
+}
+.br_settings_vtab-content h3 {
+    line-height: 199px;
+    margin: 0;
+    padding-left: 40px;
+}

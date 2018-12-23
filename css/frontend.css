@@ -1,0 +1,80 @@
+.br_alabel > span {
+    padding: 0;
+    font-weight: bold;
+    display: inline-block;
+    overflow: visible;
+    text-overflow: clip;
+}
+.br_alabel_label {
+    line-height: 1.75;
+    margin-top: 0.5em;
+}
+.br_alabel_label.br_alabel_type_image span {
+    padding: 0;
+}
+.br_alabel_label.br_alabel_left {
+    float: left;
+    clear: left;
+}
+.br_alabel_label.br_alabel_right {
+    float: right;
+    clear: right;
+}
+.br_alabel_label.br_alabel_center {
+    clear: both;
+    text-align: center;
+}
+.br_alabel_label.br_alabel_center span {
+    display: inline-block;
+}
+.br_alabel span {
+    text-align: center;
+    box-sizing: border-box;
+}
+.br_alabel_image {
+    position: absolute;
+    top: -10px;
+    z-index: 500;
+}
+.br_alabel_image span {
+    line-height: 50px;
+    vertical-align: middle;
+    display: block;
+    border-radius: 50px;
+    font-size: 12px;
+    box-sizing: content-box;
+}
+.br_alabel_image.br_alabel_left {
+    left: -10px;
+}
+.br_alabel_image.br_alabel_right {
+    right: -10px;
+}
+.br_alabel_image.br_alabel_center {
+    left: 50%;
+}
+.br_alabel_image.br_alabel_center span {
+    position: relative;
+    left: -50%;
+}
+.br_alabel img {
+    display: block;
+    max-width: 100%;
+    margin: 0!important;
+    padding: 0!important;
+}
+.woocommerce .product span.onsale{
+    padding: 0;
+    z-index: 100;
+}
+.br_alabel_sale_p.br_alabel_image span {
+    font-size: 16px;
+    padding: 0;
+}
+.br_alabel_image .woocommerce-Price-amount.amount,
+.br_alabel_image .woocommerce-Price-currencySymbol,
+.br_alabel_label.br_alabel_center span.woocommerce-Price-currencySymbol,
+.br_alabel_label.br_alabel_center span.woocommerce-Price-amount.amount {
+    line-height: inherit;
+    display:inline;
+}

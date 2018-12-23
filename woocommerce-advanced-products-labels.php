@@ -19,7 +19,7 @@ define('products_label_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'templates/')
 
 load_plugin_textdomain('BeRocket_products_label_domain', false, plugin_basename(__DIR__) . '/languages/');
 
-require_once(plugin_dir_path(__FILE__) . 'berocket/framework.php');
+require_once(__DIR__ . '/berocket/framework.php');
 
 foreach (glob(plugin_dir_path(__FILE__) . 'includes/compatibility/*.php') as $filename) {
 	include_once($filename);

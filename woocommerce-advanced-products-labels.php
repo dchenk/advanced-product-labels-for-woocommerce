@@ -8,16 +8,13 @@
  * Requires at least: 4.0
  * Author URI: https://github.com/dchenk
  * Text Domain: BeRocket_products_label_domain
- * Domain Path: /languages/
+ * Domain Path: /languages
  * WC tested up to: 3.4.6
  */
 
 define('BeRocket_products_label_version', '1.1.11');
-
 define('BeRocket_products_label_domain', 'BeRocket_products_label_domain');
 define('products_label_TEMPLATE_PATH', __DIR__ . '/templates/');
-
-load_plugin_textdomain('BeRocket_products_label_domain', false, plugin_basename(__DIR__) . '/languages/');
 
 require_once(__DIR__ . '/berocket/framework.php');
 
@@ -35,7 +32,9 @@ class BeRocket_products_label extends BeRocket_Framework {
 	protected static $instance;
 
 	public function __construct() {
+
 		$this->custom_post = BeRocket_advanced_labels_custom_post::getInstance();
+
 		$this->info = [
 			'id'          => 18,
 			'lic_id'      => 35,
@@ -279,6 +278,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 		add_action('wp_footer', [$this, 'page_load_script']);
 		add_filter('BeRocket_updater_menu_order_custom_post', [$this, 'menu_order_custom_post']);
 	}
+
 	public function page_load_script() {
 		global $berocket_display_any_advanced_labels;
 		if (! empty($berocket_display_any_advanced_labels)) {
@@ -289,11 +289,13 @@ class BeRocket_products_label extends BeRocket_Framework {
 		}
 	}
 
-	public function remove_woocommerce_sale_flash($html) {
+	public function remove_woocommerce_sale_flash($html): string {
 		return '';
 	}
 
 	public function init() {
+		load_plugin_textdomain('BeRocket_products_label_domain', false, plugin_basename(__DIR__) . '/languages');
+
 		$theme = wp_get_theme();
 		$theme = ($theme->offsetGet('Parent Theme') ? $theme->offsetGet('Parent Theme') : $theme->Name);
 		if (strpos($theme, 'LEGENDA') !== false) {

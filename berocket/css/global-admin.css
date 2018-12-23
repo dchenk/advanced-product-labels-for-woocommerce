@@ -10,19 +10,6 @@
     position: relative;
     padding-left: 25px;
 }
-.berocket_admin_menu_custom_post_submenu:before {
-    content: "";
-    background: transparent url('../images/submenu-icon.png') top left/cover;
-    height: 14px;
-    width: 14px;
-    display: block;
-    position: absolute;
-    left: 7px;
-    top: -3px;
-}
-.current .berocket_admin_menu_custom_post_submenu:before {
-    background: transparent url('../images/submenu-icon-a.png') top left/cover;
-}
 .berocket_debug_errors {
     margin-top: 60px;
 }

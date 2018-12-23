@@ -573,7 +573,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		return $html;
 	}
 
-	public function get_option($post_id) {
+	public function get_option($post_id): array {
 		$options_test = get_post_meta($post_id, $this->post_name, true);
 		if (empty($options_test)) {
 			$this->post_name = 'br_label';
@@ -586,7 +586,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		return $options;
 	}
 
-	public function wc_save_check($post_id, $post) {
+	public function wc_save_check($post_id, $post): array {
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
 			return false;
 		}

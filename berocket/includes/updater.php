@@ -22,9 +22,7 @@ if ( ! class_exists( 'BeRocket_updater' ) ) {
             self::$key        = ( empty( $options[ 'account_key' ] ) ? '' : $options[ 'account_key' ] );
 
             add_action( 'admin_head', array( __CLASS__, 'scripts' ) );
-            add_action( 'admin_menu', array( __CLASS__, 'main_menu_item' ), 1 );
             add_action( 'admin_menu', array( __CLASS__, 'account_page' ), 500 );
-            add_action( 'network_admin_menu', array( __CLASS__, 'network_account_page' ) );
             add_action( 'admin_init', array( __CLASS__, 'account_option_register' ) );
             add_filter( 'pre_set_site_transient_update_plugins', array( __CLASS__, 'update_check_set' ) );
             add_action( 'install_plugins_pre_plugin-information', array( __CLASS__, 'plugin_info' ), 1 );
@@ -428,20 +426,6 @@ if ( ! class_exists( 'BeRocket_updater' ) ) {
             <?php
         }
 
-        public static function network_account_page() {
-            add_menu_page( 'BeRocket Account Settings', 'BeRocket Account', 'manage_options', 'berocket_account', array(
-                    __CLASS__,
-                    'account_form_network'
-                ), plugin_dir_url( __FILE__ ) . 'ico.png', '55.55' );
-        }
-
-        public static function main_menu_item() {
-            add_menu_page( 'BeRocket Account', 'BeRocket', 'manage_woocommerce', 'berocket_account', array(
-                    __CLASS__,
-                    'account_form'
-                ), plugin_dir_url( __FILE__ ) . 'ico.png', '55.55' );
-        }
-
         public static function account_page() {
             add_submenu_page( 'berocket_account', 'BeRocket Account Settings', 'Account Keys', 'manage_options', 'berocket_account', array(
                     __CLASS__,
@@ -668,8 +652,8 @@ if ( ! class_exists( 'BeRocket_updater' ) ) {
 
             delete_site_transient( 'berocket_not_activated_notices_site' );
             delete_transient( 'berocket_not_activated_notices' );
-            if ( is_multisite() ) {  
-                global $wpdb;  
+            if ( is_multisite() ) {
+                global $wpdb;
 
                 $current_site = get_current_site();
                 $all_sites = get_sites(array('fields' => 'ids'));

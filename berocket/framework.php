@@ -10,7 +10,6 @@ if( empty($BeRocket_framework_latest_version_exist) || empty($BeRocket_framework
 }*/
 require_once(__DIR__ . '/includes/functions.php');
 require_once(__DIR__ . '/includes/updater.php');
-require_once(__DIR__ . '/includes/widget.php');
 require_once(__DIR__ . '/includes/admin_notices.php');
 require_once(__DIR__ . '/includes/custom_post.php');
 require_once(__DIR__ . '/includes/conditions.php');
@@ -26,6 +25,7 @@ foreach (glob(__DIR__ . '/' . "../includes/*.php") as $filename) {
 if (!class_exists('BeRocket_Framework')) {
 
 	class BeRocket_Framework {
+
 		public static $settings_name = '';
 		protected static $instance;
 		protected $plugin_version_capability = 0;
@@ -37,13 +37,19 @@ if (!class_exists('BeRocket_Framework')) {
 			'fontawesome_frontend_version',
 		];
 		private $post;
+
+		/**
+		 * @var BeRocket_products_label The child class object
+		 */
 		private $cc;
 
 		public function __construct($child) {
 			if (null === static::$instance) {
 				static::$instance = $child;
 			}
-			$this->cc = $child; // Child Class object
+
+			$this->cc = $child;
+
 			do_action('BeRocket_framework_init_plugin', $this->cc->info);
 			$this->plugin_version_capability = apply_filters('brfr_plugin_version_capability_' . $this->cc->info['plugin_name'], $this->plugin_version_capability, $this);
 			$this->defaults = apply_filters('brfr_plugin_defaults_value_' . $this->cc->info['plugin_name'], $this->defaults, $this);
@@ -55,7 +61,6 @@ if (!class_exists('BeRocket_Framework')) {
 
 			if ($this->cc->init_validation()) {
 				add_action('init', [$this->cc, 'init']);
-				add_action('wp_head', [$this->cc, 'set_styles']);
 				add_action('admin_init', [$this->cc, 'admin_init']);
 				add_action('admin_menu', [$this->cc, 'admin_menu']);
 				add_action('admin_enqueue_scripts', [$this->cc, 'admin_enqueue_scripts']);
@@ -79,9 +84,9 @@ if (!class_exists('BeRocket_Framework')) {
 			}
 			do_action($this->info['plugin_name'] . '_framework_construct', $this->cc);
 		}
-		public static function getInstance() {
+		public static function getInstance(): BeRocket_Framework {
 			if (null === static::$instance) {
-				static::$instance = new static();
+				static::$instance = new static(null);
 			}
 			return static::$instance;
 		}
@@ -206,10 +211,11 @@ if (!class_exists('BeRocket_Framework')) {
 		 * Initialize
 		 */
 		public function init() {
-			wp_enqueue_script("jquery");
+			wp_enqueue_script('jquery');
 			wp_register_style('font-awesome', plugins_url('berocket/css/font-awesome.min.css', $this->cc->info['plugin_file']));
 			wp_register_style('font-awesome-5', plugins_url('berocket/css/fontawesome5.min.css', $this->cc->info['plugin_file']));
 			wp_register_style('font-awesome-5-compat', plugins_url('berocket/css/fontawesome4-compat.min.css', $this->cc->info['plugin_file']));
+
 			if (is_admin()) {
 				wp_enqueue_style('font-awesome');
 			} elseif (! empty($this->framework_data['fontawesome_frontend'])) {
@@ -257,16 +263,6 @@ if (!class_exists('BeRocket_Framework')) {
 					wp_enqueue_style('font-awesome-5-compat');
 				}
 			}
-		}
-
-		/**
-		 * Function set styles in wp_head WordPress action
-		 *
-		 * @return void
-		 */
-		public function set_styles() {
-			$options = $this->get_option();
-			echo '<style>' . $options['custom_css'] . '</style>';
 		}
 
 		/**
@@ -821,7 +817,6 @@ if (!class_exists('BeRocket_Framework')) {
 		 * Getting plugin option values
 		 *
 		 * @access public
-		 *
 		 */
 		public function get_option() {
 			if (! function_exists('icl_object_id')) {

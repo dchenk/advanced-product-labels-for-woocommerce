@@ -3,9 +3,9 @@
 class BeRocket_Labels_compat_product_preview {
 
 	public function __construct() {
-		add_action('berocket_pp_popup_inside_image', [__CLASS__, 'show_labels']);
-		add_action('berocket_pp_popup_inside_thumbnails', [__CLASS__, 'show_labels']);
-		add_action('BeRocket_preview_after_general_settings', [__CLASS__, 'settings'], 10, 2);
+		add_action('berocket_pp_popup_inside_image', [$this, 'show_labels']);
+		add_action('berocket_pp_popup_inside_thumbnails', [$this, 'show_labels']);
+		add_action('BeRocket_preview_after_general_settings', [$this, 'settings'], 10, 2);
 	}
 
 	public static function show_labels($options) {

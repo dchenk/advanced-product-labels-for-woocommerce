@@ -45,7 +45,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 			add_filter('admin_init', [$this, 'admin_init']);
 		}
 
-		public static function getInstance() {
+		public static function getInstance(): BeRocket_custom_post_class {
 			if (null === static::$instance) {
 				static::$instance = new static();
 			}

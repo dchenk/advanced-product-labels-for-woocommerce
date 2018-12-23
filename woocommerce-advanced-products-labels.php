@@ -18,17 +18,21 @@ define('products_label_TEMPLATE_PATH', __DIR__ . '/templates/');
 
 require_once(__DIR__ . '/berocket/framework.php');
 
-foreach (glob(plugin_dir_path(__FILE__) . 'includes/compatibility/*.php') as $filename) {
-	include_once($filename);
-}
+require_once(__DIR__ . '/includes/compatibility/product_preview.php');
 
 class BeRocket_products_label extends BeRocket_Framework {
+
 	public static $settings_name = 'br-products_label-options';
 	public $info;
 	public $defaults;
 	public $values;
 	public $templates;
+
+	/**
+	 * @var BeRocket_custom_post_class
+	 */
 	public $custom_post;
+
 	protected static $instance;
 
 	public function __construct() {
@@ -46,7 +50,6 @@ class BeRocket_products_label extends BeRocket_Framework {
 			'plugin_name' => 'products_label',
 			'full_name'   => 'WooCommerce Advanced Product Labels',
 			'norm_name'   => 'Products Labels',
-			'price'       => '24',
 			'domain'      => 'BeRocket_products_label_domain',
 			'templates'   => products_label_TEMPLATE_PATH,
 			'plugin_file' => __FILE__,
@@ -58,7 +61,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 			'disable_plabels'   => '0',
 			'disable_ppage'     => '0',
 			'remove_sale'       => '0',
-			'custom_css'        => '.product .images {position: relative;}',
+			// 'custom_css'        => '.product .images {position: relative;}',
 			'script'            => '',
 			'shop_hook'         => 'woocommerce_before_shop_loop_item_title+15',
 			'product_hook_image'=> 'woocommerce_product_thumbnails+15',
@@ -269,11 +272,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		add_action('init', [$this, 'init']);
 		add_action('woocommerce_product_write_panel_tabs', [$this, 'product_edit_advanced_label']);
-		if (version_compare(br_get_woocommerce_version(), '2.7', '>=')) {
-			add_action('woocommerce_product_data_panels', [$this, 'product_edit_tab']);
-		} else {
-			add_action('woocommerce_product_write_panels', [$this, 'product_edit_tab']);
-		}
+		add_action('woocommerce_product_data_panels', [$this, 'product_edit_tab']);
 		add_action('wp_ajax_br_label_ajax_demo', [$this, 'ajax_get_label']);
 		add_action('wp_footer', [$this, 'page_load_script']);
 		add_filter('BeRocket_updater_menu_order_custom_post', [$this, 'menu_order_custom_post']);
@@ -281,9 +280,9 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 	public function page_load_script() {
 		global $berocket_display_any_advanced_labels;
-		if (! empty($berocket_display_any_advanced_labels)) {
+		if (!empty($berocket_display_any_advanced_labels)) {
 			$options = $this->get_option();
-			if (! empty($options['script']['js_page_load'])) {
+			if (!empty($options['script']['js_page_load'])) {
 				echo '<script>jQuery(document).ready(function(){', $options['script']['js_page_load'], '});</script>';
 			}
 		}
@@ -392,17 +391,24 @@ class BeRocket_products_label extends BeRocket_Framework {
 	public function set_label_label() {
 		$this->set_label('label');
 	}
+
 	public function set_label_label_fix() {
 		echo '<div>';
 		$this->set_label('label');
 		echo '<div style="clear:both;"></div></div>';
 	}
-	public function set_label($type = true) {
+
+	/**
+	 * @param string $type
+	 */
+	public function set_label($type = '') {
 		global $product;
+
 		do_action('berocket_apl_set_label_start', $product);
 		if (apply_filters('berocket_apl_set_label_prevent', false, $type, $product)) {
-			return true;
+			return;
 		}
+
 		$product_post = br_wc_get_product_post($product);
 		$options = $this->get_option();
 		if (! $options['disable_plabels']) {
@@ -415,12 +421,12 @@ class BeRocket_products_label extends BeRocket_Framework {
 					}
 				}
 			}
-			if ((! empty($label_type['text']) && $label_type['text'] != 'Label')
-				|| (! empty($label_type['content_type']) && $label_type['content_type'] != 'text')) {
+			if ((!empty($label_type['text']) && $label_type['text'] != 'Label')
+				|| (!empty($label_type['content_type']) && $label_type['content_type'] != 'text')) {
 				$this->show_label_on_product($label_type, $product);
 			}
 		}
-		if (! $options['disable_labels']) {
+		if (!$options['disable_labels']) {
 			$args = [
 				'posts_per_page'   => -1,
 				'offset'           => 0,
@@ -462,9 +468,11 @@ class BeRocket_products_label extends BeRocket_Framework {
 		}
 		wp_die();
 	}
+
 	public function product_edit_advanced_label() {
 		echo '<li class="product_tab_manager"><a href="#br_alabel">' . __('Advanced label', 'BeRocket_tab_manager_domain') . '</a></li>';
 	}
+
 	public function product_edit_tab() {
 		wp_enqueue_script('berocket_products_label_admin', plugins_url('js/admin.js', __FILE__), ['jquery'], BeRocket_products_label_version);
 		wp_enqueue_script('berocket_framework_admin');
@@ -472,12 +480,13 @@ class BeRocket_products_label extends BeRocket_Framework {
 		wp_enqueue_script('berocket_widget-colorpicker');
 		wp_enqueue_style('berocket_widget-colorpicker-style');
 		wp_enqueue_style('berocket_font_awesome');
-		$one_product = true;
 		set_query_var('one_product', true);
-		include products_label_TEMPLATE_PATH . "label.php";
+		include products_label_TEMPLATE_PATH . 'label.php';
 	}
+
 	public function show_label_on_product($br_label, $product) {
 		global $berocket_display_any_advanced_labels;
+
 		$berocket_display_any_advanced_labels = true;
 		if ($product !== 'demo') {
 			$product_post = br_wc_get_product_post($product);

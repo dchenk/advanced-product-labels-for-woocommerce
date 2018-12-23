@@ -9,7 +9,6 @@ if( empty($BeRocket_framework_latest_version_exist) || empty($BeRocket_framework
 	require_once($BeRocket_framework_latest_version_exist['file']);
 }*/
 require_once(__DIR__ . '/includes/functions.php');
-require_once(__DIR__ . '/includes/updater.php');
 require_once(__DIR__ . '/includes/admin_notices.php');
 require_once(__DIR__ . '/includes/custom_post.php');
 require_once(__DIR__ . '/includes/conditions.php');
@@ -56,8 +55,6 @@ if (!class_exists('BeRocket_Framework')) {
 
 			register_activation_hook($this->cc->info['plugin_file'], [$this->cc, 'activation']);
 			register_uninstall_hook($this->cc->info['plugin_file'], [get_class($this->cc), 'deactivation']);
-			add_filter('BeRocket_updater_add_plugin', [$this->cc, 'updater_info']);
-			add_filter('berocket_admin_notices_rate_stars_plugins', [$this, 'rate_stars_plugins']);
 
 			if ($this->cc->init_validation()) {
 				add_action('init', [$this->cc, 'init']);

@@ -1,17 +1,14 @@
 <?php
-//delete_option('berocket_admin_notices'); //remove all notice information
-//delete_option('berocket_last_close_notices_time'); //remove wait time before next notice
-//delete_option('berocket_admin_notices_rate_stars');
 
 class berocket_admin_notices {
 	public $find_names;
 	public $notice_exist = false;
 	public static $last_time = '-24 hours';
 	public static $end_soon_time = '+1 hour';
-	public static $subscribed = false;
 	public static $jquery_script_exist = false;
 	public static $styles_exist = false;
 	public static $notice_index = 0;
+
 	public static $default_notice_options = [
 		'start'         => 0,
 		'end'           => 0,
@@ -113,10 +110,6 @@ class berocket_admin_notices {
 		return json_encode($a1) > json_encode($a2);
 	}
 	public static function set_notice_by_path($options, $replace = false, $find_names = false) {
-		self::$subscribed = get_option('berocket_email_subscribed');
-		if (self::$subscribed && $options['subscribe']) {
-			return false;
-		}
 		$notices = get_option('berocket_admin_notices');
 		if ($options['end'] < time() && $options['end'] != 0) {
 			return false;
@@ -219,10 +212,10 @@ class berocket_admin_notices {
 		update_option('berocket_admin_notices', $notices);
 		return true;
 	}
+
 	public static function get_notice() {
 		$notices = get_option('berocket_admin_notices');
 		$last_time = get_option('berocket_last_close_notices_time');
-		self::$subscribed = get_option('berocket_email_subscribed');
 		if (! is_array($notices) || count($notices) == 0) {
 			return false;
 		}
@@ -234,10 +227,10 @@ class berocket_admin_notices {
 		update_option('berocket_current_displayed_notice', $current_notice);
 		return $current_notice;
 	}
+
 	public static function get_notice_for_settings() {
 		$notices = get_option('berocket_admin_notices');
 		$last_notice = get_option('berocket_admin_notices_last_on_options');
-		self::$subscribed = get_option('berocket_email_subscribed');
 		$notices = self::get_notices_with_priority($notices);
 		if (! is_array($notices) || count($notices) == 0) {
 			return false;
@@ -253,6 +246,7 @@ class berocket_admin_notices {
 		update_option('berocket_admin_notices_last_on_options', $last_notice);
 		return $notices[$last_notice];
 	}
+
 	public static function get_not_closed_notice($array, $end_soon = false, $closed = 0, $count = 3) {
 		$notice = false;
 		if (empty($array) || ! is_array($array)) {
@@ -273,9 +267,8 @@ class berocket_admin_notices {
 					$notice = self::get_not_closed_notice($item, $end_soon, $closed, $count - 1);
 				}
 			} else {
-				$display_notice = ($item['closed'] <= $closed && (! self::$subscribed || ! $item['subscribe']) && ($item['start'] == 0 || $item['start'] < $time) && ($item['end'] == 0 || $item['end'] > $time));
+				$display_notice = ($item['closed'] <= $closed && (!$item['subscribe']) && ($item['start'] == 0 || $item['start'] < $time) && ($item['end'] == 0 || $item['end'] > $time));
 				$display_notice = apply_filters('berocket_admin_notice_is_display_notice', $display_notice, $item, [
-					'subscribed' => self::$subscribed,
 					'end_soon'   => $end_soon,
 					'closed'     => $closed,
 				]);
@@ -289,6 +282,7 @@ class berocket_admin_notices {
 		}
 		return $notice;
 	}
+
 	public static function get_notices_with_priority($array, $priority = 19, $count = 3) {
 		if (empty($array) || ! is_array($array)) {
 			$array = [];
@@ -303,9 +297,8 @@ class berocket_admin_notices {
 				$notice = self::get_notices_with_priority($item, $priority, $count - 1);
 				$notices = array_merge($notices, $notice);
 			} else {
-				$display_notice = ((!self::$subscribed || ! $item['subscribe']) && ($item['priority'] <= 5 || !$item['closed']));
+				$display_notice = ((true || ! $item['subscribe']) && ($item['priority'] <= 5 || !$item['closed']));
 				$display_notice = apply_filters('berocket_admin_notice_is_display_notice_priority', $display_notice, $item, [
-					'subscribed' => self::$subscribed,
 					'priority'   => $priority,
 				]);
 				if ($display_notice) {
@@ -315,6 +308,7 @@ class berocket_admin_notices {
 		}
 		return $notices;
 	}
+
 	public static function display_admin_notice() {
 		$settings_page = apply_filters('is_berocket_settings_page', false);
 		if ($settings_page) {
@@ -340,6 +334,7 @@ class berocket_admin_notices {
 			}
 		}
 	}
+
 	public static function echo_notice($notice) {
 		$notice = array_merge(self::$default_notice_options, $notice);
 		$settings_page = apply_filters('is_berocket_settings_page', false);
@@ -565,10 +560,11 @@ class berocket_admin_notices {
 		self::echo_styles();
 		self::echo_jquery_functions();
 	}
+
 	public static function echo_styles() {
-		if (! self::$styles_exist) {
-			self::$styles_exist = true;
-			echo '<style>
+		if (!self::$styles_exist) {
+			self::$styles_exist = true; ?>
+			<style>
 			.berocket_admin_notice .berocket_notice_content {
 				display: inline-block;
 				vertical-align: middle;
@@ -616,16 +612,14 @@ class berocket_admin_notices {
 				font-weight: bold;
 				line-height: 120%;
 			}
-			</style>';
+			</style><?php
 		}
 	}
+
 	public static function echo_jquery_functions() {
 		if (! self::$jquery_script_exist) {
-			self::$jquery_script_exist = true;
-			echo '<script>
-				jQuery(document).on("berocket_subscribed", ".berocket_admin_notice", function(){
-					jQuery(this).find(".berocket_no_thanks").click();
-				});
+			self::$jquery_script_exist = true; ?>
+			<script>
 				jQuery(document).on("berocket_incorrect_email", ".berocket_admin_notice", function(){
 					jQuery(this).find(".berocket_subscribe_form").addClass("form-invalid");
 				});
@@ -664,10 +658,6 @@ class berocket_admin_notices {
 						});
 					}
 				});
-				jQuery(document).on("berocket_subscribing", ".berocket_subscribe", function(event) {
-					event.preventDefault();
-					jQuery(this).hide();
-				});
 				jQuery(document).on("berocket_incorrect_email", ".berocket_subscribe", function(event) {
 					event.preventDefault();
 					jQuery(this).addClass("form-invalid").find(".error").show();
@@ -680,29 +670,29 @@ class berocket_admin_notices {
 						return false;
 					}
 				});
-				jQuery(document).on("click", ".berocket_subscribe.berocket_subscribe_form .berocket_notice_submit", function(event) {
-					event.preventDefault();
-					jQuery(this).parents(".berocket_subscribe_form").trigger("berocket_subscribe_send");
-				});
-				
-			</script>';
+			</script><?php
 		}
 	}
+
 	public static function close_notice($notice = false) {
-		self::$subscribed = get_option('berocket_email_subscribed');
+
 		if (($notice == false || ! is_array($notice)) && ! empty($_POST['notice'])) {
 			$notice = sanitize_textarea_field($_POST['notice']);
 		}
-		if (empty($notice) || ! is_array($notice)
-		|| (empty($notice['start']) && $notice['start'] !== '0')
-		|| (empty($notice['end']) && $notice['end'] !== '0')
-		|| (empty($notice['priority']) && $notice['priority'] !== '0')
-		|| (empty($notice['name']))) {
-			$notice = self::get_notice();
-		}
-		if (empty($notice) || ! is_array($notice)) {
+
+		if (empty($notice) || !is_array($notice)) {
 			wp_die();
 		}
+
+		if (
+			(empty($notice['start']) && $notice['start'] !== '0') ||
+			(empty($notice['end']) && $notice['end'] !== '0') ||
+			(empty($notice['priority']) && $notice['priority'] !== '0') ||
+			empty($notice['name'])
+		) {
+			$notice = self::get_notice();
+		}
+
 		$find_names = [$notice['priority'], $notice['end'], $notice['start'], $notice['name']];
 		$current_notice = self::get_notice_by_path($find_names);
 		if (isset($current_notice)) {
@@ -727,384 +717,8 @@ class berocket_admin_notices {
 		wp_die();
 	}
 
-	public static function subscribe() {
-		if (! empty($_POST['email'])) {
-			if ($ch = curl_init()) {
-				$plugins = [];
-				if (! empty($_POST['plugin'])) {
-					$plugins[] = sanitize_textarea_field($_POST['plugin']);
-				}
-				$plugins = apply_filters('berocket_admin_notices_subscribe_plugins', $plugins);
-				$plugins = array_unique($plugins);
-				$plugins = implode(',', $plugins);
-				update_option('berocket_email_subscribed', true);
-				curl_setopt($ch, CURLOPT_URL, "https://berocket.com/main/subscribe");
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, "subs_email=" . sanitize_email($_POST['email']) . "&plugins=" . $plugins);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-				echo curl_exec($ch);
-				curl_close($ch);
-			}
-		}
-		wp_die();
-	}
-
 }
 
 add_action('admin_notices', ['berocket_admin_notices', 'display_admin_notice']);
 add_action('wp_ajax_berocket_admin_close_notice', ['berocket_admin_notices', 'close_notice']);
-add_action('wp_ajax_berocket_subscribe_email', ['berocket_admin_notices', 'subscribe']);
-
-class berocket_admin_notices_rate_stars {
-
-	public $first_time = '+7 days';
-	public $later_time = '+7 days';
-
-	public function __construct() {
-		add_action('admin_notices', [$this, 'admin_notices']);
-	}
-	public function admin_notices() {
-		$display_one = false;
-		$disabled = get_option('berocket_admin_notices_rate_stars');
-		if (! is_array($disabled)) {
-			$disabled = [];
-		}
-		$plugins = apply_filters('berocket_admin_notices_rate_stars_plugins', []);
-		foreach ($plugins as $plugin_id => $plugin) {
-			$display = false;
-			if (empty($disabled[$plugin['id']])) {
-				$disabled[$plugin['id']] = [
-					'time' => strtotime($this->first_time),
-					'count' => 0,
-				];
-			} elseif ($disabled[$plugin['id']]['time'] != 0 && $disabled[$plugin['id']]['time'] < time()) {
-				$display = true;
-			}
-			if ($display) {
-				$display_one = true; ?>
-				<div class="notice notice-info berocket-rate-stars berocket-rate-stars-block berocket-rate-stars-<?php echo $plugin['id']; ?>">
-					<p><?php
-					$text = __('Awesome, you\'ve been using %plugin_name% Plugin for more than 1 week. May we ask you to give it a 5-star rating on WordPress?', 'BeRocket_domain');
-				$text_mobile = __('May we ask you to give our plugin %plugin_name% a 5-star rating?', 'BeRocket_domain');
-				$plugin['name'] = str_replace(' for WooCommerce', '', $plugin['name']);
-				$text = str_replace('%plugin_name%', '<a href="https://wordpress.org/support/plugin/' . $plugin['free_slug'] . '/" target="_blank">' . $plugin['name'] . '</a>', $text);
-				$text_mobile = str_replace('%plugin_name%', '<a href="https://wordpress.org/support/plugin/' . $plugin['free_slug'] . '/" target="_blank">' . $plugin['name'] . '</a>', $text_mobile);
-				$text = '<span class="brfeature_show_mobile">' . $text_mobile . '</span><span class="berocket-right-block">
-						<a class="berocket_rate_close brfirst" 
-							data-plugin="' . $plugin['id'] . '" 
-							data-action="berocket_rate_stars_close" 
-							data-prevent="0" 
-							data-function="berocket_rate_star_close_notice"
-							data-later="0" 
-							data-thanks_html=\'<img src="' . plugin_dir_url(__FILE__) . '../images/Thank-you.png"><h3 class="berocket_thank_you_rate_us">' . __('Each good feedback is very important for plugin growth', 'BeRocket_domain') . '</h3>\'
-							href="https://wordpress.org/support/plugin/' . $plugin['free_slug'] . '/reviews/?filter=5#new-post" 
-							target="_blank">' . __('Ok, you deserved it', 'BeRocket_domain') . '</a>
-						<span class="brfirts"> | </span>
-						<a class="berocket_rate_close brsecond" 
-							data-plugin="' . $plugin['id'] . '" 
-							data-action="berocket_rate_stars_close" 
-							data-prevent="1" 
-							data-later="1" 
-							data-function="berocket_rate_star_close_notice"
-							href="#later">
-								<span class="brfeature_hide_mobile">' . __('Maybe later', 'BeRocket_domain') . '</span>
-								<span class="brfeature_show_mobile">' . __('Later', 'BeRocket_domain') . '</span>
-							</a>
-						<span class="brsecond"> | </span>
-						<a class="berocket_rate_close brthird" 
-							data-plugin="' . $plugin['id'] . '" 
-							data-action="berocket_rate_stars_close" 
-							data-prevent="1" 
-							data-later="0" 
-							data-function="berocket_rate_star_close_notice"
-							href="#close">
-								<span class="brfeature_hide_mobile">' . __('I already did', 'BeRocket_domain') . '</span>
-								<span class="brfeature_show_mobile">' . __('Already', 'BeRocket_domain') . '</span>
-							</a>
-					</span><span class="brfeature_hide_mobile">' . $text . '</span>';
-				echo $text; ?></p>
-				</div>
-				<?php
-			}
-		}
-		if ($display_one) {
-			add_action('admin_footer', [$this, 'wp_footer_js']); ?>
-			<style>
-				.berocket-rate-stars span.brsecond,
-				.berocket-rate-stars a.brthird {
-					color: #999;
-				}
-				.berocket-rate-stars .berocket-right-block > span {
-					display: inline-block;
-					margin-left: 10px;
-					margin-right: 10px;
-				}
-				.berocket-rate-stars a.brthird:hover {
-					color: #00a0d2;
-				}
-				.berocket-rate-stars a {
-					text-decoration: none;
-				}
-				.berocket-rate-stars .berocket-right-block {
-					float: right;
-					padding-left: 20px;
-					display: inline-block;
-
-				}
-				.berocket-rate-stars .brfeature_show_mobile {
-					display: none;
-				}
-				@media screen and (min-width: 768px) and (max-width: 1024px) {
-					.berocket-rate-stars .berocket-right-block span.brfirts {
-						display: none;
-					}
-					.berocket-rate-stars .berocket-right-block .berocket_rate_close.brfirst {
-						display: block;
-					}
-				}
-				@media screen and (max-width: 768px) {
-					.berocket-rate-stars {
-						display: none;
-					}
-					.berocket-rate-stars .brfeature_show_mobile {
-						display: inline-block;
-					}
-					.berocket-rate-stars .brfeature_hide_mobile {
-						display: none;
-					}
-					.berocket-rate-stars .berocket-right-block {
-						float: none;
-						padding-left: 0;
-					}
-					.berocket-rate-stars .berocket-right-block > span {
-						margin-left: 5px;
-						margin-right: 5px;
-					}
-				}
-			</style>
-			<?php
-		}
-		update_option('berocket_admin_notices_rate_stars', $disabled);
-	}
-	public function disable_rate_notice() {
-		$plugin = (empty($_GET['plugin']) ? (empty($_POST['plugin']) ? '' : $_POST['plugin']) : $_GET['plugin']);
-		$later = (empty($_GET['later']) ? (empty($_POST['later']) ? '' : $_POST['later']) : $_GET['later']);
-		$disabled = get_option('berocket_admin_notices_rate_stars');
-		if (isset($disabled[$plugin]) && is_array($disabled[$plugin]) && isset($disabled[$plugin]['time'])) {
-			if (empty($later)) {
-				$disabled[$plugin]['time'] = 0;
-			} else {
-				$disabled[$plugin]['time'] = strtotime($this->later_time);
-			}
-		}
-		update_option('berocket_admin_notices_rate_stars', $disabled);
-		wp_die();
-	}
-	public function feature_request_send() {
-		$plugin = (empty($_GET['brfeature_plugin']) ? (empty($_POST['brfeature_plugin']) ? '' : $_POST['brfeature_plugin']) : $_GET['brfeature_plugin']);
-		$email = (empty($_GET['brfeature_email']) ? (empty($_POST['brfeature_email']) ? '' : $_POST['brfeature_email']) : $_GET['brfeature_email']);
-		$title = (empty($_GET['brfeature_title']) ? (empty($_POST['brfeature_title']) ? '' : $_POST['brfeature_title']) : $_GET['brfeature_title']);
-		$description = (empty($_GET['brfeature_description']) ? (empty($_POST['brfeature_description']) ? '' : $_POST['brfeature_description']) : $_GET['brfeature_description']);
-		if (! empty($plugin) && ! empty($title) && ! empty($description)) {
-			$response = wp_remote_post('https://berocket.com/api/data/add_feature_request', [
-				'body'        => [
-					'plugin'        => $plugin,
-					'email'         => $email,
-					'title'         => $title,
-					'description'   => $description,
-				],
-				'method'      => 'POST',
-				'timeout'     => 5,
-				'redirection' => 5,
-				'blocking'    => true,
-				'sslverify'   => false,
-			]);
-		}
-		wp_die();
-	}
-	public function show_rate_window($html, $plugin_id) {
-		$disabled = get_option('berocket_admin_notices_rate_stars');
-		if (empty($disabled[$plugin_id]) || $disabled[$plugin_id]['time'] != 0) {
-			$plugins = apply_filters('berocket_admin_notices_rate_stars_plugins', []);
-			foreach ($plugins as $plugin) {
-				if ($plugin['id'] == $plugin_id) {
-					$html = '<div class="berocket_rate_plugin berocket-rate-stars-block berocket-rate-stars-plugin-page-' . $plugin['id'] . '">
-						<h3>' . __('May we ask you to give us a 5-star feedback?', 'BeRocket_domain') . '</h3>
-						<a class="berocket_rate_close brfirst" 
-							data-plugin="' . $plugin['id'] . '" 
-							data-action="berocket_rate_stars_close" 
-							data-prevent="0" 
-							data-later="0" 
-							data-function="berocket_rate_star_close_notice"
-							data-thanks_html=\'<img src="' . plugin_dir_url(__FILE__) . '../images/Thank-you.png"><h3 class="berocket_thank_you_rate_us">' . __('Each good feedback is very important for plugin growth', 'BeRocket_domain') . '</h3>\'
-							href="https://wordpress.org/support/plugin/' . $plugin['free_slug'] . '/reviews/?filter=5#new-post" 
-							target="_blank">' . __('Ok, you deserved it', 'BeRocket_domain') . '</a>
-							<p>' . __('Support the plugin by setting good feedback.<br>We really need this.', 'BeRocket_domain') . '</p>
-					</div>
-					<style>
-					.berocket_rate_plugin {
-						border-radius: 3px;
-						box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.06);
-						overflow: auto;
-						position: relative;
-						background-color: white;
-						color: rgba(0, 0, 0, 0.87);
-						padding: 0 25px;
-						margin-bottom: 30px;
-						box-sizing: border-box;
-						text-align: center;
-						float: right;
-						clear: right;
-						width: 28%;
-					}
-					.berocket_rate_plugin .berocket_rate_close {
-						margin-top: 30px;
-						margin-bottom: 20px;
-						color: #fff;
-						box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-						text-shadow: none;
-						border: 0 none;
-						min-width: 120px;
-						width: 90%;
-						-moz-user-select: none;
-						background: #ff5252 none repeat scroll 0 0;
-						box-sizing: border-box;
-						cursor: pointer;
-						display: inline-block;
-						font-size: 14px;
-						outline: 0 none;
-						padding: 8px;
-						position: relative;
-						text-align: center;
-						text-decoration: none;
-						transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s, background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-						white-space: nowrap;
-						height: auto;
-						vertical-align: top;
-						line-height: 25px;
-						border-radius: 3px;
-						font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-						font-weight: bold;
-						
-						margin: 5px 0;
-						background: #97b9cf;
-						border: 2px solid #97b9cf;
-						color: white;
-					}
-					.berocket_rate_plugin img {
-						margin-top: 20px;
-					}
-					.berocket_rate_plugin .berocket_thank_you_rate_us {
-						color: #555;
-						margin-bottom: 35px;
-					}
-					.berocket_rate_plugin .berocket_rate_close:hover,
-					.berocket_rate_plugin .berocket_rate_close:focus,
-					.berocket_rate_plugin .berocket_rate_close:active{
-						color: white;
-						background: #87a9bf;
-						border: 2px solid #87a9bf;
-					}
-					@media screen and (min-width: 901px) and (max-width: 1200px) {
-						.berocket_rate_plugin{
-							padding-left: 10px;
-							padding-right: 10px;
-						}
-					}
-					@media screen and (max-width: 900px) {
-						.berocket_rate_plugin {
-							float: none;
-							width: 100%;
-							margin-top: 30px;
-							margin-bottom: 0;
-						}
-						.berocket_rate_plugin .berocket_rate_close{
-							float: none;
-							width: 100%;
-						}
-					}
-					</style>';
-					add_action('admin_footer', [$this, 'wp_footer_js']);
-					return $html;
-				}
-			}
-		}
-		return $html;
-	}
-	public function wp_footer_js() {
-		?>
-		<script>
-			jQuery(document).on('click', '.berocket-rate-stars-block .berocket_rate_close', function(event) {
-				var $this = jQuery(this);
-				if( $this.data('prevent') ) {
-					event.preventDefault();
-				}
-				var data = $this.data();
-				if( $this.data('function') ) {
-					if( typeof(window[$this.data('function')]) == 'function' ) {
-						window[$this.data('function')](data);
-					}
-				}
-				jQuery.post(ajaxurl, data, function(result) {
-					if( $this.data('function_after') ) {
-						if( typeof(window[$this.data('function_after')]) == 'function' ) {
-							window[$this.data('function_after')](result, data);
-						}
-					}
-				});
-			});
-			function berocket_rate_star_close_notice(button_data) {
-				jQuery('.berocket-rate-stars-'+button_data.plugin).slideUp('100');
-				console.log(button_data);
-				if( ! button_data.prevent ) {
-					jQuery('.berocket-rate-stars-plugin-page-'+button_data.plugin).html(button_data.thanks_html);
-					jQuery('.berocket-rate-stars-plugin-feature-'+button_data.plugin).slideUp(100);
-				}
-				if( button_data.prevent && ! button_data.later ) {
-					jQuery('.berocket-rate-stars-plugin-page-'+button_data.plugin).slideUp(100);
-					jQuery('.berocket-rate-stars-plugin-feature-'+button_data.plugin).slideUp(100);
-				}
-			}
-			jQuery(document).on('click', '.berocket_feature_request_button', function(event) {
-				event.preventDefault();
-				var $this = jQuery(this);
-				$this.hide();
-				$this.parents('.berocket_feature_request').find('.berocket_feature_request_form').show();
-			});
-			jQuery(document).on('submit', '.berocket_feature_request_inside', function(event) {
-				event.preventDefault();
-				var form_data = jQuery(this).serialize();
-				var send = true;
-				if( ! jQuery(this).find('[name=brfeature_title]').val() ) {
-					send = false;
-					jQuery(this).find('[name=brfeature_title]').addClass('brfeature_error');
-				}
-				if( ! jQuery(this).find('[name=brfeature_description]').val() ) {
-					send = false;
-					jQuery(this).find('[name=brfeature_description]').addClass('brfeature_error');
-				}
-				if( send ) {
-					form_data = form_data+'&action=berocket_feature_request_send';
-					jQuery.post(ajaxurl, form_data);
-					jQuery(this).parents('.berocket_feature_request_form').hide().parents('.berocket_feature_request').find('.berocket_feature_request_thanks').show();
-				}
-			});
-			jQuery(document).on('change', '.brfeature_error', function() {
-				jQuery(this).removeClass('brfeature_error');
-			});
-			jQuery(document).on('click', '.berocket_feature_request_rate .berocket_rate_close', function(event) {
-				jQuery(this).parents('.berocket_feature_request_rate').slideUp(100);
-			});
-			jQuery(document).on('click', '.berocket_rate_next_time', function(event) {
-				event.preventDefault();
-				jQuery(this).parents('.berocket_feature_request_rate').slideUp(100);
-			});
-		</script>
-		<?php
-	}
-
-}
-
-new berocket_admin_notices_rate_stars();
 

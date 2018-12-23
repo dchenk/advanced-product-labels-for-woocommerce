@@ -586,7 +586,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		return $options;
 	}
 
-	public function wc_save_check($post_id, $post): array {
+	public function wc_save_check($post_id, $post): bool {
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
 			return false;
 		}

@@ -1,10 +1,14 @@
 <?php
+
 class BeRocket_conditions_advanced_labels extends BeRocket_conditions {
 }
+
 class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
+
 	public $hook_name = 'berocket_advanced_label_editor';
 	public $conditions;
 	protected static $instance;
+
 	public function __construct() {
 		add_action('products_label_framework_construct', [$this, 'init_conditions']);
 		$this->post_name = 'br_labels';
@@ -97,6 +101,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		add_filter('brfr_berocket_advanced_label_editor_custom_css_explanation', [__CLASS__, 'section_custom_css_explanation'], 10, 4);
 		parent::__construct();
 	}
+
 	public function init_conditions() {
 		$this->conditions = new BeRocket_conditions_advanced_labels($this->post_name . '[data]', $this->hook_name, [
 			'condition_product',
@@ -112,6 +117,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			'condition_product_rating',
 		]);
 	}
+
 	public function conditions($post) {
 		$options = $this->get_option($post->ID);
 		if (empty($options['data'])) {
@@ -119,6 +125,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		}
 		echo $this->conditions->build($options['data']);
 	}
+
 	public function description($post) {
 		?>
         <p><?php _e('Label without any condition will be displayed on all products', 'BeRocket_products_label_domain'); ?></p>
@@ -127,6 +134,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
         <p><strong>OR</strong> <?php _e('uses between different sections with conditions', 'BeRocket_products_label_domain'); ?></p>
         <?php
 	}
+
 	public function preview($post) {
 		wp_enqueue_style('berocket_tippy');
 		wp_enqueue_script('berocket_tippy'); ?>
@@ -541,27 +549,27 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			]
 		);
 		echo '</div>'; ?>
-        <style>
-        .berocket-label-margin-paddings-block {
-            width: 50px;
-        }
-        </style>
-        <?php
+		<style>
+		.berocket-label-margin-paddings-block {
+			width: 50px;
+		}
+		</style>
+		<?php
 	}
 
 	public static function section_custom_css_explanation($html, $item, $options, $name) {
-		$html .= '<tr><td colspan="2">It is settings for advanced users. Please do not use it if you don\'t know how it work.<br>
-        This options is provided for designer and programmers.<br>
-        How labels looks in HTML<br>
-        &lt;div&gt;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&lt;span&gt;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;b&gt;TEXT OF LABEL&lt;/b&gt;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br>
-        &lt;/div&gt;</td></tr>';
+		$html .= '<tr><td colspan="2">It is settings for advanced users. Please do not use it if you don\'t know how it works.<br>
+		This options is provided for designer and programmers.<br>
+		How labels look in HTML<br>
+		&lt;div&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;span&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;b&gt;TEXT OF LABEL&lt;/b&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br>
+		&lt;/div&gt;</td></tr>';
 		return $html;
 	}
 
@@ -577,6 +585,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		}
 		return $options;
 	}
+
 	public function wc_save_check($post_id, $post) {
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
 			return false;
@@ -589,6 +598,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		}
 		return true;
 	}
+
 	public function wc_save_product($post_id, $post) {
 		$current_settings = get_post_meta($post_id, $this->post_name, true);
 		if (empty($current_settings)) {
@@ -603,35 +613,40 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		$_POST['br_labels'] = apply_filters('berocket_apl_wc_save_product', $_POST['br_labels'], $post_id);
 		parent::wc_save_product($post_id, $post);
 	}
+
 	public function manage_edit_columns($columns) {
 		$columns = parent::manage_edit_columns($columns);
 		$columns["products"] = __("Label text", 'BeRocket_products_label_domain');
 		$columns["data"] = __("Position", 'BeRocket_products_label_domain');
 		return $columns;
 	}
+
 	public function columns_replace($column) {
 		parent::columns_replace($column);
 		global $post;
 		$label_type = $this->get_option($post->ID);
 		switch ($column) {
-			case "products":
-				$text = '';
-				if (isset($label_type['text'])) {
-					$text = $label_type['text'];
-				}
-				if ($label_type['content_type'] == 'sale_p') {
-					$text = __('Discount percentage', 'BeRocket_products_label_domain');
-				}
-				echo apply_filters('berocket_labels_products_column_text', $text, $label_type);
-				break;
-			case "data":
-				$position = ['left' => __('Left', 'BeRocket_products_label_domain'), 'center' => __('Center', 'BeRocket_products_label_domain'), 'right' => __('Right', 'BeRocket_products_label_domain')];
-				$type = ['image' => __('On image', 'BeRocket_products_label_domain'), 'label' => __('Label', 'BeRocket_products_label_domain')];
-				if (isset($label_type['position'], $label_type['type'])) {
-					echo $type[$label_type['type']] . ' ( ' . $position[$label_type['position']] . ' )';
-				}
-				break;
+		case "products":
+			$text = '';
+			if (isset($label_type['text'])) {
+				$text = $label_type['text'];
+			}
+			if ($label_type['content_type'] == 'sale_p') {
+				$text = __('Discount percentage', 'BeRocket_products_label_domain');
+			}
+			echo apply_filters('berocket_labels_products_column_text', $text, $label_type);
+			break;
+		case "data":
+			$position = ['left' => __('Left', 'BeRocket_products_label_domain'), 'center' => __('Center', 'BeRocket_products_label_domain'), 'right' => __('Right', 'BeRocket_products_label_domain')];
+			$type = ['image' => __('On image', 'BeRocket_products_label_domain'), 'label' => __('Label', 'BeRocket_products_label_domain')];
+			if (isset($label_type['position'], $label_type['type'])) {
+				echo $type[$label_type['type']] . ' ( ' . $position[$label_type['position']] . ' )';
+			}
+			break;
 		}
 	}
+
 }
+
 new BeRocket_advanced_labels_custom_post();
+

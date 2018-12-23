@@ -774,10 +774,6 @@ if( ! class_exists( 'berocket_admin_notices_rate_stars' ) ) {
         public $later_time = '+7 days';
         function __construct() {
             add_action( 'admin_notices', array($this, 'admin_notices') );
-            add_action( 'wp_ajax_berocket_rate_stars_close', array($this, 'disable_rate_notice') );
-            add_action( 'wp_ajax_berocket_feature_request_send', array($this, 'feature_request_send') );
-            add_action( 'berocket_rate_plugin_window', array($this, 'show_rate_window'), 10, 2 );
-            add_action( 'berocket_feature_request_window', array($this, 'show_feature_request_window'), 10, 2 );
         }
         function admin_notices() {
             $display_one = false;
@@ -1050,210 +1046,6 @@ if( ! class_exists( 'berocket_admin_notices_rate_stars' ) ) {
             }
             return $html;
         }
-        function show_feature_request_window($html, $plugin_id) {
-            $disabled = get_option('berocket_admin_notices_rate_stars');
-            $plugins = apply_filters('berocket_admin_notices_rate_stars_plugins', array());
-            foreach($plugins as $plugin) {
-                if( $plugin['id'] == $plugin_id ) {
-                    add_action('admin_footer', array($this, 'wp_footer_js'));
-                    $html .= '
-                    <div class="berocket_feature_request berocket-feature-request berocket-feature-request-'.$plugin['id'].'">
-                        <a class="berocket_feature_request_button" href="#feature_request"><img src="'.plugin_dir_url( __FILE__ ).'../images/Feature-request.png" alt="Feature Request"></a>
-                        <div class="berocket_feature_request_form" style="display: none;">
-                            <img src="'.plugin_dir_url( __FILE__ ).'../images/Feature-request-form-title.png" alt="Feature Request">
-                            <form class="berocket_feature_request_inside">
-                                <input name="brfeature_plugin" type="hidden" value="'.$plugin['id'].'">
-                                <input name="brfeature_title" placeholder="'.__('Feature Title', 'BeRocket_domain').'">
-                                <input name="brfeature_email" placeholder="'.__('Email (optional)', 'BeRocket_domain').'">
-                                <textarea name="brfeature_description" placeholder="'.__('Feature Description', 'BeRocket_domain').'"></textarea>
-                                <button class="berocket_feature_request_submit" type="submit">'.__('SEND FEATURE REQUEST', 'BeRocket_domain').'</button>
-                            </form>
-                            <div style="margin-bottom: 10px;">* <small>This form will be sended to <a target="_blank" href="https://berocket.com">berocket.com</a></small></div>
-                        </div>
-                        <div class="berocket_feature_request_thanks" style="display: none;">
-                            <img src="'.plugin_dir_url( __FILE__ ).'../images/Thank-you.png">';
-                    if( empty($disabled[$plugin_id]) || $disabled[$plugin_id]['time'] != 0 ) {
-                        $html .= '
-                        <div class="berocket_feature_request_rate berocket-rate-stars-plugin-feature-'.$plugin_id.'">
-                            <h3>'.__("While you're here, you could rate this plugin", 'BeRocket_domain').'</h3>
-                            <ul class="berocket-rate-stars-block">
-                            <li><a class="berocket_rate_close brfirst" 
-                                data-plugin="'.$plugin['id'].'" 
-                                data-action="berocket_rate_stars_close" 
-                                data-prevent="0" 
-                                data-later="0" 
-                                data-function="berocket_rate_star_close_notice"
-                                data-thanks_html=\'<img src="'.plugin_dir_url( __FILE__ ).'../images/Thank-you.png"><h3 class="berocket_thank_you_rate_us">'.__('Each good feedback is very important for plugin growth', 'BeRocket_domain').'</h3>\'
-                                href="https://wordpress.org/support/plugin/'.$plugin['free_slug'].'/reviews/?filter=5#new-post" 
-                                target="_blank">'.__('This plugin deserves 5 stars', 'BeRocket_domain').'</a></li>
-                            <li><a class="berocket_rate_next_time brsecond" 
-                                href="#later">'.__("I'll rate it next time", 'BeRocket_domain').'</a></li>
-                            <li><a class="berocket_rate_close brthird" 
-                                data-plugin="'.$plugin['id'].'" 
-                                data-action="berocket_rate_stars_close" 
-                                data-prevent="1" 
-                                data-later="0" 
-                                data-function="berocket_rate_star_close_notice"
-                                href="#close">'.__('I already rated it', 'BeRocket_domain').'</a></li>
-                            </ul>
-                        </div>';
-                    }
-                        $html .= '</div>
-                    </div>
-                    <style>
-                        .berocket_feature_request_inside input,
-                        .berocket_feature_request_inside textarea,
-                        .berocket_feature_request_submit {
-                            width: 90%;
-                        }
-                        .berocket_feature_request_submit {
-                            margin-top: 30px;
-                            margin-bottom: 20px;
-                            color: #fff;
-                            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-                            text-shadow: none;
-                            border: 0 none;
-                            min-width: 120px;
-                            -moz-user-select: none;
-                            background: #ff5252 none repeat scroll 0 0;
-                            box-sizing: border-box;
-                            cursor: pointer;
-                            display: inline-block;
-                            font-size: 14px;
-                            outline: 0 none;
-                            padding: 8px;
-                            position: relative;
-                            text-align: center;
-                            text-decoration: none;
-                            transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s, background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-                            white-space: nowrap;
-                            height: auto;
-                            vertical-align: top;
-                            line-height: 25px;
-                            border-radius: 3px;
-                            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-                            font-weight: bold;
-                            margin: 5px 0 15px;
-                            padding: 10px;
-                        }
-                        .berocket_feature_request_submit:hover,
-                        .berocket_feature_request_submit:focus,
-                        .berocket_feature_request_submit:active {
-                            background: #ff6e68 none repeat scroll 0 0;
-                            color: white;
-                        }
-                        .berocket_feature_request_button {
-                            line-height: 0;
-                            overflow: hidden;
-                            display: inline-block;
-                        }
-                        .berocket_feature_request_form {
-                            overflow: auto;
-                        }
-                        .berocket_feature_request_button,
-                        .berocket_feature_request_form,
-                        .berocket_feature_request_thanks {
-                            border-radius: 3px;
-                            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.06);
-                            position: relative;
-                            background-color: white;
-                            color: rgba(0, 0, 0, 0.87);
-                            margin-bottom: 30px;
-                            box-sizing: border-box;
-                            text-align: center;
-                            float: right;
-                            clear: right;
-                            width: 28%;
-                        }
-                        .berocket_feature_request_inside {
-                            padding: 0 25px;
-                        }
-                        .berocket_feature_request_button img,
-                        .berocket_feature_request_form img {
-                            width: 100%;
-                        }
-                        .berocket_feature_request_inside input,
-                        .berocket_feature_request_inside textarea {
-                            outline: none;
-                            box-shadow: none;
-                            resize: none;
-                            margin-bottom: 10px;
-                            margin-top: 10px;
-                            box-shadow: 0px 0px 15px #aaa;
-                            border-radius: 3px;
-                            padding: 10px;
-                            border: 2px solid #FFFFFF;
-                        }
-                        .berocket_feature_request_inside textarea {
-                            height: 150px;
-                            overflow: auto;
-                        }
-                        @media screen and (min-width: 901px) and (max-width: 1200px) {
-                            .berocket_feature_request_inside{
-                                padding-left: 10px;
-                                padding-right: 10px;
-                            }
-                        }
-                        .berocket_feature_request_thanks .berocket_feature_request_rate ul {
-                            margin-left: 20%;
-                            list-style: disc;
-                        }
-                        @media screen and (max-width: 900px) {
-                            .berocket_feature_request_thanks .berocket_feature_request_rate ul {
-                                margin-left: -80px;
-                                padding-left: 50%;
-                            }
-                            .berocket_feature_request {
-                                margin-top: 30px;
-                            }
-                            .berocket_feature_request_button,
-                            .berocket_feature_request_form,
-                            .berocket_feature_request_thanks {
-                                float: none;
-                                width: 100%;
-                                margin-bottom: 0;
-                            }
-                            .berocket_feature_request_inside input,
-                            .berocket_feature_request_inside textarea,
-                            .berocket_feature_request_submit{
-                                float: none;
-                                width: 100%;
-                            }
-                        }
-                        .berocket_feature_request_inside input.brfeature_error,
-                        .berocket_feature_request_inside textarea.brfeature_error {
-                            box-shadow: 0px 0px 15px #f00;
-                            border-color: #ff0000;
-                            animation-name: brfeature_error;
-                            animation-duration: 2s;
-                        }
-                        @keyframes brfeature_error {
-                            0%   {border-color: #ffffff;}
-                            10%  {border-color: #ff0000;}
-                            20%  {border-color: #ff9999;}
-                            30% {border-color: #ff0000;}
-                            40%   {border-color: #ff9999;}
-                            50%  {border-color: #ff0000;}
-                            60%  {border-color: #ff9999;}
-                            70% {border-color: #ff0000;}
-                            80%   {border-color: #ff9999;}
-                            100%  {border-color: #ff0000;}
-                        }
-                        .berocket_feature_request_thanks {
-                            padding-top: 20px;
-                            padding-bottom: 20px;
-                        }
-                        .berocket_feature_request_thanks .berocket_feature_request_rate h3 {
-                            color: #555;
-                        }
-                        .berocket_feature_request_thanks .berocket_feature_request_rate ul li {
-                            text-align: left;
-                        }
-                    </style>';
-                    return $html;
-                }
-            }
-        }
         function wp_footer_js() {
             ?>
             <script>
@@ -1325,7 +1117,9 @@ if( ! class_exists( 'berocket_admin_notices_rate_stars' ) ) {
             </script>
             <?php
         }
+
     }
+
     new berocket_admin_notices_rate_stars;
+
 }
-?>

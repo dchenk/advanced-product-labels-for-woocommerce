@@ -15,7 +15,7 @@
 define('BeRocket_products_label_version', '1.1.11');
 
 define('BeRocket_products_label_domain', 'BeRocket_products_label_domain');
-define('products_label_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'templates/');
+define('products_label_TEMPLATE_PATH', __DIR__ . '/templates/');
 
 load_plugin_textdomain('BeRocket_products_label_domain', false, plugin_basename(__DIR__) . '/languages/');
 
@@ -25,16 +25,6 @@ foreach (glob(plugin_dir_path(__FILE__) . 'includes/compatibility/*.php') as $fi
 	include_once($filename);
 }
 
-/**
- * Class BeRocket_products_label
- * REPLACE
- * products_label - plugin name
- * Products Labels - normal plugin name
- * WooCommerce Advanced Product Labels - full plugin name
- * 18 - id on BeRocket
- * woocommerce-advanced-product-labels - slug on BeRocket
- * 24 - price on BeRocket
- */
 class BeRocket_products_label extends BeRocket_Framework {
 	public static $settings_name = 'br-products_label-options';
 	public $info;
@@ -274,19 +264,8 @@ class BeRocket_products_label extends BeRocket_Framework {
 			'free_slug'     => 'advanced-product-labels-for-woocommerce',
 		];
 
-		// List of the features missed in free version of the plugin
-		$this->feature_list = [
-			'Conditions by product attribute, sale price, stock quantity, page ID',
-			'Discount Amount type of Label',
-			'Custom Discount type of Label',
-			'Image type of Label',
-			'Time left for discount type of Label',
-			'Product attribute type of Label',
-			'Template for labels',
-			'More options for stylization',
-		];
-
 		$this->framework_data['fontawesome_frontend'] = true;
+
 		parent::__construct($this);
 
 		add_action('init', [$this, 'init']);
@@ -309,9 +288,11 @@ class BeRocket_products_label extends BeRocket_Framework {
 			}
 		}
 	}
+
 	public function remove_woocommerce_sale_flash($html) {
 		return '';
 	}
+
 	public function init() {
 		$theme = wp_get_theme();
 		$theme = ($theme->offsetGet('Parent Theme') ? $theme->offsetGet('Parent Theme') : $theme->Name);
@@ -323,7 +304,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 		$shop_hook = $options['shop_hook'];
 		$shop_hook = explode('+', $shop_hook);
 		add_action($shop_hook[0], [$this, 'set_all_label'], $shop_hook[1]);
-		if (! empty($options['remove_sale'])) {
+		if (!empty($options['remove_sale'])) {
 			remove_action('woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10);
 			remove_action('woocommerce_before_single_product_summary', 'woocommerce_show_product_sale_flash', 10);
 			add_filter('woocommerce_sale_flash', [$this, 'remove_woocommerce_sale_flash']);
@@ -905,10 +886,10 @@ class BeRocket_products_label extends BeRocket_Framework {
 			$k = 1;
 			$html .= "<div class='br_settings_vtab-content" . ((strpos($current_template, $type) !== false) ? ' active' : '') . " tab-{$type}-templates'>";
 			if (count($template)) {
-				$html .= "  <ul class='br_template_select'>";
+				$html .= "<ul class='br_template_select'>";
 
 				foreach ($template as $template_value => $template_styles) {
-					$html .= "  <li>
+					$html .= "<li>
                                 <input id='thumb_layout_{$i}' type='radio' name='br_labels[template]'";
 
 					foreach ($template_styles as $template_style_name => $template_style_value) {
@@ -920,25 +901,25 @@ class BeRocket_products_label extends BeRocket_Framework {
 					}
 
 					$html .= " class='br_not_change' value='{$type}-{$template_value}' />
-                                <label class='template-preview-{$type} {$type}-{$template_value}' for='thumb_layout_{$i}'>
-                                    <span>
-                                        <span>
-                                            <i></i>
-                                            <b>SALE</b>
-                                        </span>
-                                        <img src='../wp-content/plugins/woocommerce-advanced-products-labels/images/preview.png' />
-                                    </span>
-                                </label>
-                            </li>
-                            ";
+								<label class='template-preview-{$type} {$type}-{$template_value}' for='thumb_layout_{$i}'>
+									<span>
+										<span>
+											<i></i>
+											<b>SALE</b>
+										</span>
+										<img src='../wp-content/plugins/woocommerce-advanced-products-labels/images/preview.png' />
+									</span>
+								</label>
+							</li>";
 					$i++;
 					$k++;
 				}
 
-				$html .= "      <li class='clear'></li>
-                        </ul>";
+				$html .= '<li class="clear"></li>' .
+						'</ul>';
+
 			} else {
-				$html .= "<h3>No Templates Available Yet.</h3>";
+				$html .= '<h3>No Templates Available Yet.</h3>';
 			}
 			$html .= '</div>';
 		}

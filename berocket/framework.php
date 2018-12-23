@@ -109,36 +109,6 @@ if (!class_exists('BeRocket_Framework')) {
 		}
 
 		/**
-		 * Get plugin data from BeRocket
-		 *
-		 * @return array
-		 */
-		public function get_product_data_berocket() {
-			$products = get_transient($this->info['plugin_name'] . '_paid_info');
-			if ($products === false) {
-				$response = wp_remote_post('https://berocket.com/main/get_product_data/' . $this->info['id'], [
-					'method' => 'POST',
-					'timeout' => 15,
-					'redirection' => 5,
-					'blocking' => true,
-					'sslverify' => false,
-				]);
-				if (! is_wp_error($response)) {
-					$out = wp_remote_retrieve_body($response);
-					if (!empty($out) && json_decode($out)) {
-						$products = json_decode($out, true);
-						set_transient($this->info['plugin_name'] . '_paid_info', $products, WEEK_IN_SECONDS);
-					} else {
-						set_transient($this->info['plugin_name'] . '_paid_info', '', DAY_IN_SECONDS);
-					}
-				} else {
-					set_transient($this->info['plugin_name'] . '_paid_info', '', DAY_IN_SECONDS);
-				}
-			}
-			return $products;
-		}
-
-		/**
 		 * Function set default settings to database
 		 *
 		 * @return void
@@ -308,16 +278,8 @@ if (!class_exists('BeRocket_Framework')) {
 		 * @return void
 		 */
 		public function admin_init() {
-			if (isset($this->plugin_version_capability) && $this->plugin_version_capability <= 5) {
-				berocket_admin_notices::generate_subscribe_notice();
-				if (empty($this->feature_list) || ! is_array($this->feature_list) || ! count($this->feature_list)) {
-					$products_info = $this->get_product_data_berocket();
-					if (is_array($products_info) && isset($products_info['difference']) && is_array($products_info['difference'])) {
-						$this->feature_list = $products_info['difference'];
-					}
-				}
-			}
-			require_once(plugin_dir_path(__FILE__) . 'includes/settings_fields.php');
+			require_once(__DIR__ . '/includes/settings_fields.php');
+
 			wp_register_script(
 				'berocket_framework_admin',
 				plugins_url('berocket/js/admin.js', $this->cc->info['plugin_file']),
@@ -438,7 +400,6 @@ if (!class_exists('BeRocket_Framework')) {
 		 */
 		public function display_admin_settings($tabs_info = [], $data = [], $setup_style = []) {
 			$plugin_info = get_plugin_data($this->cc->info['plugin_file']);
-			global $wp;
 			$def_setup_style = [
 				'settings_url'    => add_query_arg(null, null),
 				'use_filters_hook' => true,

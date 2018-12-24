@@ -14,11 +14,11 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		$this->post_name = 'br_labels';
 
 		$this->post_settings = [
-			'label' => __('Advanced Label', 'BeRocket_products_label_domain'),
+			'label' => __('Product Labels', 'BeRocket_products_label_domain'),
 			'labels' => [
-				'name'               => __('Advanced Label', 'BeRocket_products_label_domain'),
-				'singular_name'      => __('Advanced Label', 'BeRocket_products_label_domain'),
-				'menu_name'          => _x('Advanced Labels', 'Admin menu name', 'BeRocket_products_label_domain'),
+				'name'               => __('Labels', 'BeRocket_products_label_domain'),
+				'singular_name'      => __('Label', 'BeRocket_products_label_domain'),
+				'menu_name'          => _x('Labels', 'Admin menu name', 'BeRocket_products_label_domain'),
 				'add_new'            => __('Add Label', 'BeRocket_products_label_domain'),
 				'add_new_item'       => __('Add New Label', 'BeRocket_products_label_domain'),
 				'edit'               => __('Edit', 'BeRocket_products_label_domain'),
@@ -26,18 +26,18 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 				'new_item'           => __('New Label', 'BeRocket_products_label_domain'),
 				'view'               => __('View Labels', 'BeRocket_products_label_domain'),
 				'view_item'          => __('View Label', 'BeRocket_products_label_domain'),
-				'search_items'       => __('Search Advanced Labels', 'BeRocket_products_label_domain'),
-				'not_found'          => __('No Advanced Labels found', 'BeRocket_products_label_domain'),
-				'not_found_in_trash' => __('No Advanced Labels found in trash', 'BeRocket_products_label_domain'),
+				'search_items'       => __('Search Product Labels', 'BeRocket_products_label_domain'),
+				'not_found'          => __('No Labels found', 'BeRocket_products_label_domain'),
+				'not_found_in_trash' => __('No Labels found in trash', 'BeRocket_products_label_domain'),
 			],
-			'description'     => __('This is where you can add advanced labels.', 'BeRocket_products_label_domain'),
-			'public'          => true,
-			'show_ui'         => true,
-			'map_meta_cap'    => true,
-			'capability_type' => 'product',
+			'description'         => __('Add and manage product labels.', 'BeRocket_products_label_domain'),
+			'public'              => true,
+			'show_ui'             => true,
+			'map_meta_cap'        => true,
+			'capability_type'     => 'product',
 			'publicly_queryable'  => false,
 			'exclude_from_search' => true,
-			'show_in_menu'        => 'berocket_account',
+			'show_in_menu'        => 'br_products_label',
 			'hierarchical'        => false,
 			'rewrite'             => false,
 			'query_var'           => false,
@@ -102,8 +102,6 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		$this->add_meta_box('description', __('Description', 'BeRocket_products_label_domain'), false, 'side');
 		$this->add_meta_box('preview', __('Preview', 'BeRocket_products_label_domain'), false, 'side');
 
-		add_action('admin_menu', [$this, 'admin_menu']);
-
 		parent::__construct();
 	}
 
@@ -121,17 +119,6 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			'condition_product_type',
 			'condition_product_rating',
 		]);
-	}
-
-	public function admin_menu() {
-		add_submenu_page(
-			'woocommerce',
-			__($this->info['norm_name'] . ' settings', $this->info['domain']),
-			__($this->info['norm_name'], $this->info['domain']),
-			'manage_options',
-			$this->values['option_page'],
-			[$this, 'option_form']
-		);
 	}
 
 	public function conditions($post) {

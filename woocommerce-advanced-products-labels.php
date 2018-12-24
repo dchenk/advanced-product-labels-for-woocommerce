@@ -268,13 +268,12 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		add_action('init', [$this, 'init']);
 		add_action('admin_init', [$this, 'admin_init']);
-		add_action('admin_menu', [$this, 'admin_menu']);
+		add_action('admin_menu', [$this, 'admin_menu'], 8);
 		add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
 		add_action('woocommerce_product_write_panel_tabs', [$this, 'product_edit_advanced_label']);
 		add_action('woocommerce_product_data_panels', [$this, 'product_edit_tab']);
 		add_action('wp_ajax_br_label_ajax_demo', [$this, 'ajax_get_label']);
 		add_action('wp_footer', [$this, 'page_load_script']);
-		add_filter('BeRocket_updater_menu_order_custom_post', [$this, 'menu_order_custom_post']);
 	}
 
 	public function page_load_script() {
@@ -803,8 +802,8 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 	public function admin_menu() {
 		add_menu_page(
-			__($this->info['norm_name'] . ' settings', $this->info['domain']),
 			__('Product Label Settings', $this->info['domain']),
+			__('Product Labels', $this->info['domain']),
 			'manage_options',
 			$this->values['option_page'],
 			[$this, 'option_form']
@@ -965,10 +964,10 @@ class BeRocket_products_label extends BeRocket_Framework {
 //		return $html;
 //	}
 
-	public function menu_order_custom_post($compatibility) {
-		$compatibility['br_labels'] = 'br_products_label';
-		return $compatibility;
-	}
+//	public function menu_order_custom_post($compatibility) {
+//		$compatibility['br_labels'] = 'br_products_label';
+//		return $compatibility;
+//	}
 
 //	private function get_templates_section_html($current_template = 'css-1'): string {
 //		$i = 1;

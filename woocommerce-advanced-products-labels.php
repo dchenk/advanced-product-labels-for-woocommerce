@@ -59,7 +59,6 @@ class BeRocket_products_label extends BeRocket_Framework {
 			'disable_plabels'   => '0',
 			'disable_ppage'     => '0',
 			'remove_sale'       => '0',
-			// 'custom_css'        => '.product .images {position: relative;}',
 			'script'            => '',
 			'shop_hook'         => 'woocommerce_before_shop_loop_item_title+15',
 			'product_hook_image'=> 'woocommerce_product_thumbnails+15',
@@ -271,11 +270,13 @@ class BeRocket_products_label extends BeRocket_Framework {
 		add_action('init', [$this, 'init']);
 		add_action('admin_init', [$this, 'admin_init']);
 		add_action('admin_menu', [$this, 'admin_menu']);
+		add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
 		add_action('woocommerce_product_write_panel_tabs', [$this, 'product_edit_advanced_label']);
 		add_action('woocommerce_product_data_panels', [$this, 'product_edit_tab']);
 		add_action('wp_ajax_br_label_ajax_demo', [$this, 'ajax_get_label']);
 		add_action('wp_footer', [$this, 'page_load_script']);
 		add_filter('BeRocket_updater_menu_order_custom_post', [$this, 'menu_order_custom_post']);
+
 	}
 
 	public function page_load_script() {
@@ -346,12 +347,14 @@ class BeRocket_products_label extends BeRocket_Framework {
 			);
 			wp_enqueue_style('berocket_products_label_admin_style');
 		}
+
 		wp_register_style(
 			'berocket_products_label_templates_style',
 			plugins_url('css/templates.css', __FILE__),
 			'',
 			$this->info['version']
 		);
+
 		wp_enqueue_style('berocket_products_label_templates_style');
 	}
 
@@ -406,12 +409,9 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		if (!empty($_GET['page']) && $_GET['page'] == $this->values['option_page']) {
 			if (function_exists('wp_enqueue_code_editor')) {
-				wp_enqueue_code_editor(
-					[
-						'type' => 'css',
-					]
-				);
+				wp_enqueue_code_editor(['type' => 'css']);
 			}
+
 			wp_enqueue_script('berocket_framework_admin');
 
 			wp_enqueue_style('berocket_framework_admin_style');
@@ -426,6 +426,19 @@ class BeRocket_products_label extends BeRocket_Framework {
 		wp_enqueue_style('berocket_framework_global_admin_style');
 
 		add_filter('option_page_capability_' . $this->values['option_page'], [$this, 'option_page_capability']);
+	}
+
+	/**
+	 * Load admin file-upload scripts and styles
+	 */
+	public static function admin_enqueue_scripts() {
+		if (function_exists('wp_enqueue_media')) {
+			wp_enqueue_media();
+		} else {
+			wp_enqueue_style('thickbox');
+			wp_enqueue_script('media-upload');
+			wp_enqueue_script('thickbox');
+		}
 	}
 
 	public function move_labels_from_zoom() {
@@ -455,12 +468,15 @@ class BeRocket_products_label extends BeRocket_Framework {
 		</script>
 		<?php
 	}
+
 	public function set_all_label() {
 		$this->set_label();
 	}
+
 	public function set_image_label() {
 		$this->set_label('image');
 	}
+
 	public function set_label_label() {
 		$this->set_label('label');
 	}
@@ -530,6 +546,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 		}
 		do_action('berocket_apl_set_label_end', $product);
 	}
+
 	public function ajax_get_label() {
 		if (current_user_can('manage_options')) {
 			do_action('berocket_apl_set_label_start', 'demo');
@@ -803,22 +820,12 @@ class BeRocket_products_label extends BeRocket_Framework {
 				'General' => [
 					'icon' => 'cog',
 				],
-				'CSS'     => [
-					'icon' => 'css3',
-				],
-				'JavaScript'     => [
-					'icon' => 'code',
-				],
-				'Advanced'     => [
+				'Advanced' => [
 					'icon' => 'cogs',
 				],
 				'Labels' => [
 					'icon' => 'plus-square',
 					'link' => admin_url('edit.php?post_type=br_labels'),
-				],
-				'License' => [
-					'icon' => 'unlock-alt',
-					'link' => admin_url('admin.php?page=berocket_account'),
 				],
 			],
 			[
@@ -871,12 +878,6 @@ class BeRocket_products_label extends BeRocket_Framework {
 						"value"    => '',
 						"label_for" => __('Version of Font Awesome that will be used on front end. Please select version that you have in your theme', 'BeRocket_AJAX_domain'),
 					],
-					[
-						"type"  => "textarea",
-						"label" => __('Custom CSS', 'BeRocket_products_label_domain'),
-						"name"  => "custom_css",
-						"class" => "berocket_custom_css",
-					],
 				],
 				'Advanced' => [
 					'shop_hook' => [
@@ -924,15 +925,6 @@ class BeRocket_products_label extends BeRocket_Framework {
 						"label_for"=> __('Where default labels will be displayed on product page. In different theme it can be different place(This means that it is supposed to be in this place)', 'BeRocket_products_label_domain'),
 						"name"     => "product_hook_label",
 						"value"     => $this->defaults["product_hook_label"],
-					],
-				],
-				'JavaScript'     => [
-					[
-						"type"      => "textarea",
-						"label"     => __('On Page Load', 'BeRocket_products_label_domain'),
-						"name"      => ["script", "js_page_load"],
-						"value"     => "",
-						"class" => "berocket_custom_javascript",
 					],
 				],
 			]

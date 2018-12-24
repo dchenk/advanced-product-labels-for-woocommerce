@@ -1,7 +1,6 @@
 === Advanced Product Labels for WooCommerce ===
 Plugin Name: Advanced Product Labels for WooCommerce
 Contributors: dholovnia, berocket
-Donate link: http://berocket.com/product/woocommerce-advanced-product-labels
 Tags: labels, tag, mark, product labels, product tags, product marks, product sign, new product label, sale product label, new product badge, sale product badge, advanced product labels, woocommerce labels, woocommerce product labels, woocommerce tags, woocommerce marks, woo labels, woo product labels, wc labels, wc product labels, marked produc, add more labels, add more tags, custom product labels, custom product tags, custom product marks, custom labels, custom product badges, custom badges, per product type, per product label, single product label, single product page label, shop page label, shop page badges, change button label, change label, button label, simple label, variable product label, grouped product label, external product label, berocket, berocket advanced product labels for woocommerce
 Requires at least: 4.9
 Tested up to: 4.9.8

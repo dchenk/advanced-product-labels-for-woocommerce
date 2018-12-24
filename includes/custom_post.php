@@ -98,7 +98,6 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		$this->add_meta_box('settings', __('Advanced Labels Settings', 'BeRocket_products_label_domain'));
 		$this->add_meta_box('description', __('Description', 'BeRocket_products_label_domain'), false, 'side');
 		$this->add_meta_box('preview', __('Preview', 'BeRocket_products_label_domain'), false, 'side');
-		add_filter('brfr_berocket_advanced_label_editor_custom_css_explanation', [__CLASS__, 'section_custom_css_explanation'], 10, 4);
 		parent::__construct();
 	}
 
@@ -548,29 +547,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 				'options' => $options,
 			]
 		);
-		echo '</div>'; ?>
-		<style>
-		.berocket-label-margin-paddings-block {
-			width: 50px;
-		}
-		</style>
-		<?php
-	}
-
-	public static function section_custom_css_explanation($html, $item, $options, $name) {
-		$html .= '<tr><td colspan="2">It is settings for advanced users. Please do not use it if you don\'t know how it works.<br>
-		This options is provided for designer and programmers.<br>
-		How labels look in HTML<br>
-		&lt;div&gt;<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&lt;span&gt;<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;&lt;/i&gt;<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;b&gt;TEXT OF LABEL&lt;/b&gt;<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br>
-		&lt;/div&gt;</td></tr>';
-		return $html;
+		echo '</div>';
 	}
 
 	public function get_option($post_id): array {
@@ -626,7 +603,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		global $post;
 		$label_type = $this->get_option($post->ID);
 		switch ($column) {
-		case "products":
+		case 'products':
 			$text = '';
 			if (isset($label_type['text'])) {
 				$text = $label_type['text'];
@@ -636,13 +613,12 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			}
 			echo apply_filters('berocket_labels_products_column_text', $text, $label_type);
 			break;
-		case "data":
+		case 'data':
 			$position = ['left' => __('Left', 'BeRocket_products_label_domain'), 'center' => __('Center', 'BeRocket_products_label_domain'), 'right' => __('Right', 'BeRocket_products_label_domain')];
 			$type = ['image' => __('On image', 'BeRocket_products_label_domain'), 'label' => __('Label', 'BeRocket_products_label_domain')];
 			if (isset($label_type['position'], $label_type['type'])) {
 				echo $type[$label_type['type']] . ' ( ' . $position[$label_type['position']] . ' )';
 			}
-			break;
 		}
 	}
 

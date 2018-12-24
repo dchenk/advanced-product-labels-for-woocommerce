@@ -3,7 +3,6 @@
 class BeRocket_framework_settings_fields {
 
 	public function __construct() {
-		do_action('BeRocket_framework_settings_fields_construct');
 		add_filter('berocket_framework_item_content_text', [$this, 'text'], 10, 6);
 		add_filter('berocket_framework_item_content_number', [$this, 'number'], 10, 6);
 		add_filter('berocket_framework_item_content_radio', [$this, 'radio'], 10, 8);
@@ -62,8 +61,8 @@ class BeRocket_framework_settings_fields {
 		if (isset($field_item['options']) && is_array($field_item['options']) && count($field_item['options'])) {
 			foreach ($field_item['options'] as $option) {
 				$html .= '<option value="' . $option['value'] . '"' .
-				 (($value == $option['value']) ? ' selected="selected" ' : '')
-				 . '>' . $option['text'] . '</option>';
+					(($value == $option['value']) ? ' selected="selected" ' : '') . '>' .
+					$option['text'] . '</option>';
 			}
 		} else {
 			$html .= "<option>Options data is corrupted!</option>";

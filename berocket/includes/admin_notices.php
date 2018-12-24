@@ -298,7 +298,7 @@ class berocket_admin_notices {
 				$notice = self::get_notices_with_priority($item, $priority, $count - 1);
 				$notices = array_merge($notices, $notice);
 			} else {
-				$display_notice = ((true || ! $item['subscribe']) && ($item['priority'] <= 5 || !$item['closed']));
+				$display_notice = $item['priority'] <= 5 || !$item['closed'];
 				$display_notice = apply_filters('berocket_admin_notice_is_display_notice_priority', $display_notice, $item, [
 					'priority'   => $priority,
 				]);
@@ -421,48 +421,6 @@ class berocket_admin_notices {
 				opacity: 0.5;
 				display: inline-block;'),
 			'}
-			', (empty($notice['subscribe']) ? '' : '
-			.berocket_admin_notice.berocket_admin_notice_' . self::$notice_index . ' .berocket_subscribe_form {
-				display: inline-block;
-				padding-right: 10px;
-			}
-			.berocket_admin_notice.berocket_admin_notice_' . self::$notice_index . ' .berocket_subscribe_form .berocket_subscribe_email {
-				width: 180px;
-				margin: 0;
-				height: 28px
-				display: inline;
-			}
-			.berocket_admin_notice.berocket_admin_notice_' . self::$notice_index . ' .berocket_subscribe_form .berocket_notice_submit {
-				margin: 0 0 0 10px;
-				min-width: 80px;
-				max-width: 80px;
-				width: 80px;
-				padding: 0;
-				display: inline;
-				vertical-align: baseline;
-				color: #fff;
-				box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-				text-shadow: none;
-				border: 0 none;
-				-moz-user-select: none;
-				background: #ff5252 none repeat scroll 0 0;
-				box-sizing: border-box;
-				cursor: pointer;
-				font-size: 14px;
-				outline: 0 none;
-				position: relative;
-				text-align: center;
-				text-decoration: none;
-				transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s, background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-				white-space: nowrap;
-				height: auto;
-			}
-			.berocket_admin_notice.berocket_admin_notice_' . self::$notice_index . ' .berocket_subscribe_form .berocket_notice_submit:hover,
-			.berocket_admin_notice.berocket_admin_notice_' . self::$notice_index . ' .berocket_subscribe_form .berocket_notice_submit:focus,
-			.berocket_admin_notice.berocket_admin_notice_' . self::$notice_index . ' .berocket_subscribe_form .berocket_notice_submit:active{
-				background: #ff6e68 none repeat scroll 0 0;
-				color: white;
-			}'), '
 			@media screen and (min-width: 783px) and (max-width: ', round($notice['image']['width'] * $notice['image']['scale'] + $notice['rightwidth'] + $notice['contentwidth'] + 10 + 200), 'px) {
 				div.berocket_admin_notice.berocket_admin_notice_', self::$notice_index, ' .berocket_notice_content_wrap {
 					font-size: 14px;

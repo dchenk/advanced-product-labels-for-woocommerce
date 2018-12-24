@@ -97,21 +97,11 @@
 	}
 }
 
-.br_framework_settings h2 {
-	padding: 20px 0 30px!important;
-}
-
 header.aplfw-header {
-	background-color: #2c3b48;
-	height: 80px;
-}
-
-header nav {
 }
 
 header nav a {
-	color: white;
-	font-size: 42px;
+	font-size: 38px;
 	line-height: 80px;
 	margin-right: 30px;
 	text-decoration: none;
@@ -225,28 +215,10 @@ header nav a {
 	padding: 0 !important
 }
 
-
 .br_framework_settings form.show_premium {
 	float: left;
 	width: 70%;
 	box-sizing: border-box;
-}
-
-.br_framework_settings .paid_features,
-.br_framework_settings .berocket_subscribe {
-	float: right;
-	clear: right;
-	width: 28%;
-	box-sizing: border-box;
-	text-align: center;
-	margin-bottom: 30px;
-}
-.br_framework_settings .paid_features .berocket_paid_features_support {
-	line-height: 1.7em;
-}
-
-.br_framework_settings .paid_features ul li {
-	text-align: left;
 }
 
 .br_framework_settings .button {
@@ -728,10 +700,6 @@ header nav a {
 
 @media (max-width: 782px) {
 
-	header.aplfw-header h4 {
-		padding-left: 80px;
-	}
-
 	.br_framework_settings .body ul.side {
 		width: 100px;
 	}
@@ -770,10 +738,6 @@ header nav a {
 }
 
 @media (max-width: 600px) {
-	header.aplfw-header h4 {
-		display: none;
-	}
-
 	.br_framework_settings .body .content .title {
 		padding-left: 20px;
 	}

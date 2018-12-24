@@ -10,8 +10,9 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 	protected static $instance;
 
 	public function __construct() {
-		add_action('products_label_framework_construct', [$this, 'init_conditions']);
+
 		$this->post_name = 'br_labels';
+
 		$this->post_settings = [
 			'label' => __('Advanced Label', 'BeRocket_products_label_domain'),
 			'labels' => [
@@ -43,6 +44,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			'supports'            => ['title'],
 			'show_in_nav_menus'   => false,
 		];
+
 		$this->default_settings = [
 			'label_from_post'       => '',
 			'content_type'          => 'text',
@@ -94,10 +96,14 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			'i4_custom_class'       => '',
 			'i4_custom_css'         => '',
 		];
+
 		$this->add_meta_box('conditions', __('Conditions', 'BeRocket_products_label_domain'));
 		$this->add_meta_box('settings', __('Advanced Labels Settings', 'BeRocket_products_label_domain'));
 		$this->add_meta_box('description', __('Description', 'BeRocket_products_label_domain'), false, 'side');
 		$this->add_meta_box('preview', __('Preview', 'BeRocket_products_label_domain'), false, 'side');
+
+		add_action('admin_menu', [$this, 'admin_menu']);
+
 		parent::__construct();
 	}
 
@@ -115,6 +121,17 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			'condition_product_type',
 			'condition_product_rating',
 		]);
+	}
+
+	public function admin_menu() {
+		add_submenu_page(
+			'woocommerce',
+			__($this->info['norm_name'] . ' settings', $this->info['domain']),
+			__($this->info['norm_name'], $this->info['domain']),
+			'manage_options',
+			$this->values['option_page'],
+			[$this, 'option_form']
+		);
 	}
 
 	public function conditions($post) {
@@ -448,9 +465,6 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 				],
 				'Custom CSS' => [
-					'custom_css_explanation' => [
-						"section" => "custom_css_explanation",
-					],
 					'div_custom_class' => [
 						"type"     => "text",
 						"label"    => __('&lt;div&gt; block custom class', 'BeRocket_products_label_domain'),

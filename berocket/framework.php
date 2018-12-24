@@ -10,7 +10,13 @@ include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 load_plugin_textdomain('BeRocket_domain', false, plugin_basename(__DIR__) . '/languages');
 
 class BeRocket_Framework {
-	public static $settings_name = '';
+
+	public static $settings_name;
+
+	public $info = [];
+
+	public $defaults = [];
+
 	protected static $instance;
 	protected $plugin_version_capability = 0;
 
@@ -44,12 +50,9 @@ class BeRocket_Framework {
 		register_activation_hook($this->cc->info['plugin_file'], [$this, 'activation']);
 		register_uninstall_hook($this->cc->info['plugin_file'], [get_class($this->cc), 'deactivation']);
 
-		add_action('init', [$this->cc, 'init']);
+		add_action('init', [$this, 'init']);
 
-		add_action('wp_ajax_br_' . $this->cc->info['plugin_name'] . '_settings_save', [
-			$this->cc,
-			'save_settings',
-		]);
+		add_action('wp_ajax_br_' . $this->cc->info['plugin_name'] . '_settings_save', [$this, 'save_settings']);
 
 		add_filter('is_berocket_settings_page', [$this->cc, 'is_settings_page']);
 
@@ -175,23 +178,17 @@ class BeRocket_Framework {
 		return 'manage_woocommerce';
 	}
 
-	public function admin_settings($tabs_info = [], $data = []) {
-		$setup_style = func_get_args();
-		$setup_style = empty($setup_style[2]) || !is_array($setup_style[2]) ? [] : $setup_style[2];
-		$setup_style['settings_url'] = admin_url('admin.php?page=' . $this->cc->values['option_page']);
-		$this->display_admin_settings($tabs_info, $data, $setup_style);
-	}
-
 	/**
 	 * Function generate settings page
 	 *
-	 * @var $data - array with settings data, page will be build using this
+	 * @param $tabs_info array
+	 * @param $data array with settings data, page will be build using this
+	 * @param $setup_style array
 	 */
-	public function display_admin_settings($tabs_info = [], $data = []) {
+	public function display_admin_settings($tabs_info, $data, $setup_style) {
 		$setup_style = [
 			'settings_url'           => add_query_arg(null, null),
 			'hide_header'            => false,
-			'hide_header_links'      => false,
 			'hide_save_button'       => false,
 			'hide_form'              => false,
 			'hide_additional_blocks' => false,
@@ -392,16 +389,15 @@ class BeRocket_Framework {
 			if (!$setup_style['hide_header']) {
 				echo "<header class='aplfw-header'>
 						<nav>";
-				if (!$setup_style['hide_header_links']) {
-					$header_links = [];
-					$header_links['support'] = [
+				$header_links = [
+					'support' => [
 						'text' => '<i class="fa fa-support"></i>',
 						'link' => 'https://github.com/dchenk/advanced-product-labels-for-woocommerce',
-					];
-					$header_links = apply_filters('brfr_header_links_' . $setup_style['name_for_filters'], $header_links);
-					foreach ($header_links as $header_link_title => $header_link) {
-						echo '<a href="' . $header_link['link'] . '" title="' . $header_link_title . '" target="_blank">' . $header_link['text'] . '</a>';
-					}
+					],
+				];
+				$header_links = apply_filters('aplfw_header_links_' . $setup_style['name_for_filters'], $header_links);
+				foreach ($header_links as $header_link_title => $header_link) {
+					echo '<a href="' . $header_link['link'] . '" title="' . $header_link_title . '" target="_blank">' . $header_link['text'] . '</a>';
 				}
 				echo "</nav>
 					</header>";
@@ -412,7 +408,7 @@ class BeRocket_Framework {
 			echo '</ul>';
 			echo '<div class="content">';
 			echo "<div class='title'>{$title}</div>";
-			if (! $setup_style['hide_form']) {
+			if (!$setup_style['hide_form']) {
 				echo '<form data-plugin="' . $this->cc->info['plugin_name'] . '" class="br_framework_submit_form ' . $this->cc->info['plugin_name'] . '_submit_form ' . ((isset($this->plugin_version_capability) && $this->plugin_version_capability <= 5) ? 'show_premium' : '') .
 						 '" method="post" action="options.php">';
 				settings_fields($_GET['page']);
@@ -450,7 +446,7 @@ class BeRocket_Framework {
 		}
 
 		// Get default slug-name.php
-		if (! $template && $name && file_exists($this->cc->info['templates'] . "{$name}.php")) {
+		if (!$template && $name && file_exists($this->cc->info['templates'] . "{$name}.php")) {
 			$template = $this->cc->info['templates'] . "{$name}.php";
 		}
 
@@ -490,6 +486,7 @@ class BeRocket_Framework {
 
 	/**
 	 * Sanitize option function
+	 * @return array
 	 */
 	public function sanitize_option($input) {
 		$new_input = self::recursive_array_set($this->cc->defaults, $input);
@@ -536,20 +533,13 @@ class BeRocket_Framework {
 	 * Getting plugin option values
 	 */
 	public function get_option() {
-		if (!function_exists('icl_object_id')) {
-			$options = wp_cache_get($this->cc->values['settings_name'], 'berocket_framework_option');
+		$options = get_option($this->cc->values['settings_name']);
+		if (!empty($options) && is_array($options)) {
+			$options = array_merge($this->cc->defaults, $options);
+		} else {
+			$options = $this->cc->defaults;
 		}
-		if (empty($options)) {
-			$options = get_option($this->cc->values['settings_name']);
-
-			if (! empty($options) && is_array($options)) {
-				$options = array_merge($this->cc->defaults, $options);
-			} else {
-				$options = $this->cc->defaults;
-			}
-			$options = apply_filters('brfr_get_option_cache_' . $this->cc->info['plugin_name'], $options, $this->cc->defaults);
-			wp_cache_set($this->cc->values['settings_name'], $options, 'berocket_framework_option', 600);
-		}
+		$options = apply_filters('brfr_get_option_cache_' . $this->cc->info['plugin_name'], $options, $this->cc->defaults);
 		$global_options = $this->get_global_option();
 		if (count($this->global_settings)) {
 			foreach ($this->global_settings as $global_setting) {

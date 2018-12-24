@@ -21,7 +21,6 @@ require_once(__DIR__ . '/berocket/framework.php');
 require_once(__DIR__ . '/includes/compatibility/product_preview.php');
 
 class BeRocket_products_label extends BeRocket_Framework {
-
 	public static $settings_name = 'br-products_label-options';
 	public $info;
 	public $defaults;
@@ -36,7 +35,6 @@ class BeRocket_products_label extends BeRocket_Framework {
 	protected static $instance;
 
 	public function __construct() {
-
 		$this->custom_post = BeRocket_advanced_labels_custom_post::getInstance();
 
 		$this->info = [
@@ -49,7 +47,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 			'name'        => '',
 			'plugin_name' => 'products_label',
 			'full_name'   => 'WooCommerce Advanced Product Labels',
-			'norm_name'   => 'Products Labels',
+			'norm_name'   => 'Product Labels',
 			'domain'      => 'BeRocket_products_label_domain',
 			'templates'   => products_label_TEMPLATE_PATH,
 			'plugin_file' => __FILE__,
@@ -271,6 +269,8 @@ class BeRocket_products_label extends BeRocket_Framework {
 		parent::__construct($this);
 
 		add_action('init', [$this, 'init']);
+		add_action('admin_init', [$this, 'admin_init']);
+		add_action('admin_menu', [$this, 'admin_menu']);
 		add_action('woocommerce_product_write_panel_tabs', [$this, 'product_edit_advanced_label']);
 		add_action('woocommerce_product_data_panels', [$this, 'product_edit_tab']);
 		add_action('wp_ajax_br_label_ajax_demo', [$this, 'ajax_get_label']);
@@ -354,9 +354,84 @@ class BeRocket_products_label extends BeRocket_Framework {
 		);
 		wp_enqueue_style('berocket_products_label_templates_style');
 	}
+
+	/**
+	 * Function adding styles/scripts and settings to admin_init WordPress action
+	 */
+	public function admin_init() {
+		require_once(__DIR__ . 'berocket/includes/settings_fields.php');
+
+		register_setting($this->values['option_page'], $this->values['settings_name'], [$this, 'save_settings_callback']);
+
+		wp_register_script(
+			'berocket_framework_admin',
+			plugins_url('berocket/js/admin.js', $this->info['plugin_file']),
+			['jquery'],
+			$this->info['version']
+		);
+
+		wp_register_style(
+			'berocket_framework_admin_style',
+			plugins_url('berocket/css/admin.css', $this->info['plugin_file']),
+			"",
+			$this->info['version']
+		);
+
+		wp_register_style(
+			'berocket_framework_global_admin_style',
+			plugins_url('berocket/css/global-admin.css', $this->info['plugin_file']),
+			"",
+			$this->info['version']
+		);
+
+		wp_register_script(
+			'berocket_widget-colorpicker',
+			plugins_url('berocket/js/colpick.js', $this->info['plugin_file']),
+			['jquery']
+		);
+
+		wp_register_style(
+			'berocket_widget-colorpicker-style',
+			plugins_url('berocket/css/colpick.css', $this->info['plugin_file'])
+		);
+
+		wp_register_style(
+			'berocket_font_awesome',
+			plugins_url('berocket/css/font-awesome.min.css', $this->info['plugin_file'])
+		);
+
+		wp_localize_script('berocket_framework_admin', 'berocket_framework_admin', [
+			'security' => wp_create_nonce("search-products"),
+		]);
+
+		if (!empty($_GET['page']) && $_GET['page'] == $this->values['option_page']) {
+			if (function_exists('wp_enqueue_code_editor')) {
+				wp_enqueue_code_editor(
+					[
+						'type' => 'css',
+					]
+				);
+			}
+			wp_enqueue_script('berocket_framework_admin');
+
+			wp_enqueue_style('berocket_framework_admin_style');
+
+			wp_enqueue_script('berocket_widget-colorpicker');
+
+			wp_enqueue_style('berocket_widget-colorpicker-style');
+
+			wp_enqueue_style('berocket_font_awesome');
+		}
+
+		wp_enqueue_style('berocket_framework_global_admin_style');
+
+		add_filter('option_page_capability_' . $this->values['option_page'], [$this, 'option_page_capability']);
+	}
+
 	public function move_labels_from_zoom() {
 		add_action('wp_footer', [$this, 'set_label_js_script']);
 	}
+
 	public function set_label_js_script() {
 		?>
 		<script>
@@ -486,12 +561,11 @@ class BeRocket_products_label extends BeRocket_Framework {
 		global $berocket_display_any_advanced_labels;
 
 		$berocket_display_any_advanced_labels = true;
-		if ($product !== 'demo') {
-			$product_post = br_wc_get_product_post($product);
-		}
-		if (empty($br_label) || ! is_array($br_label)) {
+
+		if (empty($br_label) || !is_array($br_label)) {
 			return false;
 		}
+
 		if (empty($br_label['content_type'])) {
 			$br_label['content_type'] = 'text';
 		}
@@ -523,7 +597,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 							$child = br_wc_get_product_attr($product, 'child', $child_id);
 							$child_sale = br_wc_get_product_attr($child, 'sale_price');
 							$child_regular = br_wc_get_product_attr($child, 'regular_price');
-							if (! empty($child_sale) && $child_sale != $child_regular) {
+							if (!empty($child_sale) && $child_sale != $child_regular) {
 								$price_ratio2 = $child_sale / $child_regular;
 								if ($price_ratio === false || $price_ratio2 < $price_ratio) {
 									$price_ratio = $price_ratio2;
@@ -694,6 +768,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 			echo $html;
 		}
 	}
+
 	public function check_label_on_post($label_id, $label_data, $product) {
 		$product_id = br_wc_get_product_id($product);
 		$show_label = wp_cache_get('WC_Product_' . $product_id, 'brapl_' . $label_id);
@@ -710,21 +785,18 @@ class BeRocket_products_label extends BeRocket_Framework {
 		}
 		return $show_label;
 	}
+
 	public function admin_menu() {
-		if (parent::admin_menu()) {
-			add_submenu_page(
-				'woocommerce',
-				__($this->info['norm_name'] . ' settings', $this->info['domain']),
-				__($this->info['norm_name'], $this->info['domain']),
-				'manage_options',
-				$this->values['option_page'],
-				[
-					$this,
-					'option_form',
-				]
-			);
-		}
+		add_submenu_page(
+			'woocommerce',
+			__($this->info['norm_name'] . ' settings', $this->info['domain']),
+			__($this->info['norm_name'], $this->info['domain']),
+			'manage_options',
+			$this->values['option_page'],
+			[$this, 'option_form']
+		);
 	}
+
 	public function admin_settings($tabs_info = [], $data = []) {
 		parent::admin_settings(
 			[
@@ -867,74 +939,75 @@ class BeRocket_products_label extends BeRocket_Framework {
 		);
 	}
 
-	public function section_templates($item, $options) {
-		if (empty($item['value'])) {
-			$item['value'] = 'css-1';
-		}
+//	public function section_templates($item, $options) {
+//		if (empty($item['value'])) {
+//			$item['value'] = 'css-1';
+//		}
+//
+//		$html = "<th>
+	//                    <div class='br_settings_vtab" . ((strpos($item['value'], 'css') !== false) ? ' active' : '') . "' data-tab='css-templates'>" . __('CSS Templates', 'BeRocket_products_label_domain') . "</div>
+	//                    <div class='br_settings_vtab" . ((strpos($item['value'], 'image') !== false) ? ' active' : '') . "' data-tab='image-templates'>" . __('Image Templates', 'BeRocket_products_label_domain') . "</div>
+	//                    <div class='br_settings_vtab" . ((strpos($item['value'], 'advanced') !== false) ? ' active' : '') . "' data-tab='advanced-templates'>" . __('Advanced Templates', 'BeRocket_products_label_domain') . "</div>
+	//                </th>
+	//                <td class='br_label_css_templates'>";
+//		$html .= $this->get_templates_section_html($item['value']);
+//		$html .= "</div></td>";
+//
+//		return $html;
+//	}
 
-		$html = "<th>
-                    <div class='br_settings_vtab" . ((strpos($item['value'], 'css') !== false) ? ' active' : '') . "' data-tab='css-templates'>" . __('CSS Templates', 'BeRocket_products_label_domain') . "</div>
-                    <div class='br_settings_vtab" . ((strpos($item['value'], 'image') !== false) ? ' active' : '') . "' data-tab='image-templates'>" . __('Image Templates', 'BeRocket_products_label_domain') . "</div>
-                    <div class='br_settings_vtab" . ((strpos($item['value'], 'advanced') !== false) ? ' active' : '') . "' data-tab='advanced-templates'>" . __('Advanced Templates', 'BeRocket_products_label_domain') . "</div>
-                </th>
-                <td class='br_label_css_templates'>";
-		$html .= $this->get_templates_section_html($item['value']);
-		$html .= "</div></td>";
-
-		return $html;
-	}
 	public function menu_order_custom_post($compatibility) {
 		$compatibility['br_labels'] = 'br_products_label';
 		return $compatibility;
 	}
 
-	private function get_templates_section_html($current_template = 'css-1') {
-		$i = 1;
-		$html = '';
-		foreach ($this->templates as $type => $template) {
-			$k = 1;
-			$html .= "<div class='br_settings_vtab-content" . ((strpos($current_template, $type) !== false) ? ' active' : '') . " tab-{$type}-templates'>";
-			if (count($template)) {
-				$html .= "<ul class='br_template_select'>";
-
-				foreach ($template as $template_value => $template_styles) {
-					$html .= "<li>
-                                <input id='thumb_layout_{$i}' type='radio' name='br_labels[template]'";
-
-					foreach ($template_styles as $template_style_name => $template_style_value) {
-						$html .= " data-" . $template_style_name . "='" . $template_style_value . "'";
-					}
-
-					if ($type . '-' . $k == $current_template) {
-						$html .= ' checked="checked"';
-					}
-
-					$html .= " class='br_not_change' value='{$type}-{$template_value}' />
-								<label class='template-preview-{$type} {$type}-{$template_value}' for='thumb_layout_{$i}'>
-									<span>
-										<span>
-											<i></i>
-											<b>SALE</b>
-										</span>
-										<img src='../wp-content/plugins/woocommerce-advanced-products-labels/images/preview.png' />
-									</span>
-								</label>
-							</li>";
-					$i++;
-					$k++;
-				}
-
-				$html .= '<li class="clear"></li>' .
-						'</ul>';
-
-			} else {
-				$html .= '<h3>No Templates Available Yet.</h3>';
-			}
-			$html .= '</div>';
-		}
-
-		return $html;
-	}
+//	private function get_templates_section_html($current_template = 'css-1'): string {
+//		$i = 1;
+//		$html = '';
+//		foreach ($this->templates as $type => $template) {
+//			$k = 1;
+//			$html .= "<div class='br_settings_vtab-content" . ((strpos($current_template, $type) !== false) ? ' active' : '') . " tab-{$type}-templates'>";
+//			if (count($template)) {
+//				$html .= "<ul class='br_template_select'>";
+//
+//				foreach ($template as $template_value => $template_styles) {
+//					$html .= "<li>
+//                                <input id='thumb_layout_{$i}' type='radio' name='br_labels[template]'";
+//
+//					foreach ($template_styles as $template_style_name => $template_style_value) {
+//						$html .= " data-" . $template_style_name . "='" . $template_style_value . "'";
+//					}
+//
+//					if ($type . '-' . $k == $current_template) {
+//						$html .= ' checked="checked"';
+//					}
+//
+//					$html .= " class='br_not_change' value='{$type}-{$template_value}' />
+//								<label class='template-preview-{$type} {$type}-{$template_value}' for='thumb_layout_{$i}'>
+//									<span>
+//										<span>
+//											<i></i>
+//											<b>SALE</b>
+//										</span>
+//										<img src='../wp-content/plugins/woocommerce-advanced-products-labels/images/preview.png' />
+//									</span>
+//								</label>
+//							</li>";
+//					$i++;
+//					$k++;
+//				}
+//
+//				$html .= '<li class="clear"></li>' .
+//						'</ul>';
+//
+//			} else {
+//				$html .= '<h3>No Templates Available</h3>';
+//			}
+//			$html .= '</div>';
+//		}
+//
+//		return $html;
+//	}
 }
 
 new BeRocket_products_label;

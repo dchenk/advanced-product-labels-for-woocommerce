@@ -23,7 +23,7 @@ array(
    'hierarchical'        => false,
    'rewrite'             => false,
    'query_var'           => false,
-   'supports'            => array( 'title' ),
+   'supports'            => ['title'],
    'show_in_nav_menus'   => false,
 )
 */
@@ -38,7 +38,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 		protected static $instance;
 
 		public function __construct() {
-			if (null === static::$instance) {
+			if (static::$instance === null) {
 				static::$instance = $this;
 			}
 			add_filter('init', [$this, 'init']);
@@ -46,7 +46,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 		}
 
 		public static function getInstance(): BeRocket_custom_post_class {
-			if (null === static::$instance) {
+			if (static::$instance === null) {
 				static::$instance = new static();
 			}
 			return static::$instance;
@@ -57,8 +57,8 @@ if (!class_exists('BeRocket_custom_post_class')) {
 			register_post_type($this->post_name, $this->post_settings);
 		}
 
-		public function get_custom_posts($args = []) {
-			$args = array_merge([
+		public function get_custom_posts() {
+			$args = [
 				'posts_per_page'   => -1,
 				'offset'           => 0,
 				'category'         => '',
@@ -74,7 +74,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 				'post_status'      => 'publish',
 				'fields'           => 'ids',
 				'suppress_filters' => false,
-			], $args);
+			];
 			$posts_array = new WP_Query($args);
 			return $posts_array->posts;
 		}
@@ -132,15 +132,10 @@ if (!class_exists('BeRocket_custom_post_class')) {
 
 		public function columns_replace($column) {
 			global $post;
-			switch ($column) {
-				case "name":
-
-					$edit_link = get_edit_post_link($post->ID);
-					$title = '<a class="row-title" href="' . $edit_link . '">' . _draft_or_post_title() . '</a>';
-
-					echo 'ID:' . $post->ID . ' <strong>' . $title . '</strong>';
-
-					break;
+			if ($column === 'name') {
+				$edit_link = get_edit_post_link($post->ID);
+				$title = '<a class="row-title" href="' . $edit_link . '">' . _draft_or_post_title() . '</a>';
+				echo 'ID:' . $post->ID . ' <strong>' . $title . '</strong>';
 			}
 		}
 
@@ -160,11 +155,10 @@ if (!class_exists('BeRocket_custom_post_class')) {
                     <option value="0"><?php _e('Do not copy', 'BeRocket_domain'); ?></option>
                     <?php
 					if (!empty($posts_array) && is_array($posts_array)) {
-						foreach ($posts_array as $post_id) {
-							if ($post_id == $post->ID) {
-								continue;
+						foreach ($posts_array as $postID) {
+							if ($postID != $post->ID) {
+								echo '<option value="' . $postID . '">(ID: ' . $postID . ') ' . get_the_title($postID) . '</option>';
 							}
-							echo '<option value="' . $post_id . '">(ID: ' . $post_id . ') ' . get_the_title($post_id) . '</option>';
 						}
 					} ?>
                 </select>
@@ -196,7 +190,6 @@ if (!class_exists('BeRocket_custom_post_class')) {
 			wp_enqueue_style('berocket_widget-colorpicker-style');
 			wp_enqueue_style('font-awesome'); ?>
 			<div class="submitbox" id="submitpost">
-
 				<div id="minor-publishing">
 					<div id="major-publishing-actions">
 						<div id="delete-action"><?php
@@ -223,15 +216,15 @@ if (!class_exists('BeRocket_custom_post_class')) {
 			wp_nonce_field($this->post_name . '_check', $this->post_name . '_nonce');
 		}
 
-		public function wc_save_check($post_id, $post): bool {
+		public function wc_save_check($postID, $post): bool {
 			if ($this->post_name != $post->post_type) {
 				return false;
 			}
 
-			$current_settings = get_post_meta($post_id, $this->post_name, true);
+			$current_settings = get_post_meta($postID, $this->post_name, true);
 
 			if (empty($current_settings)) {
-				update_post_meta($post_id, $this->post_name, $this->default_settings);
+				update_post_meta($postID, $this->post_name, $this->default_settings);
 			}
 
 			if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {

@@ -97,52 +97,19 @@
 	}
 }
 
-
-
-
-/* New Design */
-
 .br_framework_settings h2 {
 	padding: 20px 0 30px!important;
 }
 
-.br_framework_settings header {
+header.aplfw-header {
 	background-color: #2c3b48;
 	height: 80px;
-	position: relative;
-	z-index: 1000;
 }
 
-.br_framework_settings header .br_plugin_name {
-	box-sizing: border-box;
-	font-size: 20px;
-	line-height: 20px;
-	overflow: hidden;
-	padding: 14px 40px 14px 150px;
+header nav {
 }
 
-.br_framework_settings header .br_plugin_name h1,
-.br_framework_settings header .br_plugin_name h3 {
-	color: white;
-	margin: 0;
-	padding: 0;
-	font-size: 18px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-.br_framework_settings header .br_plugin_name h3 {
-	font-size: 13px;
-	font-weight: normal;
-	color: #B8B8B8;
-}
-
-.br_framework_settings header nav.premium {
-	float: right;
-}
-
-.br_framework_settings header nav.premium a {
+header nav a {
 	color: white;
 	font-size: 42px;
 	line-height: 80px;
@@ -655,24 +622,6 @@
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 	font-weight: bold;
 }
-.br_framework_settings .berocket_subscribe .berocket_notice_submit {
-	width: 100%;
-	margin-top: 15px;
-}
-.br_framework_settings .get_premium_version,
-.br_framework_settings .buy_premium_version {
-	width: 90%;
-}
-.br_framework_settings .get_premium_version {
-	margin: 5px 0;
-	background: transparent;
-	border: 2px solid #97b9cf;
-	color: #7496ad;
-}
-.br_framework_settings .buy_premium_version {
-	margin: 5px 0 15px;
-	padding: 10px;
-}
 .br_framework_settings .premium_buttons {
 	margin-top: 30px;
 	margin-bottom: 20px;
@@ -762,9 +711,7 @@
 	clear: both;
 }
 
-/* Responsive styles */
-
-@media screen and (max-width: 900px) {
+@media (max-width: 900px) {
 	.br_framework_settings form.show_premium,
 	.br_framework_settings .paid_features,
 	.br_framework_settings .berocket_subscribe {
@@ -779,9 +726,9 @@
 	}
 }
 
-@media screen and (max-width: 782px) {
+@media (max-width: 782px) {
 
-	.br_framework_settings header .br_plugin_name {
+	header.aplfw-header h4 {
 		padding-left: 80px;
 	}
 
@@ -816,21 +763,14 @@
 		padding: 10px 10px 10px 0;
 	}
 
-	.br_framework_settings header nav.premium a {
+	header.aplfw-header nav a {
 		font-size: 32px;
 	}
 
-	.br_framework_settings header .br_plugin_name h1 {
-		font-size: 14px;
-	}
-
-	.br_framework_settings header .br_plugin_name h3 {
-		font-size: 12px;
-	}
 }
 
-@media screen and (max-width: 600px) {
-	.br_framework_settings header .br_plugin_name {
+@media (max-width: 600px) {
+	header.aplfw-header h4 {
 		display: none;
 	}
 
@@ -858,6 +798,7 @@
 		padding: 4px 10px 6px 0;
 	}
 }
+
 .berocket_display_block_messages_hide {
 	position: absolute;
 	background-color: rgba(0,0,0,0.5);
@@ -937,10 +878,9 @@
 	margin-left: -10px;
 	transform: rotate(45deg);
 }
-@media screen and (min-width: 901px) and (max-width: 1300px) {
-	.br_framework_settings form .nav-block,
-	.br_framework_settings .paid_features,
-	.br_framework_settings .berocket_subscribe {
+
+@media (min-width: 901px) and (max-width: 1300px) {
+	.br_framework_settings form .nav-block {
 		padding: 0 10px;
 	}
 }

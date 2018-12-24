@@ -5,20 +5,20 @@ class BeRocket_conditions_advanced_labels extends BeRocket_conditions {
 
 class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 
+	public $post_name = 'br_labels';
 	public $hook_name = 'berocket_advanced_label_editor';
 	public $conditions;
+
 	protected static $instance;
 
 	public function __construct() {
-
-		$this->post_name = 'br_labels';
 
 		$this->post_settings = [
 			'label' => __('Product Labels', 'BeRocket_products_label_domain'),
 			'labels' => [
 				'name'               => __('Labels', 'BeRocket_products_label_domain'),
 				'singular_name'      => __('Label', 'BeRocket_products_label_domain'),
-				'menu_name'          => _x('Labels', 'Admin menu name', 'BeRocket_products_label_domain'),
+				'menu_name'          => __('Product Labels', 'BeRocket_products_label_domain'),
 				'add_new'            => __('Add Label', 'BeRocket_products_label_domain'),
 				'add_new_item'       => __('Add New Label', 'BeRocket_products_label_domain'),
 				'edit'               => __('Edit', 'BeRocket_products_label_domain'),
@@ -37,7 +37,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			'capability_type'     => 'product',
 			'publicly_queryable'  => false,
 			'exclude_from_search' => true,
-			'show_in_menu'        => 'br_products_label',
+			'show_in_menu'        => true,
 			'hierarchical'        => false,
 			'rewrite'             => false,
 			'query_var'           => false,
@@ -96,6 +96,8 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			'i4_custom_class'       => '',
 			'i4_custom_css'         => '',
 		];
+
+		add_action('products_label_framework_construct', [$this, 'init_conditions']);
 
 		$this->add_meta_box('conditions', __('Conditions', 'BeRocket_products_label_domain'));
 		$this->add_meta_box('settings', __('Advanced Labels Settings', 'BeRocket_products_label_domain'));
@@ -540,28 +542,12 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			],
 			[
 				'name_for_filters' => $this->hook_name,
-				'hide_header' => true,
 				'hide_form' => true,
-				'hide_additional_blocks' => true,
-				'hide_save_button' => true,
 				'settings_name' => $this->post_name,
 				'options' => $options,
 			]
 		);
 		echo '</div>';
-	}
-
-	public function get_option($post_id): array {
-		$options_test = get_post_meta($post_id, $this->post_name, true);
-		if (empty($options_test)) {
-			$this->post_name = 'br_label';
-		}
-		$options = parent::get_option($post_id);
-		if (empty($options_test)) {
-			$this->post_name = 'br_labels';
-			update_post_meta($post_id, $this->post_name, $options);
-		}
-		return $options;
 	}
 
 	public function wc_save_check($post_id, $post): bool {

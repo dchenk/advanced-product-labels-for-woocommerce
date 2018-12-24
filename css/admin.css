@@ -1,10 +1,12 @@
-/* TEMPLATES STYLES */
-
 .br_framework_settings .framework-form-table > tbody > tr > td.br_label_css_templates,
 .br_framework_settings .framework-form-table > thead > tr > td.br_label_css_templates,
 .br_framework_settings .framework-form-table > tfoot > tr > td.br_label_css_templates,
 .br_framework_settings .framework-form-table > tr > td.br_label_css_templates {
     width: 75%;
+}
+
+.br_framework_settings h4.sub-head {
+    margin-bottom: 9px;
 }
 
 .br_framework_settings ul.br_template_select {
@@ -30,11 +32,9 @@
     padding: 10px;
     height: auto;
     cursor: pointer;
-    transition: all 0.3s;
     -moz-transition: all 0.3s;
     -webkit-transition: all 0.3s;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+    transition: all 0.3s;
     box-sizing: border-box;
 }
 
@@ -62,8 +62,7 @@
     border-color: #4fd1cd;
 }
 
-
-/* preview label styles */
+/* Previewing labels */
 .br_framework_settings .br_template_select li label > span span {
     position: absolute;
     display: block;
@@ -96,7 +95,7 @@
     height: 0;
 }
 
-/* css preview */
+/* CSS preview */
 .br_framework_settings .br_template_select li label.css-1 > span span {
     width: 50px;
     height: 30px;
@@ -346,9 +345,11 @@
 }
 
 /* COMMON STYLES */
+
 .clear-both {
     clear: both;
 }
+
 .br_framework_settings .clear {
     clear: both !important;
     float: none !important;

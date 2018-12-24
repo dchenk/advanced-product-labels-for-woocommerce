@@ -268,7 +268,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		add_action('init', [$this, 'init']);
 		add_action('admin_init', [$this, 'admin_init']);
-		add_action('admin_menu', [$this, 'admin_menu'], 8);
+		add_action('admin_menu', [$this, 'admin_menu']);
 		add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
 		add_action('woocommerce_product_write_panel_tabs', [$this, 'product_edit_advanced_label']);
 		add_action('woocommerce_product_data_panels', [$this, 'product_edit_tab']);
@@ -547,7 +547,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 	public function ajax_get_label() {
 		if (current_user_can('manage_options')) {
 			do_action('berocket_apl_set_label_start', 'demo');
-			if (! empty($_POST['br_labels']['tooltip_content'])) {
+			if (!empty($_POST['br_labels']['tooltip_content'])) {
 				$_POST['br_labels']['tooltip_content'] = stripslashes($_POST['br_labels']['tooltip_content']);
 			}
 			$this->show_label_on_product($_POST['br_labels'], 'demo');
@@ -801,9 +801,10 @@ class BeRocket_products_label extends BeRocket_Framework {
 	}
 
 	public function admin_menu() {
-		add_menu_page(
+		add_submenu_page(
+			'edit.php?post_type=br_labels',
 			__('Product Label Settings', $this->info['domain']),
-			__('Product Labels', $this->info['domain']),
+			__('Label Settings', $this->info['domain']),
 			'manage_options',
 			$this->values['option_page'],
 			[$this, 'option_form']
@@ -817,10 +818,6 @@ class BeRocket_products_label extends BeRocket_Framework {
 			],
 			'Advanced' => [
 				'icon' => 'cogs',
-			],
-			'Labels' => [
-				'icon' => 'plus-square',
-				'link' => admin_url('edit.php?post_type=br_labels'),
 			],
 		];
 
@@ -940,7 +937,8 @@ class BeRocket_products_label extends BeRocket_Framework {
 		<div class="wrap br_framework_settings">
 			<div id="icon-themes" class="icon32"></div>
 			<h1><?php _e('Settings for Advanced Product Labels', 'BeRocket_domain'); ?></h1>
-			<h4>Customize labels placed on products.</h4>
+			<h4 class="sub-head">Customize labels placed on products.</h4>
+			<a href="https://github.com/dchenk/advanced-product-labels-for-woocommerce" title="Plugin Support" target="_blank">Support</a>
 			<?php settings_errors(); ?>
 			<?php $this->admin_settings(); ?>
 		</div>

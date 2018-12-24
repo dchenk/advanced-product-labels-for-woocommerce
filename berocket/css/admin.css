@@ -83,6 +83,7 @@
 	animation-name: br_saved_anim_fa;
 	animation-duration: 0.4s;
 }
+
 @keyframes br_saved_anim_fa {
 	0% {
 		font-size: 0px;
@@ -97,21 +98,11 @@
 	}
 }
 
-header.aplfw-header {
-}
-
-header nav a {
-	font-size: 38px;
-	line-height: 80px;
-	margin-right: 30px;
-	text-decoration: none;
-}
-
 .br_framework_settings .body {
-	position: relative;
 	background-color: #f0f0f0;
 	display: table;
 	width: 100%;
+	margin-top: 14px;
 }
 
 .br_framework_settings .body ul.side {
@@ -531,9 +522,7 @@ header nav a {
 	padding: 10px;
 }
 
-.br_framework_settings form .nav-block,
-.br_framework_settings .paid_features,
-.br_framework_settings .berocket_subscribe {
+.br_framework_settings form .nav-block {
 	border-radius: 3px;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.06);
 	overflow: auto;
@@ -542,112 +531,10 @@ header nav a {
 	color: rgba(0, 0, 0, 0.87);
 	padding: 0 25px;
 }
-.br_framework_settings .berocket_subscribe h3 {
-	color: white;
-}
-.br_framework_settings .berocket_subscribe p {
-	font-size: 12px;
-	text-align: left;
-}
-.br_framework_settings .berocket_subscribe .error {
-	color: #d02c21;
-}
-.br_framework_settings .berocket_subscribe .berocket_subscribe_email {
-	background-color: #404c5d;
-	border: 0;
-	outline: 0;
-	color: #aaa;
-	width: 100%;
-	line-height: 2em;
-	font-size: 16px;
-	padding-left: 15px;
-	padding-right: 15px;
-}
 
-.br_framework_settings .berocket_subscribe .berocket_notice_submit,
-.br_framework_settings .get_premium_version,
-.br_framework_settings .buy_premium_version {
-	margin-top: 30px;
-	margin-bottom: 20px;
-	color: #fff;
-	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-	text-shadow: none;
-	border: 0 none;
-	min-width: 120px;
-	-moz-user-select: none;
-	background: #ff5252 none repeat scroll 0 0;
-	box-sizing: border-box;
-	cursor: pointer;
-	display: inline-block;
-	font-size: 14px;
-	outline: 0 none;
-	padding: 8px;
-	position: relative;
-	text-align: center;
-	text-decoration: none;
-	transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s, background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-	white-space: nowrap;
-	height: auto;
-	vertical-align: top;
-	line-height: 25px;
-	border-radius: 3px;
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-	font-weight: bold;
-}
-.br_framework_settings .premium_buttons {
-	margin-top: 30px;
-	margin-bottom: 20px;
-}
-.br_framework_settings .premium_buttons span {
-	display: block;
-	color: #7496ad;
-}
-.br_framework_settings .premium_buttons span.divider {
-	line-height: 2.4em;
-	font-size: 20px;
-	font-weight: bold;
-	position: relative;
-}
-.br_framework_settings .premium_buttons span.divider:before,
-.br_framework_settings .premium_buttons span.divider:after{
-	position: absolute;
-	top: 50%;
-	left: 5%;
-	right: 60%;
-	height: 1px;
-	background: #97b9cf;
-	content: "";
-}
-.br_framework_settings .premium_buttons span.divider:after{
-	left: 60%;
-	right: 5%;
-}
-.br_framework_settings .premium_buttons span:last-child b{
-	font-size: 16px;
-}
-.br_framework_settings .berocket_subscribe .berocket_notice_submit:hover,
-.br_framework_settings .berocket_subscribe .berocket_notice_submit:focus,
-.br_framework_settings .berocket_subscribe .berocket_notice_submit:active,
-.br_framework_settings .buy_premium_version:hover,
-.br_framework_settings .buy_premium_version:focus,
-.br_framework_settings .buy_premium_version:active {
-	background: #ff6e68 none repeat scroll 0 0;
-	color: white;
-}
-.br_framework_settings .get_premium_version:hover,
-.br_framework_settings .get_premium_version:focus,
-.br_framework_settings .get_premium_version:active{
-	background: #97b9cf;
-	color: white;
-}
 .br_framework_settings form .nav-block {
 	padding-top: 15px;
 	padding-bottom: 15px;
-}
-
-#berocket_product_key {
-	width: 80%;
-	min-width: 100px;
 }
 
 .br_settings_footer {
@@ -668,15 +555,6 @@ header nav a {
 .br_framework_settings .button.accent:active {
 	background: #ff6e68 none repeat scroll 0 0;
 	color: white;
-}
-
-.paid_features ul li{
-	list-style: initial;
-	margin-left: 2em;
-}
-
-#footer-thankyou, #footer-upgrade{
-	display: none;
 }
 
 .clear-both {

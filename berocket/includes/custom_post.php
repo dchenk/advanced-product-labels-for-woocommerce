@@ -1,32 +1,4 @@
 <?php
-/* $post_settings example
-array(
-   'labels' => array(
-	   'menu_name'          => _x( 'Product Filters', 'Admin menu name', 'BeRocket_AJAX_domain' ),
-	   'add_new_item'       => __( 'Add New Filter', 'BeRocket_AJAX_domain' ),
-	   'edit'               => __( 'Edit', 'BeRocket_AJAX_domain' ),
-	   'edit_item'          => __( 'Edit Filter', 'BeRocket_AJAX_domain' ),
-	   'new_item'           => __( 'New Filter', 'BeRocket_AJAX_domain' ),
-	   'view'               => __( 'View Filters', 'BeRocket_AJAX_domain' ),
-	   'view_item'          => __( 'View Filter', 'BeRocket_AJAX_domain' ),
-	   'search_items'       => __( 'Search Product Filters', 'BeRocket_AJAX_domain' ),
-	   'not_found'          => __( 'No Product Filters found', 'BeRocket_AJAX_domain' ),
-	   'not_found_in_trash' => __( 'No Product Filters found in trash', 'BeRocket_AJAX_domain' ),
-   ),
-   'description'     => __( 'This is where you can add Product Filters.', 'BeRocket_AJAX_domain' ),
-   'public'          => true,
-   'show_ui'         => true,
-   'capability_type' => 'post',
-   'publicly_queryable'  => false,
-   'exclude_from_search' => true,
-   'show_in_menu'        => 'edit.php?post_type=product',
-   'hierarchical'        => false,
-   'rewrite'             => false,
-   'query_var'           => false,
-   'supports'            => ['title'],
-   'show_in_nav_menus'   => false,
-)
-*/
 
 if (!class_exists('BeRocket_custom_post_class')) {
 

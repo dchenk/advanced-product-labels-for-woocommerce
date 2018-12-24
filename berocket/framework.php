@@ -179,23 +179,21 @@ class BeRocket_Framework {
 	}
 
 	/**
-	 * Function generate settings page
+	 * Generate a settings page.
 	 *
 	 * @param $tabs_info array
 	 * @param $data array with settings data, page will be build using this
 	 * @param $setup_style array
 	 */
-	public function display_admin_settings($tabs_info, $data, $setup_style) {
-		$setup_style = [
+	public function display_admin_settings(array $tabs_info, array $data, array $setup_style) {
+		$setup_style_defaults = [
 			'settings_url'           => add_query_arg(null, null),
-			'hide_header'            => false,
-			'hide_save_button'       => false,
 			'hide_form'              => false,
-			'hide_additional_blocks' => false,
 			'settings_name'          => $this->cc->values['settings_name'],
 			'options'                => $this->get_option(),
 			'name_for_filters'       => $this->cc->info['plugin_name'],
 		];
+		$setup_style = array_merge($setup_style_defaults, $setup_style);
 
 		$tabs_info = apply_filters('brfr_tabs_info_' . $setup_style['name_for_filters'], $tabs_info);
 		$data = apply_filters('brfr_data_' . $setup_style['name_for_filters'], $data);
@@ -386,22 +384,6 @@ class BeRocket_Framework {
 
 			$page_content = apply_filters('brfr_page_content_' . $setup_style['name_for_filters'], $page_content, $data);
 
-			if (!$setup_style['hide_header']) {
-				echo "<header class='aplfw-header'>
-						<nav>";
-				$header_links = [
-					'support' => [
-						'text' => '<i class="fa fa-support"></i>',
-						'link' => 'https://github.com/dchenk/advanced-product-labels-for-woocommerce',
-					],
-				];
-				$header_links = apply_filters('aplfw_header_links_' . $setup_style['name_for_filters'], $header_links);
-				foreach ($header_links as $header_link_title => $header_link) {
-					echo '<a href="' . $header_link['link'] . '" title="' . $header_link_title . '" target="_blank">' . $header_link['text'] . '</a>';
-				}
-				echo "</nav>
-					</header>";
-			}
 			echo '<div class="body">';
 			echo '<ul class="side">';
 			echo $page_menu;
@@ -411,15 +393,13 @@ class BeRocket_Framework {
 			if (!$setup_style['hide_form']) {
 				echo '<form data-plugin="' . $this->cc->info['plugin_name'] . '" class="br_framework_submit_form ' . $this->cc->info['plugin_name'] . '_submit_form ' . ((isset($this->plugin_version_capability) && $this->plugin_version_capability <= 5) ? 'show_premium' : '') .
 						 '" method="post" action="options.php">';
-				settings_fields($_GET['page']);
+				settings_fields($this->cc->values['option_page']);
 			}
 			echo $page_content;
 			echo '<div class="clear-both"></div>';
-			if (! $setup_style['hide_save_button']) {
-				echo '<input type="submit" class="button-primary button" value="' . __('Save Changes', 'BeRocket_domain') . '" />';
+			if (!$setup_style['hide_form']) {
+				echo '<input type="submit" class="button-primary button" value="' . __('Save Changes', 'BeRocket_domain') . '">';
 				echo '<div class="br_save_error"></div>';
-			}
-			if (! $setup_style['hide_form']) {
 				echo '</form>';
 			}
 			echo '</div>';

@@ -84,7 +84,7 @@ class berocket_admin_notices {
 	}
 	public static function get_notice_by_path($find_names) {
 		$notices = get_option('berocket_admin_notices');
-		if (! is_array($notices)) {
+		if (!is_array($notices)) {
 			$notices = [];
 		}
 
@@ -107,9 +107,11 @@ class berocket_admin_notices {
 
 		return $current_notice;
 	}
+
 	public static function berocket_array_udiff_assoc_notice($a1, $a2) {
 		return json_encode($a1) > json_encode($a2);
 	}
+
 	public static function set_notice_by_path($options, $replace = false, $find_names = false) {
 		$notices = get_option('berocket_admin_notices');
 		if ($options['end'] < time() && $options['end'] != 0) {

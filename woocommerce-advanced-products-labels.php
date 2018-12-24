@@ -362,7 +362,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 	 * Function adding styles/scripts and settings to admin_init WordPress action
 	 */
 	public function admin_init() {
-		require_once(__DIR__ . 'berocket/includes/settings_fields.php');
+		require_once(__DIR__ . '/berocket/includes/settings_fields.php');
 
 		register_setting($this->values['option_page'], $this->values['settings_name'], [$this, 'save_settings_callback']);
 

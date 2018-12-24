@@ -1,13 +1,5 @@
 <?php
 
-/*$BeRocket_framework_this_version = 1;
-$BeRocket_framework_latest_version_exist = get_option('BeRocket_framework_latest_version_exist');
-if( empty($BeRocket_framework_latest_version_exist) || empty($BeRocket_framework_latest_version_exist['version']) || $BeRocket_framework_latest_version_exist['version'] < $BeRocket_framework_this_version ) {
-	$BeRocket_framework_latest_version_exist = array('version' => $BeRocket_framework_this_version, 'file' => __FILE__);
-	update_option('BeRocket_framework_latest_version_exist', $BeRocket_framework_latest_version_exist);
-} elseif( file_exists($BeRocket_framework_latest_version_exist['file']) && $BeRocket_framework_latest_version_exist['file'] != __FILE__ ) {
-	require_once($BeRocket_framework_latest_version_exist['file']);
-}*/
 require_once(__DIR__ . '/includes/functions.php');
 require_once(__DIR__ . '/includes/admin_notices.php');
 require_once(__DIR__ . '/includes/custom_post.php');
@@ -17,22 +9,27 @@ include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
 load_plugin_textdomain('BeRocket_domain', false, plugin_basename(__DIR__) . '/languages');
 
-foreach (glob(__DIR__ . '/' . "../includes/*.php") as $filename) {
-	include_once($filename);
-}
+//foreach (glob(__DIR__ . '/' . "../includes/*.php") as $filename) {
+//	include_once($filename);
+//}
 
 if (!class_exists('BeRocket_Framework')) {
+
 	class BeRocket_Framework {
+
 		public static $settings_name = '';
 		protected static $instance;
 		protected $plugin_version_capability = 0;
+
 		protected $framework_data = [
 			'fontawesome_frontend' => false,
 		];
+
 		protected $global_settings = [
 			'fontawesome_frontend_disable',
 			'fontawesome_frontend_version',
 		];
+
 		private $post;
 
 		/**
@@ -629,5 +626,8 @@ if (!class_exists('BeRocket_Framework')) {
 			}
 			return $settings_page;
 		}
+
 	}
+
 }
+

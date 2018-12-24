@@ -270,7 +270,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 		add_action('admin_init', [$this, 'admin_init']);
 		add_action('admin_menu', [$this, 'admin_menu']);
 		add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
-		add_action('woocommerce_product_write_panel_tabs', [$this, 'product_edit_advanced_label']);
+		add_action('woocommerce_product_write_panel_tabs', [$this, 'product_edit_tab_link']);
 		add_action('woocommerce_product_data_panels', [$this, 'product_edit_tab']);
 		add_action('wp_ajax_br_label_ajax_demo', [$this, 'ajax_get_label']);
 		add_action('wp_footer', [$this, 'page_load_script']);
@@ -497,9 +497,9 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		$product_post = br_wc_get_product_post($product);
 		$options = $this->get_option();
-		if (! $options['disable_plabels']) {
+		if (!$options['disable_plabels']) {
 			$label_type = $this->custom_post->get_option($product_post->ID);
-			if (! empty($label_type['label_from_post']) && is_array($label_type['label_from_post'])) {
+			if (!empty($label_type['label_from_post']) && is_array($label_type['label_from_post'])) {
 				foreach ($label_type['label_from_post'] as $label_from_post) {
 					$br_label = $this->custom_post->get_option($label_from_post);
 					if (! empty($br_label)) {
@@ -556,19 +556,76 @@ class BeRocket_products_label extends BeRocket_Framework {
 		wp_die();
 	}
 
-	public function product_edit_advanced_label() {
-		echo '<li class="product_tab_manager"><a href="#br_alabel">' . __('Advanced label', 'BeRocket_tab_manager_domain') . '</a></li>';
+	public function product_edit_tab_link() {
+		echo '<li id="advanced-prod-label-tab"><a href="#advanced-prod-label-edit"><span>' . __('Advanced Label', 'BeRocket_tab_manager_domain') . '</span></a></li>';
 	}
 
 	public function product_edit_tab() {
+		global $pagenow, $post;
+
 		wp_enqueue_script('berocket_products_label_admin', plugins_url('js/admin.js', __FILE__), ['jquery'], BeRocket_products_label_version);
 		wp_enqueue_script('berocket_framework_admin');
 		wp_enqueue_style('berocket_framework_admin_style');
 		wp_enqueue_script('berocket_widget-colorpicker');
 		wp_enqueue_style('berocket_widget-colorpicker-style');
 		wp_enqueue_style('berocket_font_awesome');
+		wp_enqueue_style('product-edit-label', plugins_url('css/product-edit.css', __FILE__), [], BeRocket_products_label_version);
 		set_query_var('one_product', true);
-		include __DIR__ . '/templates/label.php';
+
+		$custom_post = BeRocket_advanced_labels_custom_post::getInstance();
+
+		$label = [
+			'label_from_post' => '',
+		];
+
+		// If we're not creating a new product now, get the possibly existing label.
+		if (!strpos($pagenow, 'post-new.php')) {
+			$label = $custom_post->get_option($post->ID);
+		}
+
+		$args = [
+			'posts_per_page'   => -1,
+			'offset'           => 0,
+			'category'         => '',
+			'category_name'    => '',
+			'orderby'          => 'date',
+			'order'            => 'DESC',
+			'include'          => '',
+			'exclude'          => '',
+			'meta_key'         => '',
+			'meta_value'       => '',
+			'post_type'        => $custom_post->post_name,
+			'post_mime_type'   => '',
+			'post_parent'      => '',
+			'author'           => '',
+			'post_status'      => 'publish',
+			'suppress_filters' => false,
+		];
+		$posts_array = get_posts($args); ?>
+
+		<div class="panel wc-metaboxes-wrapper" id="advanced-prod-label-edit">
+			<?php wp_nonce_field('br_labels_check', 'br_labels_nonce'); ?>
+			<table>
+				<tr>
+					<th><?php _e('Label to display on this product', 'BeRocket_products_label_domain'); ?></th>
+					<td><div style="max-height:200px; margin:10px 0; overflow: auto;">
+					<?php
+					foreach ($posts_array as $post_id) {
+						$post_title = get_the_title($post_id->ID);
+						echo '<p><label><input name="br_labels[label_from_post][]" type="checkbox" value="' . $post_id->ID . '"' .
+							(is_array($label['label_from_post']) && in_array($post_id->ID, $label['label_from_post'], true) ? ' checked' : '') . '>(' . $post_id->ID . ') ' . $post_title . '</label></p>';
+					} ?>
+					</div></td>
+				</tr>
+			</table>
+			<div class="berocket_label_preview_wrap">
+				<div class="berocket_label_preview">
+					<img class="berocket_product_image" src="<?php echo plugins_url('images/labels.png', __FILE__); ?>">
+				</div>
+			</div>
+			<?php $custom_post->settings($post); ?>
+		</div>
+		<?php
 	}
 
 	public function show_label_on_product($br_label, $product) {

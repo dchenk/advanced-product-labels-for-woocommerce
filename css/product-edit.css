@@ -1,0 +1,35 @@
+#advanced-prod-label-tab a::before {
+	content: "\f323" !important; /* must set important flag */
+}
+
+#advanced-prod-label-edit {
+	display: none;
+}
+
+.berocket_label_preview_wrap {
+	display: inline-block;
+	width: 240px;
+	padding: 20px;
+	background: white;
+	position: fixed;
+	top: 100%;
+	margin-top: -320px;
+	min-height: 320px;
+	right: 20px;
+	box-sizing: border-box;
+}
+
+.berocket_label_preview_wrap .berocket_label_preview {
+	position: relative;
+}
+
+.berocket_label_preview_wrap .berocket_product_image {
+	display: block;
+	width: 200px;
+}
+
+@media (max-width: 850px) {
+	.berocket_label_preview_wrap {
+		position: relative;
+	}
+}

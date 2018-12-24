@@ -9,10 +9,6 @@ include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
 load_plugin_textdomain('BeRocket_domain', false, plugin_basename(__DIR__) . '/languages');
 
-//foreach (glob(__DIR__ . '/' . "../includes/*.php") as $filename) {
-//	include_once($filename);
-//}
-
 if (!class_exists('BeRocket_Framework')) {
 
 	class BeRocket_Framework {

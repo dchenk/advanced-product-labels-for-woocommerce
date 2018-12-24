@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/dchenk/advanced-product-labels-for-woocommerce
  * Description: Promote your products! Show “Free Shipping” or other special attributes with your products.
  * Version: 1.1.11
- * Author: BeRocket
+ * Author: widerwebs
  * Requires at least: 4.0
  * Author URI: https://github.com/dchenk
  * Text Domain: BeRocket_products_label_domain
@@ -14,11 +14,11 @@
 
 define('BeRocket_products_label_version', '1.1.11');
 define('BeRocket_products_label_domain', 'BeRocket_products_label_domain');
-define('products_label_TEMPLATE_PATH', __DIR__ . '/templates/');
 
 require_once(__DIR__ . '/berocket/framework.php');
 
 require_once(__DIR__ . '/includes/compatibility/product_preview.php');
+require_once(__DIR__ . '/includes/custom_post.php');
 
 class BeRocket_products_label extends BeRocket_Framework {
 	public static $settings_name = 'br-products_label-options';
@@ -49,7 +49,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 			'full_name'   => 'WooCommerce Advanced Product Labels',
 			'norm_name'   => 'Product Labels',
 			'domain'      => 'BeRocket_products_label_domain',
-			'templates'   => products_label_TEMPLATE_PATH,
+			'templates'   => __DIR__ . '/templates/',
 			'plugin_file' => __FILE__,
 			'plugin_dir'  => __DIR__,
 		];
@@ -571,7 +571,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 		wp_enqueue_style('berocket_widget-colorpicker-style');
 		wp_enqueue_style('berocket_font_awesome');
 		set_query_var('one_product', true);
-		include products_label_TEMPLATE_PATH . 'label.php';
+		include __DIR__ . '/templates/label.php';
 	}
 
 	public function show_label_on_product($br_label, $product) {

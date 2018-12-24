@@ -62,8 +62,6 @@ class BeRocket_Framework {
 		add_action('plugins_loaded', [$this->cc, 'plugins_loaded']);
 		add_action('sanitize_comment_cookies', [$this->cc, 'sanitize_comment_cookies']);
 		add_action('install_plugins_pre_plugin-information', [$this, 'install_plugins_pre_plugin_information'], 1);
-
-		do_action($this->info['plugin_name'] . '_framework_construct', $this->cc);
 	}
 
 	public static function getInstance(): BeRocket_Framework {

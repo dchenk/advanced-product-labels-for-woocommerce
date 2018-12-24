@@ -7,12 +7,66 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 
 	public $post_name = 'br_labels';
 	public $hook_name = 'berocket_advanced_label_editor';
+	public $default_settings = [
+		'label_from_post'       => '',
+		'content_type'          => 'text',
+		'text'                  => 'Label',
+		'text_before'           => '',
+		'text_before_nl'        => '',
+		'text_after'            => '',
+		'text_after_nl'         => '',
+		'image'                 => '',
+		'type'                  => 'label',
+		'padding_top'           => '-10',
+		'padding_horizontal'    => '0',
+		'border_radius'         => '3',
+		'border_width'          => '0',
+		'border_color'          => 'ffffff',
+		'image_height'          => '30',
+		'image_width'           => '50',
+		'color_use'             => '1',
+		'color'                 => 'f16543',
+		'font_color'            => 'ffffff',
+		'font_size'             => '14',
+		'line_height'           => '30',
+		'position'              => 'left',
+		'rotate'                => '0deg',
+		'zindex'                => '500',
+		'data'                  => [],
+		'tooltip_content'       => '',
+		'tooltip_theme'         => 'dark',
+		'tooltip_position'      => 'top',
+		'tooltip_open_delay'    => '0',
+		'tooltip_close_delay'   => '0',
+		'tooltip_open_on'       => 'click',
+		'tooltip_close_on_click'=> '0',
+		'tooltip_use_arrow'     => '0',
+		'tooltip_max_width'     => '300',
+		'template'              => '',
+		'div_custom_class'      => '',
+		'div_custom_css'        => '',
+		'span_custom_class'     => '',
+		'span_custom_css'       => '',
+		'b_custom_class'        => '',
+		'b_custom_css'          => '',
+		'i1_custom_class'       => '',
+		'i1_custom_css'         => '',
+		'i2_custom_class'       => '',
+		'i2_custom_css'         => '',
+		'i3_custom_class'       => '',
+		'i3_custom_css'         => '',
+		'i4_custom_class'       => '',
+		'i4_custom_css'         => '',
+	];
+
+	/**
+	 * @var BeRocket_conditions_advanced_labels
+	 */
 	public $conditions;
 
 	protected static $instance;
 
 	public function __construct() {
-
 		$this->post_settings = [
 			'label' => __('Product Labels', 'BeRocket_products_label_domain'),
 			'labels' => [
@@ -45,69 +99,13 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			'show_in_nav_menus'   => false,
 		];
 
-		$this->default_settings = [
-			'label_from_post'       => '',
-			'content_type'          => 'text',
-			'text'                  => 'Label',
-			'text_before'           => '',
-			'text_before_nl'        => '',
-			'text_after'            => '',
-			'text_after_nl'         => '',
-			'image'                 => '',
-			'type'                  => 'label',
-			'padding_top'           => '-10',
-			'padding_horizontal'    => '0',
-			'border_radius'         => '3',
-			'border_width'          => '0',
-			'border_color'          => 'ffffff',
-			'image_height'          => '30',
-			'image_width'           => '50',
-			'color_use'             => '1',
-			'color'                 => 'f16543',
-			'font_color'            => 'ffffff',
-			'font_size'             => '14',
-			'line_height'           => '30',
-			'position'              => 'left',
-			'rotate'                => '0deg',
-			'zindex'                => '500',
-			'data'                  => [],
-			'tooltip_content'       => '',
-			'tooltip_theme'         => 'dark',
-			'tooltip_position'      => 'top',
-			'tooltip_open_delay'    => '0',
-			'tooltip_close_delay'   => '0',
-			'tooltip_open_on'       => 'click',
-			'tooltip_close_on_click'=> '0',
-			'tooltip_use_arrow'     => '0',
-			'tooltip_max_width'     => '300',
-			'template'              => '',
-			'div_custom_class'      => '',
-			'div_custom_css'        => '',
-			'span_custom_class'     => '',
-			'span_custom_css'       => '',
-			'b_custom_class'        => '',
-			'b_custom_css'          => '',
-			'i1_custom_class'       => '',
-			'i1_custom_css'         => '',
-			'i2_custom_class'       => '',
-			'i2_custom_css'         => '',
-			'i3_custom_class'       => '',
-			'i3_custom_css'         => '',
-			'i4_custom_class'       => '',
-			'i4_custom_css'         => '',
-		];
-
-		add_action('products_label_framework_construct', [$this, 'init_conditions']);
+		parent::__construct();
 
 		$this->add_meta_box('conditions', __('Conditions', 'BeRocket_products_label_domain'));
 		$this->add_meta_box('settings', __('Advanced Labels Settings', 'BeRocket_products_label_domain'));
 		$this->add_meta_box('description', __('Description', 'BeRocket_products_label_domain'), false, 'side');
 		$this->add_meta_box('preview', __('Preview', 'BeRocket_products_label_domain'), false, 'side');
 
-		parent::__construct();
-	}
-
-	public function init_conditions() {
 		$this->conditions = new BeRocket_conditions_advanced_labels($this->post_name . '[data]', $this->hook_name, [
 			'condition_product',
 			'condition_product_category',
@@ -121,6 +119,12 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			'condition_product_type',
 			'condition_product_rating',
 		]);
+	}
+
+	public function admin_init() {
+		parent::admin_init();
+		add_filter('manage_edit-' . $this->post_name . '_columns', [$this, 'manage_edit_columns']);
+		add_action('manage_' . $this->post_name . '_posts_custom_column', [$this, 'columns_replace'], 10, 2);
 	}
 
 	public function conditions($post) {
@@ -579,16 +583,18 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 	}
 
 	public function manage_edit_columns($columns) {
-		$columns = parent::manage_edit_columns($columns);
+		unset($columns['date']);
 		$columns["products"] = __("Label text", 'BeRocket_products_label_domain');
 		$columns["data"] = __("Position", 'BeRocket_products_label_domain');
 		return $columns;
 	}
 
-	public function columns_replace($column) {
-		parent::columns_replace($column);
-		global $post;
-		$label_type = $this->get_option($post->ID);
+	/**
+	 * @param $column string
+	 * @param $postID int
+	 */
+	public function columns_replace($column, $postID) {
+		$label_type = $this->get_option($postID);
 		switch ($column) {
 		case 'products':
 			$text = '';
@@ -608,8 +614,6 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 			}
 		}
 	}
-
 }
 
 new BeRocket_advanced_labels_custom_post();
-

@@ -373,14 +373,14 @@ class BeRocket_products_label extends BeRocket_Framework {
 		wp_register_style(
 			'berocket_framework_admin_style',
 			plugins_url('berocket/css/admin.css', $this->info['plugin_file']),
-			"",
+			[],
 			$this->info['version']
 		);
 
 		wp_register_style(
 			'berocket_framework_global_admin_style',
 			plugins_url('berocket/css/global-admin.css', $this->info['plugin_file']),
-			"",
+			[],
 			$this->info['version']
 		);
 

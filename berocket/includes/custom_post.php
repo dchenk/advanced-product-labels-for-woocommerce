@@ -1,7 +1,6 @@
 <?php
 
 if (!class_exists('BeRocket_custom_post_class')) {
-
 	class BeRocket_custom_post_class {
 		public $meta_boxes = [];
 		public $default_settings = [];
@@ -61,8 +60,6 @@ if (!class_exists('BeRocket_custom_post_class')) {
 		public function admin_init() {
 			add_filter('bulk_actions-edit-' . $this->post_name, [$this, 'bulk_actions_edit']);
 			add_filter('views_edit-' . $this->post_name, [$this, 'views_edit']);
-			add_filter('manage_edit-' . $this->post_name . '_columns', [$this, 'manage_edit_columns']);
-			add_action('manage_' . $this->post_name . '_posts_custom_column', [$this, 'columns_replace'], 2);
 			add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
 			add_action('save_post', [$this, 'wc_save_product'], 10, 2);
 			add_filter('post_row_actions', [$this, 'post_row_actions'], 10, 2);
@@ -93,22 +90,6 @@ if (!class_exists('BeRocket_custom_post_class')) {
 		public function views_edit($view) {
 			unset($view['publish'], $view['private'], $view['future']);
 			return $view;
-		}
-
-		public function manage_edit_columns($columns) {
-			$columns = [];
-			$columns["cb"]   = '<input type="checkbox" />';
-			$columns["name"] = __("Name", 'BeRocket_domain');
-			return $columns;
-		}
-
-		public function columns_replace($column) {
-			global $post;
-			if ($column === 'name') {
-				$edit_link = get_edit_post_link($post->ID);
-				$title = '<a class="row-title" href="' . $edit_link . '">' . _draft_or_post_title() . '</a>';
-				echo 'ID:' . $post->ID . ' <strong>' . $title . '</strong>';
-			}
 		}
 
 		public function add_meta_boxes() {
@@ -249,7 +230,5 @@ if (!class_exists('BeRocket_custom_post_class')) {
 
 			return array_merge($this->default_settings, $options);
 		}
-
 	}
-
 }

@@ -93,7 +93,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 		}
 
 		public function add_meta_boxes() {
-			add_meta_box('submitdiv', __('Save content', 'BeRocket_domain'), [$this, 'save_meta_box'], $this->post_name, 'side', 'high');
+			add_meta_box('submitdiv', __('Status', 'BeRocket_domain'), [$this, 'save_meta_box'], $this->post_name, 'side', 'high');
 			add_meta_box('copysettingsfromdiv', __('Copy settings from', 'BeRocket_domain'), [$this, 'copy_settings_from'], $this->post_name, 'side', 'high');
 			foreach ($this->meta_boxes as $meta_box) {
 				add_meta_box($meta_box['slug'], $meta_box['name'], $meta_box['callback'], $this->post_name, $meta_box['position'], $meta_box['priority']);
@@ -122,7 +122,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 				const copyPostSelect = jQuery("#berocket_copy_from_custom_post_select");
 				jQuery(".berocket_copy_from_custom_post_block button").on("click", function() {
 					jQuery(".berocket_copy_from_custom_post_block input").val(copyPostSelect.val());
-					jQuery(".submitbox input[type=submit]").trigger("click");
+					jQuery("#submitpost input[type=submit]").trigger("click");
 				});
 				copyPostSelect.on("change", function() {
 					jQuery(".berocket_copy_from_custom_post_block button").prop("disabled", !jQuery(this).val() || jQuery(this).val() === "0");
@@ -142,7 +142,8 @@ if (!class_exists('BeRocket_custom_post_class')) {
 			wp_enqueue_style('berocket_framework_admin_style');
 			wp_enqueue_script('berocket_widget-colorpicker');
 			wp_enqueue_style('berocket_widget-colorpicker-style');
-			wp_enqueue_style('font-awesome'); ?>
+			wp_enqueue_style('font-awesome');
+			wp_nonce_field($this->post_name . '_check', $this->post_name . '_nonce'); ?>
 			<div class="submitbox" id="submitpost">
 				<div id="minor-publishing">
 					<div id="major-publishing-actions">
@@ -160,14 +161,13 @@ if (!class_exists('BeRocket_custom_post_class')) {
 
 						<div id="publishing-action">
 							<span class="spinner"></span>
-							<input type="submit" class="button button-primary tips" name="publish" value="<?php _e('Save', 'BeRocket_domain'); ?>" data-tip="<?php _e('Save/update notice', 'BeRocket_domain'); ?>" />
+							<input type="submit" class="button button-primary tips" name="publish" value="<?php _e('Save', 'BeRocket_domain'); ?>">
 						</div>
 						<div class="clear"></div>
 					</div>
 				</div>
 			</div>
 			<?php
-			wp_nonce_field($this->post_name . '_check', $this->post_name . '_nonce');
 		}
 
 		public function wc_save_check($postID, $post): bool {

@@ -31,8 +31,6 @@
     height: 0;
 }
 
-
-
 /* CSS TEMPLATES STYLES */
 
 .br_alabel.template-css-6 > span {
@@ -46,9 +44,6 @@
     left: 0;
     background-color: transparent!important;
     border: 30px solid transparent;
-    border-left-color: transparent!important;
-    border-right-color: transparent!important;
-    border-bottom-color: transparent!important;
     border-top: 40px solid transparent;
 }
 .br_alabel.template-css-6 > span i.template-i {
@@ -67,7 +62,6 @@
     transform: rotate(45deg);
     background-color: transparent;
     border: 14px solid transparent;
-    border-top: 14px solid transparent;
 }
 .br_alabel.template-css-6 > span i.template-i-after {
     top: 6px;
@@ -79,7 +73,6 @@
     transform: rotate(-45deg);
     background-color: transparent;
     border: 14px solid transparent;
-    border-top: 14px solid transparent;
 }
 
 .br_alabel.template-css-7 > span i.template-i,
@@ -111,8 +104,6 @@
     left: 0;
     background-color: transparent!important;
     border: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-bottom-color: transparent!important;
 }
 .br_alabel.template-css-9 > span {
     top: 0;
@@ -122,9 +113,6 @@
     left: 0px;
     background-color: transparent!important;
     border: 18px solid transparent;
-    border-top-color: transparent!important;
-    border-left-color: transparent!important;
-    border-bottom-color: transparent!important;
     border-right: 20px solid transparent;
     -moz-transform: rotate(-10deg);
     -ms-transform: rotate(-10deg);
@@ -137,9 +125,6 @@
     left: 10px;
     background-color: transparent!important;
     border: 18px solid transparent;
-    border-top-color: transparent!important;
-    border-right-color: transparent!important;
-    border-bottom-color: transparent!important;
     border-left: 20px solid transparent;
     -moz-transform: rotate(10deg);
     -ms-transform: rotate(10deg);
@@ -180,10 +165,6 @@
     top: -51px;
     background-color: transparent !important;
     border: 44px solid transparent;
-    border-top-color: transparent !important;
-    border-left-color: transparent !important;
-    border-right-color: transparent !important;
-    border-bottom: 44px solid transparent;
 }
 .br_alabel.template-css-11 > span i.template-i-before {
     width: 30px;

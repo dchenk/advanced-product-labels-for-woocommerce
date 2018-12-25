@@ -558,7 +558,7 @@ class BeRocket_conditions {
 	}
 
 	public static function check_condition_product_category($show, $condition, $additional) {
-		if (! is_array($condition['category'])) {
+		if (!is_array($condition['category'])) {
 			$condition['category'] = [$condition['category']];
 		}
 		$terms = get_the_terms($additional['product_id'], 'product_cat');

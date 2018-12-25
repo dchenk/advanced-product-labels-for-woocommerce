@@ -40,7 +40,6 @@ class BeRocket_products_label extends BeRocket_Framework {
 		'domain'      => 'BeRocket_products_label_domain',
 		'templates'   => __DIR__ . '/templates/',
 		'plugin_file' => __FILE__,
-		'plugin_dir'  => __DIR__,
 	];
 
 	public $defaults = [
@@ -326,12 +325,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 			BeRocket_products_label_version
 		);
 
-		wp_register_style(
-			'berocket_tippy',
-			plugins_url('css/tippy.css', __FILE__),
-			[],
-			BeRocket_products_label_version
-		);
+		wp_register_style('berocket_tippy', plugins_url('css/tippy.css', __FILE__), [], BeRocket_products_label_version);
 
 		wp_register_script('berocket_tippy', plugins_url('js/tippy.min.js', __FILE__), ['jquery'], $this->info['version']);
 
@@ -365,39 +359,39 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		wp_register_script(
 			'berocket_framework_admin',
-			plugins_url('berocket/js/admin.js', $this->info['plugin_file']),
+			plugins_url('berocket/js/admin.js', __FILE__),
 			['jquery'],
 			$this->info['version']
 		);
 
 		wp_register_style(
 			'berocket_framework_admin_style',
-			plugins_url('berocket/css/admin.css', $this->info['plugin_file']),
+			plugins_url('berocket/css/admin.css', __FILE__),
 			[],
 			$this->info['version']
 		);
 
 		wp_register_style(
 			'berocket_framework_global_admin_style',
-			plugins_url('berocket/css/global-admin.css', $this->info['plugin_file']),
+			plugins_url('berocket/css/global-admin.css', __FILE__),
 			[],
 			$this->info['version']
 		);
 
 		wp_register_script(
 			'berocket_widget-colorpicker',
-			plugins_url('berocket/js/colpick.js', $this->info['plugin_file']),
+			plugins_url('berocket/js/colpick.js', __FILE__),
 			['jquery']
 		);
 
 		wp_register_style(
 			'berocket_widget-colorpicker-style',
-			plugins_url('berocket/css/colpick.css', $this->info['plugin_file'])
+			plugins_url('berocket/css/colpick.css', __FILE__)
 		);
 
 		wp_register_style(
 			'berocket_font_awesome',
-			plugins_url('berocket/css/font-awesome.min.css', $this->info['plugin_file'])
+			plugins_url('berocket/css/font-awesome.min.css', __FILE__)
 		);
 
 		wp_localize_script('berocket_framework_admin', 'berocket_framework_admin', [
@@ -486,8 +480,10 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 	/**
 	 * @param string $type
+	 * @global WC_Product $product
 	 */
 	public function set_label($type = '') {
+		/** @var $product WC_Product */
 		global $product;
 
 		do_action('berocket_apl_set_label_start', $product);
@@ -625,16 +621,20 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 	/**
 	 * @param $br_label array
-	 * @param $product WC_Product
+	 * @param $product WC_Product|string
 	 */
-	public function show_label_on_product($br_label, $product) {
+	private function show_label_on_product($br_label, $product) {
 		global $berocket_display_any_advanced_labels;
 
 		$berocket_display_any_advanced_labels = true;
 
+//		error_log('ENTERED show_label_on_product FUNCTION');
+
 		if (empty($br_label) || !is_array($br_label)) {
 			return;
 		}
+
+//		error_log('MAYBE SHOWING LABEL: ' . print_r($br_label, true) . ' -- ' . print_r($product, true));
 
 		if (empty($br_label['content_type'])) {
 			$br_label['content_type'] = 'text';
@@ -805,9 +805,9 @@ class BeRocket_products_label extends BeRocket_Framework {
 				'i3_custom_class', 'i3_custom_css',
 				'i4_custom_class', 'i4_custom_css',
 			];
-			foreach ($custom_css_elements as $custom_css_element) {
-				if (empty($br_label[$custom_css_element])) {
-					$br_label[$custom_css_element] = '';
+			foreach ($custom_css_elements as $element) {
+				if (empty($br_label[$element])) {
+					$br_label[$element] = '';
 				}
 			}
 			$div_class .= ' ' . $br_label['div_custom_class'];
@@ -822,11 +822,11 @@ class BeRocket_products_label extends BeRocket_Framework {
 				(empty($br_label['template']) ? '' : 'template-' . $br_label['template']) .
 				'" style="' . $div_style . '">';
 			$html .= '<span' . $tooltip_data . ' style="' . $label_style . '"' . (empty($br_label['div_custom_class']) ? '' : ' class="' . $br_label['div_custom_class'] . '"') . '>';
-			$html .= '<i' . (empty($i1_style) ? '' : ' style="' . $i1_style . '"') . ' class="template-span-before ' . $br_label['i1_custom_class'] . '"></i>';
-			$html .= '<i' . (empty($i2_style) ? '' : ' style="' . $i2_style . '"') . ' class="template-i ' . $br_label['i2_custom_class'] . '"></i>';
-			$html .= '<i' . (empty($i3_style) ? '' : ' style="' . $i3_style . '"') . ' class="template-i-before ' . $br_label['i3_custom_class'] . '"></i>';
-			$html .= '<i' . (empty($i4_style) ? '' : ' style="' . $i4_style . '"') . ' class="template-i-after ' . $br_label['i4_custom_class'] . '"></i>';
-			$html .= '<b' . (empty($br_label['b_custom_class']) ? '' : ' class="' . $br_label['b_custom_class'] . '"') . (empty($br_label['b_custom_css']) ? '' : ' style="' . $br_label['b_custom_css'] . '"') . '>' . $text . '</b>';
+			$html .= '<i style="' . $i1_style . '" class="template-span-before ' . $br_label['i1_custom_class'] . '"></i>';
+			$html .= '<i style="' . $i2_style . '" class="template-i ' . $br_label['i2_custom_class'] . '"></i>';
+			$html .= '<i style="' . $i3_style . '" class="template-i-before ' . $br_label['i3_custom_class'] . '"></i>';
+			$html .= '<i style="' . $i4_style . '" class="template-i-after ' . $br_label['i4_custom_class'] . '"></i>';
+			$html .= '<b' . (empty($br_label['b_custom_class']) ? '' : ' class="' . $br_label['b_custom_class'] . '"') . ' style="' . $br_label['b_custom_css'] . '">' . $text . '</b>';
 			if (! empty($br_label['tooltip_content'])) {
 				$html .= '<div style="display: none;" class="br_tooltip">' . $br_label['tooltip_content'] . '</div>';
 				wp_enqueue_style('berocket_tippy');
@@ -834,7 +834,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 			}
 			$html .= '</span>';
 			$html .= '</div>';
-			$html = apply_filters('berocket_apl_show_label_on_product_html', $html, $br_label, $product);
+			$html = apply_filters('apl_show_label_on_product_html', $html, $br_label, $product);
 			echo $html;
 		}
 	}

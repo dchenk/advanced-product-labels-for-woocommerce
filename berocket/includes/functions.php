@@ -10,6 +10,10 @@ if (!function_exists('br_wc_get_product_id')) {
 }
 
 if (!function_exists('br_wc_get_product_post')) {
+	/**
+	 * @param $product WC_Product
+	 * @return null|array|WP_Post
+	 */
 	function br_wc_get_product_post($product) {
 		$product_id = br_wc_get_product_id($product);
 		return get_post($product_id);
@@ -20,7 +24,7 @@ if (!function_exists('br_wc_get_product_post')) {
  * @param $product WC_Product
  * @param $attr
  * @param string $data
- * @return null|WC_Product
+ * @return mixed
  */
 function br_wc_get_product_attr($product, $attr, $data = '') {
 	if ($attr === 'child') {
@@ -757,4 +761,3 @@ if (! function_exists('fa_icons_list')) {
 		];
 	}
 }
-

@@ -12,7 +12,10 @@ function makeCondName(condType, id, position) {
 // Add a condition group.
 jQuery("#apl_add_cond_group").on("click", function() {
 	lastCondID++;
-	let html = window.condGroupTemplate.replace("%id%", lastCondID);
+	let html = window.condGroupTemplate.
+		replace("SELECT_TEMPLATE", window.condSelectTemplate).
+		replace(/%id%/g, lastCondID).
+		replace("DATA_CURRENT", lastCondID);
 	html = `<div class="br_html_condition" data-id="${lastCondID}" data-current="1">${html}</div>`;
 	jQuery(this).before(html);
 	jQuery(this).prev().find(".br_cond_type").trigger("change");
@@ -24,9 +27,9 @@ jQuery(document).on("click", ".berocket_add_condition", function() {
 	let current_id = Number(parent.data("current"));
 	current_id++;
 	parent.data("current", current_id);
-	let html = window.condGroupTemplate.find(".br_cond_select").html();
-	html = html.replace("%id%", current_id);
-	html = `<div class="br_cond_select" data-current="${current_id}">${html}</div>`;
+	let html = window.condSelectTemplate.
+		replace(/%id%/g, current_id).
+		replace("DATA_CURRENT", current_id);
 	jQuery(this).before(html);
 	jQuery(this).prev().find(".br_cond_type").trigger("change");
 });
@@ -37,13 +40,16 @@ jQuery(document).on("change", ".br_cond_type", function(_) {
 	parent.find(".br_cond").remove();
 	const id = parent.parents(".br_html_condition").data("id");
 	const current_id = parent.data("current");
-	const condType = parent.data("type");
-	let html_need = document.querySelector("#apl-condition-types-example .br_cond_"+jQuery(this).val()).outerHTML;
-	html_need = html_need.replace(/%id%/g, id);
-	html_need = html_need.replace(/%current_id%/g, current_id);
-	html_need = html_need.replace(/NAME_PLACEHOLDER/g, makeCondName(condType, id, current_id));
-	const elem = jQuery.parseHTML(html_need);
-	parent.find(".br_current_cond").html(elem);
+	const condType = jQuery(this).val();
+	let tmpl = window.condTypeTemplates[condType];
+	if (!tmpl) {
+		alert("An error occurred.");
+		return;
+	}
+	tmpl = tmpl.replace(/%id%/g, id).
+		replace(/%current_id%/g, current_id).
+		replace(/%name%/g, condType);
+	parent.find(".br_current_cond").html(tmpl);
 });
 
 jQuery(document).on("click", ".berocket_remove_condition", function() {

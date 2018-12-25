@@ -24,7 +24,6 @@ function br_supcondition_equal($name, $options, $extension = []) {
 }
 
 class BeRocket_conditions {
-
 	public $conditions = [];
 	public $option_name;
 	public $hook_name;
@@ -87,13 +86,23 @@ class BeRocket_conditions {
 
 		$condition_types = apply_filters($this->hook_name . '_types', []);
 
+		$types = [];
+		foreach ($condition_types as $type_slug => $type_name) {
+			$condition_html = apply_filters($this->hook_name . '_type_' . $type_slug, '', '%name%[%id%][%current_id%]', []);
+			if (!empty($condition_html)) {
+				$types[$type_slug] = '<div class="br_cond br_cond_' . $type_slug . '">' .
+					$condition_html .
+					'<input type="hidden" name="%name%[%id%][%current_id%][type]" value="' . $type_slug . '">' .
+					'</div>';
+			}
+		}
+
 		ob_start(); ?>
 		<script>
 			window.largestCondID = <?php echo $largestID; ?>;
 			window.currentCondData = <?php echo $currentData; ?>;
-			window.condGroupTemplate = `
-			<div id="apl-condition-group-example" style="display: none;">
-				<div class="br_cond_select" data-current="1">
+			window.condSelectTemplate = `
+				<div class="br_cond_select" data-current="DATA_CURRENT">
 					<span>
 						<select class="br_cond_type">
 							<?php
@@ -104,22 +113,14 @@ class BeRocket_conditions {
 					</span>
 					<span class="button berocket_remove_condition"><i class="fa fa-minus"></i></span>
 					<div class="br_current_cond"></div>
-				</div>
-				<span class="button berocket_add_condition"><i class="fa fa-plus"></i></span>
-				<span class="button br_remove_group"><i class="fa fa-minus"></i></span>
-			</div>
-			<div id="apl-condition-types-example" style="display: none;">
-				<?php
-				foreach ($condition_types as $type_slug => $type_name) {
-					$condition_html = apply_filters($this->hook_name . '_type_' . $type_slug, '', '%name%[%id%][%current_id%]', []);
-					if (!empty($condition_html)) {
-						echo '<div class="br_cond br_cond_' . $type_slug . '">' .
-							$condition_html .
-							'<input type="hidden" name="NAME_PLACEHOLDER" value="' . $type_slug . '">' .
-							'</div>';
-					}
-				} ?>
-			</div>`;
+				</div>`;
+			window.condGroupTemplate = `
+				<div id="apl-condition-group-example">
+					SELECT_TEMPLATE
+					<span class="button berocket_add_condition"><i class="fa fa-plus"></i></span>
+					<span class="button br_remove_group"><i class="fa fa-minus"></i></span>
+				</div>`;
+			window.condTypeTemplates = <?php echo json_encode($types); ?>;
 		</script>
 		<div class="br_conditions">
 			<span class="button" id="apl_add_cond_group"><i class="fa fa-plus"></i></span>
@@ -905,5 +906,4 @@ class BeRocket_conditions {
 		}
 		return $show;
 	}
-
 }

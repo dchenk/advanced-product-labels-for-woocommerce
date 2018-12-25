@@ -72,16 +72,59 @@ class BeRocket_conditions {
 		wp_enqueue_script('apl-conditions-builder', $inst->plugin_url() . 'berocket/js/conditions-admin.js', ['jquery'], BeRocket_products_label_version, true);
 		wp_enqueue_style('apl-conditions-builder', $inst->plugin_url() . 'berocket/css/conditions-admin.css', [], BeRocket_products_label_version);
 
-		// $hook_name and $option_name are used in the template.
-		$hook_name = $this->hook_name;
-		$option_name = $this->option_name;
+		$largestID = 0;
+		foreach ($value as $id => $v) {
+			if ($id > $largestID) {
+				$largestID = $id;
+			}
+		}
 
 		if (!isset($value) || !is_array($value)) {
 			$value = [];
 		}
 
-		ob_start();
-		require_once(__DIR__ . '/../templates/conditions.php');
+		$currentData = json_encode($value);
+
+		$condition_types = apply_filters($this->hook_name . '_types', []);
+
+		ob_start(); ?>
+		<script>
+			window.largestCondID = <?php echo $largestID; ?>;
+			window.currentCondData = <?php echo $currentData; ?>;
+			window.condGroupTemplate = `
+			<div id="apl-condition-group-example" style="display: none;">
+				<div class="br_cond_select" data-current="1">
+					<span>
+						<select class="br_cond_type">
+							<?php
+							foreach ($condition_types as $type_slug => $type_name) {
+								echo '<option value="' . $type_slug . '">' . $type_name . '</option>';
+							} ?>
+						</select>
+					</span>
+					<span class="button berocket_remove_condition"><i class="fa fa-minus"></i></span>
+					<div class="br_current_cond"></div>
+				</div>
+				<span class="button berocket_add_condition"><i class="fa fa-plus"></i></span>
+				<span class="button br_remove_group"><i class="fa fa-minus"></i></span>
+			</div>
+			<div id="apl-condition-types-example" style="display: none;">
+				<?php
+				foreach ($condition_types as $type_slug => $type_name) {
+					$condition_html = apply_filters($this->hook_name . '_type_' . $type_slug, '', '%name%[%id%][%current_id%]', []);
+					if (!empty($condition_html)) {
+						echo '<div class="br_cond br_cond_' . $type_slug . '">' .
+							$condition_html .
+							'<input type="hidden" name="NAME_PLACEHOLDER" value="' . $type_slug . '">' .
+							'</div>';
+					}
+				} ?>
+			</div>`;
+		</script>
+		<div class="br_conditions">
+			<span class="button" id="apl_add_cond_group"><i class="fa fa-plus"></i></span>
+		</div><?php
+
 		$html = ob_get_clean();
 		if ($html === false) {
 			$html = '';
@@ -286,7 +329,7 @@ class BeRocket_conditions {
 		$options['price'] = array_merge($def_options['price'], $options['price']);
 		$html .= static::supcondition($name, $options);
 		$html .= __('From:', 'BeRocket_domain') . '<input class="price_from" type="number" min="0" name="' . $name . '[price][from]" value="' . $options['price']['from'] . '">' .
-				 __('To:', 'BeRocket_domain') . '<input class="price_to"   type="number" min="1" name="' . $name . '[price][to]"   value="' . $options['price']['to'] . '">';
+				 __('To:', 'BeRocket_domain') . '<input class="price_to" type="number" min="1" name="' . $name . '[price][to]" value="' . $options['price']['to'] . '">';
 		return $html;
 	}
 
@@ -396,7 +439,7 @@ class BeRocket_conditions {
 		$options['price'] = array_merge($def_options['saleprice'], $options['saleprice']);
 		$html .= br_supcondition_equal($name, $options);
 		$html .= __('From:', 'BeRocket_domain') . '<input class="price_from" type="number" min="0" name="' . $name . '[saleprice][from]" value="' . $options['saleprice']['from'] . '">' .
-				 __('To:', 'BeRocket_domain') . '<input class="price_to"   type="number" min="1" name="' . $name . '[saleprice][to]"   value="' . $options['saleprice']['to'] . '">';
+				 __('To:', 'BeRocket_domain') . '<input class="price_to" type="number" min="1" name="' . $name . '[saleprice][to]" value="' . $options['saleprice']['to'] . '">';
 		return $html;
 	}
 
@@ -409,7 +452,7 @@ class BeRocket_conditions {
 		$options['price'] = array_merge($def_options['regularprice'], $options['regularprice']);
 		$html .= br_supcondition_equal($name, $options);
 		$html .= __('From:', 'BeRocket_domain') . '<input class="price_from" type="number" min="0" name="' . $name . '[regularprice][from]" value="' . $options['regularprice']['from'] . '">' .
-				 __('To:', 'BeRocket_domain') . '<input class="price_to"   type="number" min="1" name="' . $name . '[regularprice][to]"   value="' . $options['regularprice']['to'] . '">';
+				 __('To:', 'BeRocket_domain') . '<input class="price_to" type="number" min="1" name="' . $name . '[regularprice][to]" value="' . $options['regularprice']['to'] . '">';
 		return $html;
 	}
 

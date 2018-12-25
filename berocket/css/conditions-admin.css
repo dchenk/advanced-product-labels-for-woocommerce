@@ -58,7 +58,7 @@
 .br_framework_settings .button.berocket_remove_condition,
 .br_framework_settings .button.berocket_add_condition,
 .br_framework_settings .button.br_remove_group,
-.br_framework_settings .button.br_add_group {
+.br_framework_settings .button#apl_add_cond_group {
 	padding: 0 10px;
 	margin: 0;
 	width: initial;

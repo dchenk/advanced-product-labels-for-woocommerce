@@ -102,11 +102,11 @@ if (!class_exists('BeRocket_custom_post_class')) {
 
 		public function copy_settings_from($post) {
 			$posts_array = $this->get_custom_posts(); ?>
-            <div class="berocket_copy_from_custom_post_block">
-                <?php do_action('berocket_copy_from_custom_post_block', $this->post_name, $post); ?>
-                <select name="berocket_copy_from_custom_post_select">
-                    <option value="0"><?php _e('Do not copy', 'BeRocket_domain'); ?></option>
-                    <?php
+			<div class="berocket_copy_from_custom_post_block">
+				<?php do_action('berocket_copy_from_custom_post_block', $this->post_name, $post); ?>
+				<select id="berocket_copy_from_custom_post_select">
+					<option value="0"><?php _e('Do not copy', 'BeRocket_domain'); ?></option>
+					<?php
 					if (!empty($posts_array) && is_array($posts_array)) {
 						foreach ($posts_array as $postID) {
 							if ($postID != $post->ID) {
@@ -114,17 +114,18 @@ if (!class_exists('BeRocket_custom_post_class')) {
 							}
 						}
 					} ?>
-                </select>
-                <input name="berocket_copy_from_custom_post" type="hidden" value="">
-                <button type="button" class="button" disabled><?php _e('Copy', 'BeRocket_domain'); ?></button>
-            </div>
-            <script>
-				jQuery('.berocket_copy_from_custom_post_block button').on('click', function() {
-					jQuery('.berocket_copy_from_custom_post_block input').val(jQuery('.berocket_copy_from_custom_post_block select').val());
-					jQuery('.submitbox input[type=submit]').trigger('click');
+				</select>
+				<input name="berocket_copy_from_custom_post" type="hidden">
+				<button type="button" class="button" disabled><?php _e('Copy', 'BeRocket_domain'); ?></button>
+			</div>
+			<script>
+				const copyPostSelect = jQuery("#berocket_copy_from_custom_post_select");
+				jQuery(".berocket_copy_from_custom_post_block button").on("click", function() {
+					jQuery(".berocket_copy_from_custom_post_block input").val(copyPostSelect.val());
+					jQuery(".submitbox input[type=submit]").trigger("click");
 				});
-				jQuery('.berocket_copy_from_custom_post_block select').on('change', function() {
-					jQuery('.berocket_copy_from_custom_post_block button').prop('disabled', ( ! jQuery(this).val() || jQuery(this).val() == '0' ));
+				copyPostSelect.on("change", function() {
+					jQuery(".berocket_copy_from_custom_post_block button").prop("disabled", !jQuery(this).val() || jQuery(this).val() === "0");
 				});
 			</script>
 			<?php

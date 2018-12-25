@@ -64,7 +64,7 @@ class BeRocket_Framework {
 		add_action('install_plugins_pre_plugin-information', [$this, 'install_plugins_pre_plugin_information'], 1);
 	}
 
-	public static function getInstance(): BeRocket_Framework {
+	public static function getInstance(): BeRocket_products_label {
 		if (null === static::$instance) {
 			static::$instance = new static(null);
 		}
@@ -439,15 +439,13 @@ class BeRocket_Framework {
 	public function save_settings_callback($settings) {
 		if (isset($settings)) {
 			$settings = self::sanitize_option($settings);
-			if (count($this->global_settings)) {
-				$global_options = $this->get_global_option();
-				foreach ($this->global_settings as $global_setting) {
-					if (isset($settings[$global_setting])) {
-						$global_options[$global_setting] = $settings[$global_setting];
-					}
+			$global_options = $this->get_global_option();
+			foreach ($this->global_settings as $global_setting) {
+				if (isset($settings[$global_setting])) {
+					$global_options[$global_setting] = $settings[$global_setting];
 				}
-				$this->save_global_option($global_options);
 			}
+			$this->save_global_option($global_options);
 		}
 		return $settings;
 	}
@@ -519,11 +517,9 @@ class BeRocket_Framework {
 		}
 		$options = apply_filters('brfr_get_option_cache_' . $this->cc->info['plugin_name'], $options, $this->cc->defaults);
 		$global_options = $this->get_global_option();
-		if (count($this->global_settings)) {
-			foreach ($this->global_settings as $global_setting) {
-				if (isset($global_options[$global_setting])) {
-					$options[$global_setting] = $global_options[$global_setting];
-				}
+		foreach ($this->global_settings as $global_setting) {
+			if (isset($global_options[$global_setting])) {
+				$options[$global_setting] = $global_options[$global_setting];
 			}
 		}
 

@@ -747,7 +747,7 @@ class BeRocket_conditions {
 			$def_options = ['category' => ''];
 			$options = array_merge($def_options, $options);
 			$html .= br_supcondition_equal($name, $options);
-			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' . __('Include subcategories', 'BeRocket_AJAX_domain') . '</label>';
+			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' . __('Include subcategories', 'BeRocket_products_label_domain') . '</label>';
 			$html .= '<div style="max-height:150px;overflow:auto;border:1px solid #ccc;padding: 5px;">';
 			foreach ($product_categories as $category) {
 				$html .= '<div><label>

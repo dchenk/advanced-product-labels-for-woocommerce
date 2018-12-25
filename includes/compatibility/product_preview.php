@@ -16,12 +16,13 @@ class BeRocket_Labels_compat_product_preview {
 	}
 
 	public static function settings($name, $options) {
-		echo '<tr>
-			<th>' . __('Hide BeRocket Advanced Labels', 'BeRocket_products_label_domain') . '</th>
+		?>
+		<tr>
+			<th><?php _e('Hide Advanced Labels', 'BeRocket_products_label_domain'); ?></th>
 			<td>
-				<input type="checkbox" name="' . $name . '[hide_berocket_labels]"' . (empty($options['hide_berocket_labels']) ? '' : 'checked') . '>
+				<input type="checkbox" name="<?php echo $name; ?>[hide_berocket_labels]"<?php checked(!empty($options['hide_berocket_labels'])); ?>>
 			</td>
-		</tr>';
+		</tr><?php
 	}
 
 }

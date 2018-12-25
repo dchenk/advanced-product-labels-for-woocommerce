@@ -179,7 +179,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
         <?php
 	}
 
-	public function settings($post) {
+	public function settings(WP_Post $post) {
 		wp_enqueue_script('berocket_products_label_admin', plugins_url('../js/admin.js', __FILE__), ['jquery'], BeRocket_products_label_version);
 		wp_enqueue_script('berocket_framework_admin');
 		wp_enqueue_style('berocket_framework_admin_style');

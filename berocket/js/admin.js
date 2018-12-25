@@ -1,10 +1,9 @@
-;
 var br_saved_timeout;
 var br_init_colorpick;
 var br_savin_ajax = false;
 var br_something_changed = false;
-(function ($){
-    $(document).ready( function () {
+(function($) {
+    $(document).ready( function() {
         $(window).on('beforeunload', function() {
             if( br_something_changed ) {
                 return 'Something changed and not saved';
@@ -79,6 +78,7 @@ var br_something_changed = false;
                 }
             }
         });
+
         br_init_colorpick = function() {
             $('.br_framework_settings .br_colorpicker').each(function (i,o){
                 $(o).css('backgroundColor', $(o).data('color'));
@@ -94,7 +94,7 @@ var br_something_changed = false;
                     }
                 })
             });
-        }
+        };
         br_init_colorpick();
         $(document).on('click', '.br_framework_settings .br_colorpicker_default', function (event) {
             event.preventDefault();
@@ -103,7 +103,7 @@ var br_something_changed = false;
             $color.find('.br_colorpicker').css('backgroundColor', data).colpickSetColor(data);
             $color.find('.br_colorpicker_value').val(data).trigger('change');
         });
-        
+
         $(document).on('click', '.br_framework_settings .berocket_upload_image', function(e) {
             e.preventDefault();
             $p = $(this);
@@ -112,7 +112,7 @@ var br_something_changed = false;
                 button: {
                     text: 'Set Icon'
                 },
-                multiple: false 
+                multiple: false
             }).on('select', function() {
                 var attachment = custom_uploader.state().get('selection').first().toJSON();
                 $p.prevAll(".berocket_selected_image").html('<image src="'+attachment.url+'" alt="">');
@@ -200,7 +200,8 @@ var br_something_changed = false;
         }
     });
 })(jQuery);
-/* PRODUCTS SELECTOR */
+
+// PRODUCTS SELECTOR
 (function ($){
     $(document).ready( function () {
         var last_search = '';
@@ -227,7 +228,7 @@ var br_something_changed = false;
             var $current = $(this).find('.berocket_search_result');
             if( $current.length == 0 ) {
                 remove_search_result();
-            } 
+            }
         });
         $(document).on('keyup focus', '.berocket_search_input', function(event) {
             if( delay_search ) {
@@ -307,8 +308,7 @@ var br_something_changed = false;
     });
 })(jQuery);
 
-
-//SHOW MESSAGE FOR BLOCK
+// SHOW MESSAGE FOR BLOCK
 var berocket_block_messages_elements = [];
 var berocket_block_messages_element_last = false;
 var berocket_block_messages_element_interval = false;

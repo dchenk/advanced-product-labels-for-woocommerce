@@ -7,8 +7,6 @@ require_once(__DIR__ . '/includes/conditions.php');
 require_once(__DIR__ . '/includes/plugin-variation.php');
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
-load_plugin_textdomain('BeRocket_domain', false, plugin_basename(__DIR__) . '/languages');
-
 class BeRocket_Framework {
 
 	public static $settings_name;
@@ -48,7 +46,7 @@ class BeRocket_Framework {
 		$this->defaults = apply_filters('brfr_plugin_defaults_value_' . $this->cc->info['plugin_name'], $this->defaults, $this);
 
 		register_activation_hook($this->cc->info['plugin_file'], [$this, 'activation']);
-		register_uninstall_hook($this->cc->info['plugin_file'], [get_class($this->cc), 'deactivation']);
+		register_uninstall_hook($this->cc->info['plugin_file'], [get_class($this->cc), 'uninstall']);
 
 		add_action('init', [$this, 'init']);
 
@@ -56,8 +54,7 @@ class BeRocket_Framework {
 
 		add_filter('is_berocket_settings_page', [$this->cc, 'is_settings_page']);
 
-		$plugin_base_slug = plugin_basename($this->cc->info['plugin_file']);
-		add_filter('plugin_action_links_' . $plugin_base_slug, [$this, 'plugin_action_links']);
+		add_filter('plugin_action_links_' . $this->cc->info['plugin_file'], [$this, 'plugin_action_links']);
 
 		add_action('plugins_loaded', [$this->cc, 'plugins_loaded']);
 		add_action('sanitize_comment_cookies', [$this->cc, 'sanitize_comment_cookies']);
@@ -95,9 +92,9 @@ class BeRocket_Framework {
 	}
 
 	/**
-	 * Function remove settings from database
+	 * Remove settings from database
 	 */
-	public static function deactivation() {
+	public static function uninstall() {
 		if (!empty(static::$settings_name)) {
 			do_action('brfr_deactivate_' . static::$settings_name);
 			delete_option(static::$settings_name);
@@ -119,9 +116,9 @@ class BeRocket_Framework {
 	 */
 	public function init() {
 		wp_enqueue_script('jquery');
-		wp_register_style('font-awesome', plugins_url('berocket/css/font-awesome.min.css', $this->cc->info['plugin_file']));
-		wp_register_style('font-awesome-5', plugins_url('berocket/css/fontawesome5.min.css', $this->cc->info['plugin_file']));
-		wp_register_style('font-awesome-5-compat', plugins_url('berocket/css/fontawesome4-compat.min.css', $this->cc->info['plugin_file']));
+		wp_register_style('font-awesome', $this->cc->plugin_url() . 'berocket/css/font-awesome.min.css');
+		wp_register_style('font-awesome-5', $this->cc->plugin_url() . 'berocket/css/fontawesome5.min.css');
+		wp_register_style('font-awesome-5-compat', $this->cc->plugin_url() . 'berocket/css/fontawesome4-compat.min.css');
 
 		if (is_admin()) {
 			wp_enqueue_style('font-awesome');
@@ -154,9 +151,9 @@ class BeRocket_Framework {
 
 	public function enqueue_fontawesome($force = false) {
 		if (!wp_style_is('font-awesome-5-compat', 'registered')) {
-			wp_register_style('font-awesome', plugins_url('berocket/css/font-awesome.min.css', $this->cc->info['plugin_file']));
-			wp_register_style('font-awesome-5', plugins_url('berocket/css/fontawesome5.min.css', $this->cc->info['plugin_file']));
-			wp_register_style('font-awesome-5-compat', plugins_url('berocket/css/fontawesome4-compat.min.css', $this->cc->info['plugin_file']));
+			wp_register_style('font-awesome', $this->cc->plugin_url() . 'berocket/css/font-awesome.min.css');
+			wp_register_style('font-awesome-5', $this->cc->plugin_url() . 'berocket/css/fontawesome5.min.css');
+			wp_register_style('font-awesome-5-compat', $this->cc->plugin_url() . 'berocket/css/fontawesome4-compat.min.css');
 		}
 		$global_option = $this->get_global_option();
 		if (empty($global_option['fontawesome_frontend_disable'])) {

@@ -275,6 +275,13 @@ class BeRocket_products_label extends BeRocket_Framework {
 		add_action('wp_footer', [$this, 'page_load_script']);
 	}
 
+	/**
+	 * Returns the URL for the plugin's directory, with a trailing slash.
+	 */
+	public function plugin_url(): string {
+		return plugin_dir_url(__FILE__);
+	}
+
 	public function page_load_script() {
 		global $berocket_display_any_advanced_labels;
 		if (!empty($berocket_display_any_advanced_labels)) {
@@ -559,7 +566,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 	public function product_edit_tab() {
 		global $pagenow, $post;
 
-		wp_enqueue_script('berocket_products_label_admin', plugins_url('js/admin.js', __FILE__), ['jquery'], BeRocket_products_label_version);
+		wp_enqueue_script('berocket_products_label_admin', $this->plugin_url() . 'js/admin.js', ['jquery'], BeRocket_products_label_version);
 		wp_enqueue_script('berocket_framework_admin');
 		wp_enqueue_style('berocket_framework_admin_style');
 		wp_enqueue_script('berocket_widget-colorpicker');
@@ -843,7 +850,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 		$product_id = br_wc_get_product_id($product);
 		$show_label = wp_cache_get('WC_Product_' . $product_id, 'brapl_' . $label_id);
 		if ($show_label === false) {
-			$show_label = BeRocket_conditions_advanced_labels::check($label_data, 'berocket_advanced_label_editor', [
+			$show_label = BeRocket_conditions::check($label_data, 'berocket_advanced_label_editor', [
 				'product' => $product,
 				'product_id' => $product_id,
 				'product_post' => br_wc_get_product_post($product),

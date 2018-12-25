@@ -38,11 +38,13 @@ class BeRocket_conditions {
 		add_filter($hook_name . '_types', [$this, 'types']);
 		foreach ($conditions as $condition) {
 			if (isset($ready_conditions[$condition])) {
-				//CONDITIONS HTML
+				// CONDITIONS HTML
 				add_filter($hook_name . '_type_' . $ready_conditions[$condition]['type'], [get_class($this), $condition], 10, 3);
-				//CONDITIONS CHECK
+
+				// CONDITIONS CHECK
 				add_filter($hook_name . '_check_type_' . $ready_conditions[$condition]['type'], [get_class($this), $ready_conditions[$condition]['func']], 10, 3);
-				if (! empty($ready_conditions[$condition]['save'])) {
+
+				if (!empty($ready_conditions[$condition]['save'])) {
 					add_filter($hook_name . '_save_type_' . $ready_conditions[$condition]['type'], [get_class($this), $ready_conditions[$condition]['save']], 10, 3);
 				}
 			} else {
@@ -50,6 +52,7 @@ class BeRocket_conditions {
 			}
 		}
 	}
+
 	public function types($types) {
 		$ready_conditions = static::get_conditions();
 		foreach ($this->conditions as $condition) {
@@ -59,22 +62,34 @@ class BeRocket_conditions {
 		}
 		return $types;
 	}
-	public function build(&$value, $additional = []) {
-		if (! is_array($additional)) {
-			$additional = [];
+
+	public function build(&$value): string {
+		if (empty($this->hook_name)) {
+			return '';
 		}
-		$additional['hook_name'] = $this->hook_name;
-		return static::builder($this->option_name, $value, $additional);
-	}
-	public static function builder($name, &$value, $additional = []) {
-		if (! isset($value) || ! is_array($value)) {
+
+		$inst = BeRocket_products_label::getInstance();
+		wp_enqueue_script('apl-conditions-builder', $inst->plugin_url() . 'berocket/js/conditions-admin.js', ['jquery'], BeRocket_products_label_version, true);
+		wp_enqueue_style('apl-conditions-builder', $inst->plugin_url() . 'berocket/css/conditions-admin.css', [], BeRocket_products_label_version);
+
+		// $hook_name and $option_name are used in the template.
+		$hook_name = $this->hook_name;
+		$option_name = $this->option_name;
+
+		if (!isset($value) || !is_array($value)) {
 			$value = [];
 		}
+
 		ob_start();
-		include_once(plugin_dir_path(__DIR__) . "templates/conditions.php");
+		require_once(__DIR__ . '/../templates/conditions.php');
 		$html = ob_get_clean();
+		if ($html === false) {
+			$html = '';
+			error_log('could not ob_get_clean of templates/conditions.php');
+		}
 		return $html;
 	}
+
 	public static function check($conditions_data, $hook_name, $additional = []) {
 		if (! is_array($conditions_data) || count($conditions_data) == 0) {
 			$condition_status = true;
@@ -95,21 +110,22 @@ class BeRocket_conditions {
 		}
 		return $condition_status;
 	}
-	public static function save($conditions_data, $hook_name) {
-		if (! is_array($conditions_data) || count($conditions_data) == 0) {
+
+	public static function save($conditions_data, $hook_name): array {
+		if (!is_array($conditions_data)) {
 			$conditions_data = [];
-		} else {
-			foreach ($conditions_data as $conditions_id => $conditions) {
-				foreach ($conditions as $condition_id => $condition) {
-					$conditions_data[$conditions_id][$condition_id] = apply_filters($hook_name . '_save_type_' . $condition['type'], $condition);
-				}
+		}
+		foreach ($conditions_data as $conditions_id => $conditions) {
+			foreach ($conditions as $condition_id => $condition) {
+				$conditions_data[$conditions_id][$condition_id] = apply_filters($hook_name . '_save_type_' . $condition['type'], $condition);
 			}
 		}
 		return $conditions_data;
 	}
-	public static function get_conditions() {
+
+	public static function get_conditions(): array {
 		return [
-			//PRODUCTS
+			// PRODUCTS
 			'condition_product' => ['save' => 'save_condition_product', 'func' => 'check_condition_product', 'type' => 'product', 'name' => __('Product', 'BeRocket_domain')],
 			'condition_product_sale' => ['func' => 'check_condition_product_sale', 'type' => 'sale', 'name' => __('On Sale', 'BeRocket_domain')],
 			'condition_product_bestsellers' => ['func' => 'check_condition_product_bestsellers', 'type' => 'bestsellers', 'name' => __('Bestsellers', 'BeRocket_domain')],
@@ -126,17 +142,20 @@ class BeRocket_conditions {
 			'condition_product_shippingclass' => ['func' => 'check_condition_product_shippingclass', 'type' => 'shippingclass', 'name' => __('Shipping Class', 'BeRocket_domain')],
 			'condition_product_type' => ['func' => 'check_condition_product_type', 'type' => 'product_type', 'name' => __('Product Type', 'BeRocket_domain')],
 			'condition_product_rating' => ['func' => 'check_condition_product_rating', 'type' => 'product_rating', 'name' => __('Product Rating', 'BeRocket_domain')],
-			//PAGES
+
+			// PAGES
 			'condition_page_id' => ['func' => 'check_condition_page_id', 'type' => 'page_id', 'name' => __('Page ID', 'BeRocket_domain')],
 			'condition_page_woo_attribute' => ['func' => 'check_condition_page_woo_attribute', 'type' => 'woo_attribute', 'name' => __('Product Attribute', 'BeRocket_domain')],
 			'condition_page_woo_search' => ['func' => 'check_condition_page_woo_search', 'type' => 'woo_search', 'name' => __('Product Search', 'BeRocket_domain')],
 			'condition_page_woo_category' => ['func' => 'check_condition_page_woo_category', 'type' => 'woo_category', 'name' => __('Product Category', 'BeRocket_domain')],
 		];
 	}
-	public static function get_condition($condition) {
-		$conditions = static::get_conditions_product();
-		return ($conditions[$condition] ?? '');
-	}
+
+//	public static function get_condition($condition) {
+//		$conditions = static::get_conditions_product();
+//		return ($conditions[$condition] ?? '');
+//	}
+
 	public static function supcondition($name, $options, $extension = []) {
 		$equal = 'equal';
 		if (is_array($options) && isset($options['equal'])) {
@@ -159,6 +178,7 @@ class BeRocket_conditions {
 		$html .= '</select>';
 		return $html;
 	}
+
 	public static function supcondition_check($value1, $value2, $condition) {
 		$equal = 'equal';
 		if (is_array($condition) && isset($condition['equal'])) {
@@ -182,9 +202,9 @@ class BeRocket_conditions {
 		return $check;
 	}
 
-	//PRODUCT CONDITION
+	// PRODUCT CONDITION
 
-	//HTML FOR PRODUCT CONDITIONS IN ADMIN PANEL
+	// HTML FOR PRODUCT CONDITIONS IN ADMIN PANEL
 	public static function condition_product($html, $name, $options) {
 		$def_options = ['product' => []];
 		$options = array_merge($def_options, $options);
@@ -407,7 +427,7 @@ class BeRocket_conditions {
 		return $html;
 	}
 
-	//SAVE PRODUCT CONDITIONS
+	// SAVE PRODUCT CONDITIONS
 	public static function save_condition_product($condition) {
 		if (isset($condition['product']) && is_array($condition['product'])) {
 			$condition['additional_product'] = [];
@@ -415,7 +435,7 @@ class BeRocket_conditions {
 				$wc_product = wc_get_product($product);
 				if ($wc_product->get_type() == 'grouped') {
 					$children = $wc_product->get_children();
-					if (! is_array($children)) {
+					if (!is_array($children)) {
 						$children = [];
 					}
 					$condition['additional_product'] = array_merge($condition['additional_product'], $children);
@@ -425,7 +445,7 @@ class BeRocket_conditions {
 		return $condition;
 	}
 
-	//CHECK PRODUCT CONDITIONS
+	// CHECK PRODUCT CONDITIONS
 	public static function check_condition_product($show, $condition, $additional) {
 		if (isset($condition['product']) && is_array($condition['product'])) {
 			$show = in_array($additional['product_id'], $condition['product'], true);
@@ -433,7 +453,7 @@ class BeRocket_conditions {
 				$show = $show || in_array($additional['product_id'], $condition['additional_product'], true);
 			}
 			if ($condition['equal'] == 'not_equal') {
-				$show = ! $show;
+				$show = !$show;
 			}
 		}
 		return $show;
@@ -665,9 +685,10 @@ class BeRocket_conditions {
 		$show = $show && $backorder;
 		return $show;
 	}
-	//PAGE CONDITIONS
 
-	//HTML FOR PAGE CONDITIONS IN ADMIN PANEL
+	// PAGE CONDITIONS
+
+	// HTML FOR PAGE CONDITIONS IN ADMIN PANEL
 
 	public static function condition_page_id($html, $name, $options) {
 		$def_options = ['pages' => []];
@@ -796,7 +817,7 @@ class BeRocket_conditions {
 	public static function check_condition_page_woo_attribute($show, $condition, $additional) {
 		$show = (is_tax($condition['attribute'], $condition['values'][$condition['attribute']]));
 		if ($condition['equal'] == 'not_equal') {
-			$show = ! $show;
+			$show = !$show;
 		}
 		return $show;
 	}
@@ -810,19 +831,21 @@ class BeRocket_conditions {
 	}
 
 	public static function check_condition_page_woo_category($show, $condition, $additional) {
+		/** @var $wp_query WP_Query */
 		global $wp_query;
 		$show = false;
-		if (! empty($condition['category']) && ! is_array($condition['category'])) {
+		if (!empty($condition['category']) && ! is_array($condition['category'])) {
 			$condition['category'] = [$condition['category']];
 		}
 		if ($wp_query->is_tax) {
 			$queried_object = $wp_query->get_queried_object();
-			if (! empty($condition['category'])
-			&& is_array($condition['category'])
-			&& is_object($queried_object)
-			&& property_exists($queried_object, 'term_id')
-			&& property_exists($queried_object, 'taxonomy')
-			&& $queried_object->taxonomy == 'product_cat') {
+			if (!empty($condition['category'])
+				&& is_array($condition['category'])
+				&& is_object($queried_object)
+				&& property_exists($queried_object, 'term_id')
+				&& property_exists($queried_object, 'taxonomy')
+				&& $queried_object->taxonomy == 'product_cat'
+			) {
 				$show = in_array($queried_object->term_id, $condition['category'], true);
 				if (empty($show) && ! empty($condition['subcats'])) {
 					foreach ($condition['category'] as $category) {
@@ -835,7 +858,7 @@ class BeRocket_conditions {
 			}
 		}
 		if ($condition['equal'] == 'not_equal') {
-			$show = ! $show;
+			$show = !$show;
 		}
 		return $show;
 	}

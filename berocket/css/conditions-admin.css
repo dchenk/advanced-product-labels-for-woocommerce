@@ -1,0 +1,66 @@
+.br_conditions .br_html_condition {
+	margin-top: 40px;
+}
+.br_conditions .br_html_condition:first-child {
+	margin-top: 0;
+}
+.br_conditions .br_html_condition:before {
+	content: "OR";
+	display: block;
+	position: absolute;
+	top: -30px;
+	font-size: 30px;
+}
+.br_conditions .br_html_condition:first-child:before {
+	display: none;
+}
+.br_html_condition .br_cond_select {
+	margin-top: 40px;
+	position: relative;
+}
+.br_html_condition .br_cond_select:first-child {
+	margin-top: 0;
+}
+.br_html_condition .br_cond_select:before {
+	content: "AND";
+	display: block;
+	position: absolute;
+	top: -30px;
+	font-size: 30px;
+}
+.br_html_condition .br_cond_select:first-child:before {
+	display: none;
+}
+.br_html_condition .br_cond_one .br_cond_select:first-child .berocket_remove_condition {
+	display: none;
+}
+.br_html_condition {
+	border: 1px solid #999;
+	background-color: #fafafa;
+	padding: 0.5em;
+	margin-bottom: 1em;
+	position: relative;
+}
+.br_html_condition .br_remove_group {
+	position: absolute!important;
+	top:-10px;
+	right: -10px;
+}
+.br_cond_select {
+	padding-bottom: 1em;
+}
+.br_cond_select {
+	border: 1px solid #999;
+	padding: 0.5em;
+	margin-bottom: 0.5em;
+	background-color: #eee;
+}
+.br_framework_settings .button.berocket_remove_condition,
+.br_framework_settings .button.berocket_add_condition,
+.br_framework_settings .button.br_remove_group,
+.br_framework_settings .button.br_add_group {
+	padding: 0 10px;
+	margin: 0;
+	width: initial;
+	min-width: initial;
+}

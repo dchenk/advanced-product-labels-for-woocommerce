@@ -1,8 +1,5 @@
 <?php
 
-class BeRocket_conditions_advanced_labels extends BeRocket_conditions {
-}
-
 class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 
 	public $post_name = 'br_labels';
@@ -60,10 +57,13 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 	];
 
 	/**
-	 * @var BeRocket_conditions_advanced_labels
+	 * @var BeRocket_conditions
 	 */
 	public $conditions;
 
+	/**
+	 * @var BeRocket_advanced_labels_custom_post
+	 */
 	protected static $instance;
 
 	public function __construct() {
@@ -106,7 +106,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		$this->add_meta_box('description', __('Description', 'BeRocket_products_label_domain'), false, 'side');
 		$this->add_meta_box('preview', __('Preview', 'BeRocket_products_label_domain'), false, 'side');
 
-		$this->conditions = new BeRocket_conditions_advanced_labels($this->post_name . '[data]', $this->hook_name, [
+		$this->conditions = new BeRocket_conditions($this->post_name . '[data]', $this->hook_name, [
 			'condition_product',
 			'condition_product_category',
 			'condition_product_sale',
@@ -149,7 +149,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		wp_enqueue_script('berocket_tippy'); ?>
         <div class="berocket_label_preview_wrap">
             <div class="berocket_label_preview">
-                <img class="berocket_product_image" src="<?php echo plugin_dir_url(__FILE__) . '../images/labels.png'; ?>">
+                <img class="berocket_product_image" src="<?php echo BeRocket_products_label::getInstance()->plugin_url() . 'images/labels.png'; ?>">
             </div>
         </div>
         <style>
@@ -180,7 +180,8 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 	}
 
 	public function settings(WP_Post $post) {
-		wp_enqueue_script('berocket_products_label_admin', plugins_url('../js/admin.js', __FILE__), ['jquery'], BeRocket_products_label_version);
+		$inst = BeRocket_products_label::getInstance();
+		wp_enqueue_script('berocket_products_label_admin', $inst->plugin_url() . 'js/admin.js', ['jquery'], BeRocket_products_label_version);
 		wp_enqueue_script('berocket_framework_admin');
 		wp_enqueue_style('berocket_framework_admin_style');
 		wp_enqueue_script('berocket_widget-colorpicker');

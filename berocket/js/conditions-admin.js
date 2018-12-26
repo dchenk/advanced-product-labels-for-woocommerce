@@ -13,12 +13,12 @@
 		elem.dataset.current = "1";
 		elem.innerHTML = html;
 		condsList.appendChild(elem);
+		elem.insertAdjacentHTML("beforeend", window.condButtons);
 		setCondType(elem, data.type);
-		elem.querySelector("select.br_cond_type").addEventListener("change", setCondType.bind(null, elem));
+		const selectElem = elem.querySelector("select.br_cond_type");
+		selectElem.addEventListener("change", setCondType.bind(selectElem, elem));
 		elem.querySelector(".berocket_add_condition").addEventListener("click", addCondition.bind(null, elem));
-		elem.querySelector(".br_remove_group").addEventListener("click", function() {
-			elem.remove();
-		});
+		elem.querySelector(".br_remove_group").addEventListener("click", elem.remove);
 	}
 
 	// Add a condition group.
@@ -28,23 +28,26 @@
 	});
 
 	function addCondition(groupElement) {
-		const id = parent.parents(".br_html_condition").data("id");
+		const id = groupElement.data("id");
 		const position = parent.data("current");
-		let tmpl = window.condTypeTemplates[jQuery(this).val()];
-		if (!tmpl) {
-			return;
-		}
-		tmpl = tmpl.replace(/%id%/g, id).
-		replace(/%current_pos%/g, position);
+		const tmpl = window.condTypeTemplates["product"].replace(/%id%/g, id).replace(/%current_pos%/g, position);
 		parent.find(".apl-cond-options").html(tmpl);
 	}
 
-	function setCondType(groupElement, newType) {
-		let position = Number(parent.data("current"));
+	function setCondType(selectElem, groupElement) {
+		// Remove the wrapper containing the condition options.
+		groupElement.querySelector(".br_cond").remove();
+
+		const parentID = groupElement.dataset.id;
+		let position = Number(groupElement.dataset.current);
 		position++;
-		parent.data("current", position);
+		selectElem.data("current", position);
+		const tmpl = window.condTypeTemplates[selectElem.value];
+		if (!tmpl) {
+			return;
+		}
 		let html = window.condSelectTemplate.
-		replace(/%id%/g, position).
+		replace(/%id%/g, parentID).
 		replace("DATA_CURRENT", position);
 		jQuery(this).before(html);
 		jQuery(this).prev().find(".br_cond_type").trigger("change");
@@ -53,15 +56,20 @@
 	// Specify the type of a condition.
 	// Register the listener on existing conditions on page load, and all other listeners are attached when created.
 	jQuery("select.br_cond_type").on("change", function() {
-		const parent = jQuery(this).parents(".apl-condition");
-		parent.find(".br_cond").remove();
-		addCondition(parent);
+		setCondType.call(this, jQuery(this).parents(".apl-condition"));
+	});
+
+	jQuery(".berocket_add_condition").on("click", function() {
+		addCondition(jQuery(this).parents(".br_html_condition"));
 	});
 
 	jQuery(document).on("click", ".berocket_remove_condition", function() {
 		jQuery(this).parents(".apl-condition").remove();
 	});
 
+	jQuery(".br_remove_group").on("click", function() {
+		jQuery(this).parents(".br_html_condition").remove();
+	});
 
 	jQuery(document).on("change", ".br_cond_attr_select", function() {
 		const $attr_block = jQuery(this).parents(".br_cond_attribute, .br_cond_woo_attribute");

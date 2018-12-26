@@ -90,17 +90,14 @@ class BeRocket_conditions {
 			<span class="button br_remove_group"><i class="fa fa-minus"></i></span>';
 
 		$condition_types = apply_filters($this->hook_name . '_types', []);
-
-		$types = [];
-		$typesData = [];
-		foreach ($condition_types as $type_slug => $type_name) {
-
+		$typeTemplates = [];
+		foreach ($condition_types as $typeSlug => $typeName) {
+			$typeTemplates[$typeSlug] = $this->conditionTemplate($condition_types, $typeSlug);
 		} ?>
 		<script>
 			window.largestCondGroupID = <?php echo $largestID; ?>;
-			window.conditionTemplate = <?php echo json_encode($this->conditionTemplate($types)); ?>
+			window.condTypeTemplates = <?php echo json_encode($typeTemplates); ?>
 			window.condButtons = <?php echo json_encode($conditionGroupButtons); ?>;
-			window.condTypeTemplates = <?php echo json_encode($types); ?>;
 		</script>
 		<div id="apl-conditions-list">
 			<?php
@@ -111,12 +108,12 @@ class BeRocket_conditions {
 					if ($currentPosition > $lastCondPosition) {
 						$lastCondPosition = $currentPosition;
 					}
-					echo $this->conditionTemplate($types, $id, $currentPosition, $condition);
+					echo $this->conditionTemplate($condition_types, $condition['type'] ?? '', $id, $currentPosition, $condition);
 				}
+				echo $conditionGroupButtons;
 				echo '</div>';
 			} ?>
 		</div>
-		<?php echo $conditionGroupButtons; ?>
 		<span class="button" id="apl-add-cond-group"><i class="fa fa-plus"></i></span>
 		<?php
 	}
@@ -894,14 +891,12 @@ class BeRocket_conditions {
 		return $show;
 	}
 
-	private function conditionTemplate(array $condition_types, int $groupID = 0, int $currentPosition = 0, array $condition = []): string {
-		// $current indicates the position of the condition within its group and is set only if the condition has data.
-		$current = !empty($condition) ? " data-current=\"${currentPosition}\"" : '';
-		return '<div class="apl-condition"' . $current . '">' .
-				$this->condSelectTemplate($condition_types, $condition) .
+	private function conditionTemplate(array $condition_types, string $type, int $groupID = 0, int $currentPosition = 0, array $condition = []): string {
+		return '<div class="apl-condition" data-current=' . $currentPosition . '">' .
+				$this->condSelectTemplate($condition_types, $type) .
 				'<span class="button berocket_remove_condition"><i class="fa fa-minus"></i></span>
 				<div class="apl-cond-options"></div>' .
-				$this->condInputHTML($condition['type'], $groupID, $currentPosition, $condition) .
+				$this->condInputHTML($type, $groupID, $currentPosition, $condition) .
 			'</div>';
 	}
 
@@ -931,12 +926,12 @@ class BeRocket_conditions {
 	/**
 	 * construct a <select> field, and enter the data if it's given in the $condition argument.
 	 * @param array $condition_types The types of conditions supported
-	 * @param array $condition Data to use to complete the part of the form
+	 * @param string $type The type of the slug currently being rendered, left blank to not mark a selected option
 	 */
-	private function condSelectTemplate(array $condition_types, array $condition = []): string {
+	private function condSelectTemplate(array $condition_types, string $type = ''): string {
 		$options = '';
 		foreach ($condition_types as $type_slug => $type_name) {
-			$options .= '<option value="' . $type_slug . '"' . selected(($condition['type'] ?? false) === $type_slug, true, false) . '>' .
+			$options .= '<option value="' . $type_slug . '"' . selected($type === $type_slug, true, false) . '>' .
 				$type_name .
 				'</option>';
 		}

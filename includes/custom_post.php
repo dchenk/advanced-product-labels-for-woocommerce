@@ -132,7 +132,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		if (empty($options['data'])) {
 			$options['data'] = [];
 		}
-		echo $this->conditions->build($options['data']);
+		$this->conditions->build($options['data']);
 	}
 
 	public function description($post) {

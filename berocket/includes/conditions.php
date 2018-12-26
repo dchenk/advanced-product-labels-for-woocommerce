@@ -82,8 +82,6 @@ class BeRocket_conditions {
 			$value = [];
 		}
 
-		$currentData = json_encode($value);
-
 		$condition_types = apply_filters($this->hook_name . '_types', []);
 
 		$types = [];
@@ -99,8 +97,9 @@ class BeRocket_conditions {
 
 		ob_start(); ?>
 		<script>
+			window.condOptionName = <?php echo json_encode($this->option_name); ?>;
 			window.largestCondID = <?php echo $largestID; ?>;
-			window.currentCondData = <?php echo $currentData; ?>;
+			window.currentCondData = <?php echo json_encode($value); ?>;
 			window.condSelectTemplate = `
 				<div class="br_cond_select" data-current="DATA_CURRENT">
 					<span>
@@ -122,9 +121,9 @@ class BeRocket_conditions {
 				</div>`;
 			window.condTypeTemplates = <?php echo json_encode($types); ?>;
 		</script>
-		<div class="br_conditions">
-			<span class="button" id="apl_add_cond_group"><i class="fa fa-plus"></i></span>
-		</div><?php
+		<div id="apl-conditions-list"></div>
+		<span class="button" id="apl_add_cond_group"><i class="fa fa-plus"></i></span>
+		<?php
 
 		$html = ob_get_clean();
 		if ($html === false) {

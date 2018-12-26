@@ -1,17 +1,17 @@
-.br_conditions .br_html_condition {
+#apl-conditions-list .br_html_condition {
 	margin-top: 40px;
 }
-.br_conditions .br_html_condition:first-child {
+#apl-conditions-list .br_html_condition:first-child {
 	margin-top: 0;
 }
-.br_conditions .br_html_condition:before {
+#apl-conditions-list .br_html_condition:before {
 	content: "OR";
 	display: block;
 	position: absolute;
 	top: -30px;
 	font-size: 30px;
 }
-.br_conditions .br_html_condition:first-child:before {
+#apl-conditions-list .br_html_condition:first-child:before {
 	display: none;
 }
 .br_html_condition .br_cond_select {

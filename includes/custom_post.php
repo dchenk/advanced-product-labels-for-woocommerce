@@ -68,23 +68,23 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 
 	public function __construct() {
 		$this->post_settings = [
-			'label' => __('Product Labels', 'BeRocket_products_label_domain'),
+			'label' => __('Product Labels', 'apl_products_label_domain'),
 			'labels' => [
-				'name'               => __('Labels', 'BeRocket_products_label_domain'),
-				'singular_name'      => __('Label', 'BeRocket_products_label_domain'),
-				'menu_name'          => __('Product Labels', 'BeRocket_products_label_domain'),
-				'add_new'            => __('Add Label', 'BeRocket_products_label_domain'),
-				'add_new_item'       => __('Add New Label', 'BeRocket_products_label_domain'),
-				'edit'               => __('Edit', 'BeRocket_products_label_domain'),
-				'edit_item'          => __('Edit Label', 'BeRocket_products_label_domain'),
-				'new_item'           => __('New Label', 'BeRocket_products_label_domain'),
-				'view'               => __('View Labels', 'BeRocket_products_label_domain'),
-				'view_item'          => __('View Label', 'BeRocket_products_label_domain'),
-				'search_items'       => __('Search Product Labels', 'BeRocket_products_label_domain'),
-				'not_found'          => __('No Labels found', 'BeRocket_products_label_domain'),
-				'not_found_in_trash' => __('No Labels found in trash', 'BeRocket_products_label_domain'),
+				'name'               => __('Labels', 'apl_products_label_domain'),
+				'singular_name'      => __('Label', 'apl_products_label_domain'),
+				'menu_name'          => __('Product Labels', 'apl_products_label_domain'),
+				'add_new'            => __('Add Label', 'apl_products_label_domain'),
+				'add_new_item'       => __('Add New Label', 'apl_products_label_domain'),
+				'edit'               => __('Edit', 'apl_products_label_domain'),
+				'edit_item'          => __('Edit Label', 'apl_products_label_domain'),
+				'new_item'           => __('New Label', 'apl_products_label_domain'),
+				'view'               => __('View Labels', 'apl_products_label_domain'),
+				'view_item'          => __('View Label', 'apl_products_label_domain'),
+				'search_items'       => __('Search Product Labels', 'apl_products_label_domain'),
+				'not_found'          => __('No Labels found', 'apl_products_label_domain'),
+				'not_found_in_trash' => __('No Labels found in trash', 'apl_products_label_domain'),
 			],
-			'description'         => __('Add and manage product labels.', 'BeRocket_products_label_domain'),
+			'description'         => __('Add and manage product labels.', 'apl_products_label_domain'),
 			'public'              => true,
 			'show_ui'             => true,
 			'map_meta_cap'        => true,
@@ -101,10 +101,10 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 
 		parent::__construct();
 
-		$this->add_meta_box('conditions', __('Conditions', 'BeRocket_products_label_domain'));
-		$this->add_meta_box('settings', __('Advanced Labels Settings', 'BeRocket_products_label_domain'));
-		$this->add_meta_box('description', __('Description', 'BeRocket_products_label_domain'), false, 'side');
-		$this->add_meta_box('preview', __('Preview', 'BeRocket_products_label_domain'), false, 'side');
+		$this->add_meta_box('conditions', __('Conditions', 'apl_products_label_domain'));
+		$this->add_meta_box('settings', __('Advanced Labels Settings', 'apl_products_label_domain'));
+		$this->add_meta_box('description', __('Description', 'apl_products_label_domain'), false, 'side');
+		$this->add_meta_box('preview', __('Preview', 'apl_products_label_domain'), false, 'side');
 
 		$this->conditions = new BeRocket_conditions($this->post_name . '[data]', $this->hook_name, [
 			'condition_product',
@@ -137,10 +137,10 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 
 	public function description($post) {
 		?>
-        <p><?php _e('Label without any condition will be displayed on all products', 'BeRocket_products_label_domain'); ?></p>
-        <p><?php _e('Connection between condition can be AND and OR', 'BeRocket_products_label_domain'); ?></p>
-        <p><strong>AND</strong> <?php _e('uses between condition in one section', 'BeRocket_products_label_domain'); ?></p>
-        <p><strong>OR</strong> <?php _e('uses between different sections with conditions', 'BeRocket_products_label_domain'); ?></p>
+        <p><?php _e('Label without any condition will be displayed on all products', 'apl_products_label_domain'); ?></p>
+        <p><?php _e('Connection between condition can be AND and OR', 'apl_products_label_domain'); ?></p>
+        <p><strong>AND</strong> <?php _e('uses between condition in one section', 'apl_products_label_domain'); ?></p>
+        <p><strong>OR</strong> <?php _e('uses between different sections with conditions', 'apl_products_label_domain'); ?></p>
         <?php
 	}
 
@@ -213,36 +213,36 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					'content_type' => [
 						"type"     => "selectbox",
 						"options"  => [
-							['value' => 'text', 'text' => __('Text', 'BeRocket_products_label_domain')],
-							['value' => 'sale_p', 'text' => __('Discount percentage', 'BeRocket_products_label_domain')],
-							['value' => 'price', 'text' => __('Price', 'BeRocket_products_label_domain')],
-							['value' => 'stock_status', 'text' => __('Stock Status', 'BeRocket_products_label_domain')],
+							['value' => 'text', 'text' => __('Text', 'apl_products_label_domain')],
+							['value' => 'sale_p', 'text' => __('Discount percentage', 'apl_products_label_domain')],
+							['value' => 'price', 'text' => __('Price', 'apl_products_label_domain')],
+							['value' => 'stock_status', 'text' => __('Stock Status', 'apl_products_label_domain')],
 						],
 						"class"    => 'berocket_label_content_type',
-						"label"    => __('Content type', 'BeRocket_products_label_domain'),
+						"label"    => __('Content type', 'apl_products_label_domain'),
 						"name"     => "content_type",
 						"value"    => $options['content_type'],
 					],
 					'text' => [
 						"type"     => "text",
-						"label"    => __('Text', 'BeRocket_products_label_domain'),
+						"label"    => __('Text', 'apl_products_label_domain'),
 						"class"    => 'berocket_label_ berocket_label_text',
 						"name"     => "text",
 						"value"    => $options['text'],
 					],
 					'text_before' => [
-						"label"    => __('Text Before', 'BeRocket_products_label_domain'),
+						"label"    => __('Text Before', 'apl_products_label_domain'),
 						"items"    => [
 							'text_before' => [
 								"type"     => "text",
 								"class"    => 'berocket_label_ berocket_label_sale_p',
-								"label_be_for" => __('Text', 'BeRocket_products_label_domain'),
+								"label_be_for" => __('Text', 'apl_products_label_domain'),
 								"name"     => "text_before",
 								"value"    => $options['text_before'],
 							],
 							"text_before_nl" =>[
 								"type"     => "checkbox",
-								"label_for" => __('New Line', 'BeRocket_products_label_domain'),
+								"label_for" => __('New Line', 'apl_products_label_domain'),
 								"name"     => "text_before_nl",
 								"value"    => "1",
 								"selected" => false,
@@ -250,18 +250,18 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 						],
 					],
 					'text_after' => [
-						"label"    => __('Text After', 'BeRocket_products_label_domain'),
+						"label"    => __('Text After', 'apl_products_label_domain'),
 						"items"    => [
 							'text_after' => [
 								"type"     => "text",
 								"class"    => 'berocket_label_ berocket_label_sale_p',
-								"label_be_for" => __('Text', 'BeRocket_products_label_domain'),
+								"label_be_for" => __('Text', 'apl_products_label_domain'),
 								"name"     => "text_after",
 								"value"    => $options['text_after'],
 							],
 							"text_before_nl" =>[
 								"type"     => "checkbox",
-								"label_for" => __('New Line', 'BeRocket_products_label_domain'),
+								"label_for" => __('New Line', 'apl_products_label_domain'),
 								"name"     => "text_after_nl",
 								"value"    => "1",
 								"selected" => false,
@@ -270,7 +270,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 					'discount_minus' => [
 						"type"     => "checkbox",
-						"label"    => __('Use minus symbol', 'BeRocket_products_label_domain'),
+						"label"    => __('Use minus symbol', 'apl_products_label_domain'),
 						"class"    => 'berocket_label_ berocket_label_sale_p',
 						"name"     => "discount_minus",
 						"value"    => "1",
@@ -280,13 +280,13 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 				'Style'     => [
 					/*'templates' => array(
 						"section"  => "templates",
-						"label"    => __('Templates', 'BeRocket_products_label_domain'),
+						"label"    => __('Templates', 'apl_products_label_domain'),
 						"name"     => "css_template",
 						"value"    => $options['template'],
 					),*/
 					'color_use' => [
 						"type"     => "checkbox",
-						"label"    => __('Use background color', 'BeRocket_products_label_domain'),
+						"label"    => __('Use background color', 'apl_products_label_domain'),
 						"class"    => 'br_label_backcolor_use br_js_change',
 						"name"     => "color_use",
 						"value"    => "1",
@@ -295,7 +295,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 					'color' => [
 						"type"     => "color",
-						"label"    => __('Background color', 'BeRocket_products_label_domain'),
+						"label"    => __('Background color', 'apl_products_label_domain'),
 						"name"     => "color",
 						"class"    => 'br_label_backcolor br_js_change',
 						"extra"    => ' data-for=".br_alabel > span" data-style="background-color" data-ext=""',
@@ -303,7 +303,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 					'font_color' => [
 						"type"     => "color",
-						"label"    => __('Font color', 'BeRocket_products_label_domain'),
+						"label"    => __('Font color', 'apl_products_label_domain'),
 						"name"     => "font_color",
 						"class"    => 'berocket_label_ berocket_label_text berocket_label_sale_end berocket_label_sale_p br_js_change',
 						"extra"    => ' data-for=".br_alabel > span" data-style="color" data-ext=""',
@@ -311,7 +311,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 					'border_radius' => [
 						"type"     => "text",
-						"label"    => __('Border radius', 'BeRocket_products_label_domain'),
+						"label"    => __('Border radius', 'apl_products_label_domain'),
 						"name"     => "border_radius",
 						"class"    => "br_js_change",
 						"extra"    => ' data-for=".br_alabel > span" data-style="border-radius" data-ext="px" data-notext="px,em,%"',
@@ -319,7 +319,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 					'line_height' => [
 						"type"     => "number",
-						"label"    => __('Line height', 'BeRocket_products_label_domain'),
+						"label"    => __('Line height', 'apl_products_label_domain'),
 						"name"     => "line_height",
 						"class"    => "br_js_change",
 						"extra"    => ' min="0" max="400" data-for=".br_alabel > span" data-style="line-height" data-ext="px"',
@@ -327,7 +327,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 					'image_height' => [
 						"type"     => "number",
-						"label"    => __('Height', 'BeRocket_products_label_domain'),
+						"label"    => __('Height', 'apl_products_label_domain'),
 						"name"     => "image_height",
 						"class"    => "br_js_change",
 						"extra"    => ' data-for=".br_alabel > span" data-style="height" data-ext="px"',
@@ -335,7 +335,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 					'image_width' => [
 						"type"     => "number",
-						"label"    => __('Width', 'BeRocket_products_label_domain'),
+						"label"    => __('Width', 'apl_products_label_domain'),
 						"name"     => "image_width",
 						"class"    => "br_js_change",
 						"extra"    => ' data-for=".br_alabel > span" data-style="width" data-ext="px"',
@@ -346,17 +346,17 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					'type' => [
 						"type"     => "selectbox",
 						"options"  => [
-							['value' => 'label', 'text' => __('Label', 'BeRocket_products_label_domain')],
-							['value' => 'image', 'text' => __('On image', 'BeRocket_products_label_domain')],
+							['value' => 'label', 'text' => __('Label', 'apl_products_label_domain')],
+							['value' => 'image', 'text' => __('On image', 'apl_products_label_domain')],
 						],
 						"class"    => 'berocket_label_type_select',
-						"label"    => __('Type', 'BeRocket_products_label_domain'),
+						"label"    => __('Type', 'apl_products_label_domain'),
 						"name"     => "type",
 						"value"    => $options['type'],
 					],
 					'padding_top' => [
 						"type"     => "number",
-						"label"    => __('Padding from top', 'BeRocket_products_label_domain'),
+						"label"    => __('Padding from top', 'apl_products_label_domain'),
 						"class"    => 'berocket_label_type_ berocket_label_type_image br_js_change',
 						"name"     => "padding_top",
 						"extra"    => ' data-for=".br_alabel" data-style="top" data-ext="px"',
@@ -364,7 +364,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 					'padding_horizontal' => [
 						"type"     => "number",
-						"label"    => '<span class="pos__ pos__left">' . __('Padding from left: ', 'BeRocket_products_label_domain') . '</span><span class="pos__ pos__right">' . __('Padding from right: ', 'BeRocket_products_label_domain') . '</span>',
+						"label"    => '<span class="pos__ pos__left">' . __('Padding from left: ', 'apl_products_label_domain') . '</span><span class="pos__ pos__right">' . __('Padding from right: ', 'apl_products_label_domain') . '</span>',
 						"class"    => 'berocket_label_type_ berocket_label_type_image pos_label_ pos_label_right pos_label_left br_js_change',
 						"name"     => "padding_horizontal",
 						"extra"    => ' data-for=".br_alabel" data-from=".pos_label" data-ext="px"',
@@ -373,19 +373,19 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					'position' => [
 						"type"     => "selectbox",
 						"options"  => [
-							['value' => 'left', 'text' => __('Left', 'BeRocket_products_label_domain')],
-							['value' => 'center', 'text' => __('Center', 'BeRocket_products_label_domain')],
-							['value' => 'right', 'text' => __('Right', 'BeRocket_products_label_domain')],
+							['value' => 'left', 'text' => __('Left', 'apl_products_label_domain')],
+							['value' => 'center', 'text' => __('Center', 'apl_products_label_domain')],
+							['value' => 'right', 'text' => __('Right', 'apl_products_label_domain')],
 						],
 						"class"    => 'pos_label',
-						"label"    => __('Position', 'BeRocket_products_label_domain'),
+						"label"    => __('Position', 'apl_products_label_domain'),
 						"name"     => "position",
 						"value"    => $options['position'],
 					],
 				],
 				'Tooltip'   => [
 					'tooltip_content' => [
-						'label'    => __('Content', 'BeRocket_products_label_domain'),
+						'label'    => __('Content', 'apl_products_label_domain'),
 						"type"     => "textarea",
 						"class"    => "berocket_html_tooltip_content",
 						"name"     => "tooltip_content",
@@ -394,36 +394,36 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					'tooltip_theme' => [
 						"type"     => "selectbox",
 						"options"  => [
-							['value' => 'dark', 'text' => __('Dark', 'BeRocket_products_label_domain')],
-							['value' => 'light', 'text' => __('Light', 'BeRocket_products_label_domain')],
-							['value' => 'translucent', 'text' => __('Translucent', 'BeRocket_products_label_domain')],
+							['value' => 'dark', 'text' => __('Dark', 'apl_products_label_domain')],
+							['value' => 'light', 'text' => __('Light', 'apl_products_label_domain')],
+							['value' => 'translucent', 'text' => __('Translucent', 'apl_products_label_domain')],
 						],
-						"label"    => __('Style', 'BeRocket_products_label_domain'),
+						"label"    => __('Style', 'apl_products_label_domain'),
 						"name"     => "tooltip_theme",
 						"value"    => $options['tooltip_theme'],
 					],
 					'tooltip_position' => [
 						"type"     => "selectbox",
 						"options"  => [
-							['value' => 'top', 'text' => __('Top', 'BeRocket_products_label_domain')],
-							['value' => 'bottom', 'text' => __('Bottom', 'BeRocket_products_label_domain')],
-							['value' => 'left', 'text' => __('Left', 'BeRocket_products_label_domain')],
-							['value' => 'right', 'text' => __('Right', 'BeRocket_products_label_domain')],
+							['value' => 'top', 'text' => __('Top', 'apl_products_label_domain')],
+							['value' => 'bottom', 'text' => __('Bottom', 'apl_products_label_domain')],
+							['value' => 'left', 'text' => __('Left', 'apl_products_label_domain')],
+							['value' => 'right', 'text' => __('Right', 'apl_products_label_domain')],
 						],
-						"label"    => __('Position', 'BeRocket_products_label_domain'),
+						"label"    => __('Position', 'apl_products_label_domain'),
 						"name"     => "tooltip_position",
 						"value"    => $options['tooltip_position'],
 					],
 					'tooltip_open_delay' => [
 						"type"     => "number",
-						"label"    => __('Open delay', 'BeRocket_products_label_domain'),
+						"label"    => __('Open delay', 'apl_products_label_domain'),
 						"name"     => "tooltip_open_delay",
 						"extra"    => 'min="0"',
 						"value"    => $options['tooltip_open_delay'],
 					],
 					'tooltip_close_delay' => [
 						"type"     => "number",
-						"label"    => __('Close delay', 'BeRocket_products_label_domain'),
+						"label"    => __('Close delay', 'apl_products_label_domain'),
 						"name"     => "tooltip_close_delay",
 						"extra"    => 'min="0"',
 						"value"    => $options['tooltip_close_delay'],
@@ -431,28 +431,28 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					'tooltip_open_on' => [
 						"type"     => "selectbox",
 						"options"  => [
-							['value' => 'mouseenter', 'text' => __('Hover', 'BeRocket_products_label_domain')],
-							['value' => 'click', 'text' => __('Click', 'BeRocket_products_label_domain')],
+							['value' => 'mouseenter', 'text' => __('Hover', 'apl_products_label_domain')],
+							['value' => 'click', 'text' => __('Click', 'apl_products_label_domain')],
 						],
-						"label"    => __('Open on', 'BeRocket_products_label_domain'),
+						"label"    => __('Open on', 'apl_products_label_domain'),
 						"name"     => "tooltip_open_on",
 						"value"    => $options['tooltip_open_on'],
 					],
 					'tooltip_close_on_click' => [
 						"type"     => "checkbox",
-						"label"    => __('Close on click everywhere', 'BeRocket_products_label_domain'),
+						"label"    => __('Close on click everywhere', 'apl_products_label_domain'),
 						"name"     => "tooltip_close_on_click",
 						"value"    => '1',
 					],
 					'tooltip_use_arrow' => [
 						"type"     => "checkbox",
-						"label"    => __('Use arrow', 'BeRocket_products_label_domain'),
+						"label"    => __('Use arrow', 'apl_products_label_domain'),
 						"name"     => "tooltip_use_arrow",
 						"value"    => '1',
 					],
 					'tooltip_max_width' => [
 						"type"     => "number",
-						"label"    => __('Max width', 'BeRocket_products_label_domain'),
+						"label"    => __('Max width', 'apl_products_label_domain'),
 						"name"     => "tooltip_max_width",
 						"extra"    => 'min="0"',
 						"value"    => $options['tooltip_max_width'],
@@ -461,85 +461,85 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 				'Custom CSS' => [
 					'div_custom_class' => [
 						"type"     => "text",
-						"label"    => __('&lt;div&gt; block custom class', 'BeRocket_products_label_domain'),
+						"label"    => __('&lt;div&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "div_custom_class",
 						"value"    => $options['div_custom_class'],
 					],
 					'div_custom_css' => [
 						"type"     => "textarea",
-						"label"    => __('&lt;div&gt; block custom CSS', 'BeRocket_products_label_domain'),
+						"label"    => __('&lt;div&gt; block custom CSS', 'apl_products_label_domain'),
 						"name"     => "div_custom_css",
 						"value"    => $options['div_custom_css'],
 					],
 					'span_custom_class' => [
 						"type"     => "text",
-						"label"    => __('&lt;span&gt; block custom class', 'BeRocket_products_label_domain'),
+						"label"    => __('&lt;span&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "span_custom_class",
 						"value"    => $options['span_custom_class'],
 					],
 					'span_custom_css' => [
 						"type"     => "textarea",
-						"label"    => __('&lt;span&gt; block custom CSS', 'BeRocket_products_label_domain'),
+						"label"    => __('&lt;span&gt; block custom CSS', 'apl_products_label_domain'),
 						"name"     => "span_custom_css",
 						"value"    => $options['span_custom_css'],
 					],
 					'b_custom_class' => [
 						"type"     => "text",
-						"label"    => __('&lt;b&gt; block custom class', 'BeRocket_products_label_domain'),
+						"label"    => __('&lt;b&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "b_custom_class",
 						"value"    => $options['b_custom_class'],
 					],
 					'b_custom_css' => [
 						"type"     => "textarea",
-						"label"    => __('&lt;b&gt; block custom CSS', 'BeRocket_products_label_domain'),
+						"label"    => __('&lt;b&gt; block custom CSS', 'apl_products_label_domain'),
 						"name"     => "b_custom_css",
 						"value"    => $options['b_custom_css'],
 					],
 					'i1_custom_class' => [
 						"type"     => "text",
-						"label"    => __('1) &lt;i&gt; block custom class', 'BeRocket_products_label_domain'),
+						"label"    => __('1) &lt;i&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "i1_custom_class",
 						"value"    => $options['i1_custom_class'],
 					],
 					'i1_custom_css' => [
 						"type"     => "textarea",
-						"label"    => __('1) &lt;i&gt; block custom CSS', 'BeRocket_products_label_domain'),
+						"label"    => __('1) &lt;i&gt; block custom CSS', 'apl_products_label_domain'),
 						"name"     => "i1_custom_css",
 						"value"    => $options['i1_custom_css'],
 					],
 					'i2_custom_class' => [
 						"type"     => "text",
-						"label"    => __('2) &lt;i&gt; block custom class', 'BeRocket_products_label_domain'),
+						"label"    => __('2) &lt;i&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "i2_custom_class",
 						"value"    => $options['i2_custom_class'],
 					],
 					'i2_custom_css' => [
 						"type"     => "textarea",
-						"label"    => __('2) &lt;i&gt; block custom CSS', 'BeRocket_products_label_domain'),
+						"label"    => __('2) &lt;i&gt; block custom CSS', 'apl_products_label_domain'),
 						"name"     => "i2_custom_css",
 						"value"    => $options['i2_custom_css'],
 					],
 					'i3_custom_class' => [
 						"type"     => "text",
-						"label"    => __('3) &lt;i&gt; block custom class', 'BeRocket_products_label_domain'),
+						"label"    => __('3) &lt;i&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "i3_custom_class",
 						"value"    => $options['i3_custom_class'],
 					],
 					'i3_custom_css' => [
 						"type"     => "textarea",
-						"label"    => __('3) &lt;i&gt; block custom CSS', 'BeRocket_products_label_domain'),
+						"label"    => __('3) &lt;i&gt; block custom CSS', 'apl_products_label_domain'),
 						"name"     => "i3_custom_css",
 						"value"    => $options['i3_custom_css'],
 					],
 					'i4_custom_class' => [
 						"type"     => "text",
-						"label"    => __('4) &lt;i&gt; block custom class', 'BeRocket_products_label_domain'),
+						"label"    => __('4) &lt;i&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "i4_custom_class",
 						"value"    => $options['i4_custom_class'],
 					],
 					'i4_custom_css' => [
 						"type"     => "textarea",
-						"label"    => __('4) &lt;i&gt; block custom CSS', 'BeRocket_products_label_domain'),
+						"label"    => __('4) &lt;i&gt; block custom CSS', 'apl_products_label_domain'),
 						"name"     => "i4_custom_css",
 						"value"    => $options['i4_custom_css'],
 					],
@@ -582,8 +582,8 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 
 	public function manage_edit_columns($columns) {
 		unset($columns['date']);
-		$columns["products"] = __("Label text", 'BeRocket_products_label_domain');
-		$columns["data"] = __("Position", 'BeRocket_products_label_domain');
+		$columns["products"] = __("Label text", 'apl_products_label_domain');
+		$columns["data"] = __("Position", 'apl_products_label_domain');
 		return $columns;
 	}
 
@@ -600,13 +600,13 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 				$text = $label_type['text'];
 			}
 			if ($label_type['content_type'] == 'sale_p') {
-				$text = __('Discount percentage', 'BeRocket_products_label_domain');
+				$text = __('Discount percentage', 'apl_products_label_domain');
 			}
 			echo apply_filters('berocket_labels_products_column_text', $text, $label_type);
 			break;
 		case 'data':
-			$position = ['left' => __('Left', 'BeRocket_products_label_domain'), 'center' => __('Center', 'BeRocket_products_label_domain'), 'right' => __('Right', 'BeRocket_products_label_domain')];
-			$type = ['image' => __('On image', 'BeRocket_products_label_domain'), 'label' => __('Label', 'BeRocket_products_label_domain')];
+			$position = ['left' => __('Left', 'apl_products_label_domain'), 'center' => __('Center', 'apl_products_label_domain'), 'right' => __('Right', 'apl_products_label_domain')];
+			$type = ['image' => __('On image', 'apl_products_label_domain'), 'label' => __('Label', 'apl_products_label_domain')];
 			if (isset($label_type['position'], $label_type['type'])) {
 				echo $type[$label_type['type']] . ' ( ' . $position[$label_type['position']] . ' )';
 			}

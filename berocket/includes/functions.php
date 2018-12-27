@@ -183,9 +183,9 @@ if (! function_exists('br_select_fontawesome')) {
 	}
 }
 
-if (! function_exists('br_products_selector')) {
+if (!function_exists('br_products_selector')) {
 	function br_products_selector($name, $value, $additional = []) {
-		$multiple = ($additional['multiple'] ?? true);
+		$multiple = $additional['multiple'] ?? true;
 		$class = ((isset($additional['class']) && trim($additional['class'])) ? ' ' . trim($additional['class']) : '');
 		$extra = ((isset($additional['extra']) && trim($additional['extra'])) ? ' ' . trim($additional['extra']) : '');
 		$action = ($additional['action'] ?? 'woocommerce_json_search_products_and_variations');

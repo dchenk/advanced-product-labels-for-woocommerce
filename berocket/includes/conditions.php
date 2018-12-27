@@ -6,14 +6,14 @@ function br_supcondition_equal($name, $options, $extension = []) {
 		$equal = $options['equal'];
 	}
 	$equal_list = [
-		'equal' => __('Equal', 'BeRocket_products_label_domain'),
-		'not_equal' => __('Not equal', 'BeRocket_products_label_domain'),
+		'equal' => __('Equal', 'apl_products_label_domain'),
+		'not_equal' => __('Not equal', 'apl_products_label_domain'),
 	];
 	if (! empty($extension['equal_less'])) {
-		$equal_list['equal_less'] = __('Equal or less', 'BeRocket_products_label_domain');
+		$equal_list['equal_less'] = __('Equal or less', 'apl_products_label_domain');
 	}
 	if (! empty($extension['equal_more'])) {
-		$equal_list['equal_more'] = __('Equal or more', 'BeRocket_products_label_domain');
+		$equal_list['equal_more'] = __('Equal or more', 'apl_products_label_domain');
 	}
 	$html = '<select name="' . $name . '[equal]">';
 	foreach ($equal_list as $equal_slug => $equal_name) {
@@ -805,7 +805,7 @@ class BeRocket_conditions {
 			$def_options = ['category' => ''];
 			$options = array_merge($def_options, $options);
 			$html .= br_supcondition_equal($name, $options);
-			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' . __('Include subcategories', 'BeRocket_products_label_domain') . '</label>';
+			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' . __('Include subcategories', 'apl_products_label_domain') . '</label>';
 			$html .= '<div style="max-height:150px;overflow:auto;border:1px solid #ccc;padding: 5px;">';
 			foreach ($product_categories as $category) {
 				$html .= '<div><label>

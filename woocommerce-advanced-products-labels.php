@@ -7,13 +7,12 @@
  * Author: widerwebs
  * Requires at least: 4.0
  * Author URI: https://github.com/dchenk
- * Text Domain: BeRocket_products_label_domain
+ * Text Domain: apl_products_label_domain
  * Domain Path: /languages
  * WC tested up to: 3.4.6
  */
 
 define('BeRocket_products_label_version', '1.1.11');
-define('BeRocket_products_label_domain', 'BeRocket_products_label_domain');
 
 require_once(__DIR__ . '/berocket/framework.php');
 
@@ -37,7 +36,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 		'plugin_name' => 'products_label',
 		'full_name'   => 'WooCommerce Advanced Product Labels',
 		'norm_name'   => 'Product Labels',
-		'domain'      => 'BeRocket_products_label_domain',
+		'domain'      => 'apl_products_label_domain',
 		'templates'   => __DIR__ . '/templates/',
 		'plugin_file' => __FILE__,
 	];
@@ -299,7 +298,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 	public function init() {
 		parent::init();
 
-		load_plugin_textdomain('BeRocket_products_label_domain', false, plugin_basename(__DIR__) . '/languages');
+		load_plugin_textdomain('apl_products_label_domain', false, plugin_basename(__DIR__) . '/languages');
 
 		$options = $this->get_option();
 		$shop_hook = $options['shop_hook'];
@@ -612,7 +611,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		<div class="panel wc-metaboxes-wrapper" id="advanced-prod-label-edit">
 			<?php wp_nonce_field('br_labels_check', 'br_labels_nonce'); ?>
-			<h4><?php _e('Labels to display on this product', 'BeRocket_products_label_domain'); ?></h4>
+			<h4><?php _e('Labels to display on this product', 'apl_products_label_domain'); ?></h4>
 			<?php
 			foreach ($posts as $labelPost) {
 				$post_title = get_the_title($labelPost->ID);
@@ -884,96 +883,96 @@ class BeRocket_products_label extends BeRocket_Framework {
 			'General' => [
 				'disable_labels' => [
 					'type'     => 'checkbox',
-					'label'    => __('Disable global labels', 'BeRocket_products_label_domain'),
+					'label'    => __('Disable global labels', 'apl_products_label_domain'),
 					'name'     => 'disable_labels',
 					'value'    => '1',
 					'selected' => false,
 				],
 				'disable_plabels' => [
 					'type'     => 'checkbox',
-					'label'    => __('Disable product labels', 'BeRocket_products_label_domain'),
+					'label'    => __('Disable product labels', 'apl_products_label_domain'),
 					'name'     => 'disable_plabels',
 					'value'    => '1',
 					'selected' => false,
 				],
 				'disable_ppage' => [
 					'type'     => 'checkbox',
-					'label'    => __('Disable labels on product page', 'BeRocket_products_label_domain'),
+					'label'    => __('Disable labels on product page', 'apl_products_label_domain'),
 					'name'     => 'disable_ppage',
 					'value'    => '1',
 					'selected' => false,
 				],
 				'remove_sale' => [
 					'type'     => 'checkbox',
-					'label'    => __('Remove default sale label', 'BeRocket_products_label_domain'),
+					'label'    => __('Remove default sale label', 'apl_products_label_domain'),
 					'name'     => 'remove_sale',
 					'value'    => '1',
 					'selected' => false,
 				],
 				'global_font_awesome_disable' => [
-					'label'     => __('Disable Font Awesome', 'BeRocket_products_label_domain'),
+					'label'     => __('Disable Font Awesome', 'apl_products_label_domain'),
 					'type'      => 'checkbox',
 					'name'      => 'fontawesome_frontend_disable',
 					'value'     => '1',
-					'label_for' => __('Disable loading CSS file for Font Awesome icons; recommended only if you do not use Font Awesome icons in widgets or you have Font Awesome in your theme.', 'BeRocket_products_label_domain'),
+					'label_for' => __('Disable loading CSS file for Font Awesome icons; recommended only if you do not use Font Awesome icons in widgets or you have Font Awesome in your theme.', 'apl_products_label_domain'),
 				],
 				'global_fontawesome_version' => [
-					'label'    => __('Font Awesome Version', 'BeRocket_products_label_domain'),
+					'label'    => __('Font Awesome Version', 'apl_products_label_domain'),
 					'name'     => 'fontawesome_frontend_version',
 					'type'     => 'selectbox',
 					'options'  => [
-						['value' => '', 'text' => __('Font Awesome 4', 'BeRocket_products_label_domain')],
-						['value' => 'fontawesome5', 'text' => __('Font Awesome 5', 'BeRocket_products_label_domain')],
+						['value' => '', 'text' => __('Font Awesome 4', 'apl_products_label_domain')],
+						['value' => 'fontawesome5', 'text' => __('Font Awesome 5', 'apl_products_label_domain')],
 					],
 					'value'    => '',
-					'label_for' => __('Version of Font Awesome that will be used. Please select a version that you have in your theme', 'BeRocket_products_label_domain'),
+					'label_for' => __('Version of Font Awesome that will be used. Please select a version that you have in your theme', 'apl_products_label_domain'),
 				],
 			],
 			'Advanced' => [
 				'shop_hook' => [
 					'type'     => 'selectbox',
 					'options'  => [
-						['value' => 'woocommerce_before_shop_loop_item_title+15',  'text' => __('Before Title 1', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_shop_loop_item_title+5',          'text' => __('Before Title 2', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_after_shop_loop_item_title+5',    'text' => __('After Title', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_before_shop_loop_item+5',         'text' => __('Before All', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_after_shop_loop_item+500',        'text' => __('After All', 'BeRocket_products_label_domain')],
-						['value' => 'berocket_disabled_label_hook_shop+10',        'text' => __('{DISABLED}', 'BeRocket_products_label_domain')],
+						['value' => 'woocommerce_before_shop_loop_item_title+15',  'text' => __('Before Title 1', 'apl_products_label_domain')],
+						['value' => 'woocommerce_shop_loop_item_title+5',          'text' => __('Before Title 2', 'apl_products_label_domain')],
+						['value' => 'woocommerce_after_shop_loop_item_title+5',    'text' => __('After Title', 'apl_products_label_domain')],
+						['value' => 'woocommerce_before_shop_loop_item+5',         'text' => __('Before All', 'apl_products_label_domain')],
+						['value' => 'woocommerce_after_shop_loop_item+500',        'text' => __('After All', 'apl_products_label_domain')],
+						['value' => 'berocket_disabled_label_hook_shop+10',        'text' => __('{DISABLED}', 'apl_products_label_domain')],
 					],
-					'label'    => __('Shop Hook', 'BeRocket_products_label_domain'),
-					'label_for'=> __('Where labels will be displayed on shop page. In different theme it can be different place(This means that it is supposed to be in this place)', 'BeRocket_products_label_domain'),
-					'name'     => 'shop_hook',
+					'label'     => __('Shop Hook', 'apl_products_label_domain'),
+					'label_for' => __('Where labels will be displayed on shop page. In different theme it can be different place(This means that it is supposed to be in this place)', 'apl_products_label_domain'),
+					'name'      => 'shop_hook',
 					'value'     => $this->defaults['shop_hook'],
 				],
 				'product_hook_image' => [
 					'type'     => 'selectbox',
 					'options'  => [
-						['value' => 'woocommerce_product_thumbnails+15',               'text' => __('Under thumbnails', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_before_single_product_summary+50',    'text' => __('After Images', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_single_product_summary+2',            'text' => __('Before Summary Data', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_single_product_summary+100',          'text' => __('After Summary Data', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_before_single_product_summary+5',     'text' => __('Before All', 'BeRocket_products_label_domain')],
-						['value' => 'berocket_disabled_label_hook_image+10',           'text' => __('{DISABLED}', 'BeRocket_products_label_domain')],
+						['value' => 'woocommerce_product_thumbnails+15',               'text' => __('Under thumbnails', 'apl_products_label_domain')],
+						['value' => 'woocommerce_before_single_product_summary+50',    'text' => __('After Images', 'apl_products_label_domain')],
+						['value' => 'woocommerce_single_product_summary+2',            'text' => __('Before Summary Data', 'apl_products_label_domain')],
+						['value' => 'woocommerce_single_product_summary+100',          'text' => __('After Summary Data', 'apl_products_label_domain')],
+						['value' => 'woocommerce_before_single_product_summary+5',     'text' => __('Before All', 'apl_products_label_domain')],
+						['value' => 'berocket_disabled_label_hook_image+10',           'text' => __('{DISABLED}', 'apl_products_label_domain')],
 					],
-					'label'    => __('Product Hook Image', 'BeRocket_products_label_domain'),
-					'label_for'=> __('Where on image labels will be displayed on product page. In different theme it can be different place(This means that it is supposed to be in this place)', 'BeRocket_products_label_domain'),
-					'name'     => 'product_hook_image',
+					'label'     => __('Product Hook Image', 'apl_products_label_domain'),
+					'label_for' => __('Where on image labels will be displayed on product page. In different theme it can be different place(This means that it is supposed to be in this place)', 'apl_products_label_domain'),
+					'name'      => 'product_hook_image',
 					'value'     => $this->defaults['product_hook_image'],
 				],
 				'product_hook_label' => [
 					'type'     => 'selectbox',
 					'options'  => [
-						['value' => 'woocommerce_product_thumbnails+10',               'text' => __('Under thumbnails', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_before_single_product_summary+50',    'text' => __('After Images', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_single_product_summary+2',            'text' => __('Before Summary Data', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_single_product_summary+7',            'text' => __('After Title', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_single_product_summary+100',          'text' => __('After Summary Data', 'BeRocket_products_label_domain')],
-						['value' => 'woocommerce_before_single_product_summary+5',     'text' => __('Before All', 'BeRocket_products_label_domain')],
-						['value' => 'berocket_disabled_label_hook_labels+10',          'text' => __('{DISABLED}', 'BeRocket_products_label_domain')],
+						['value' => 'woocommerce_product_thumbnails+10',               'text' => __('Under thumbnails', 'apl_products_label_domain')],
+						['value' => 'woocommerce_before_single_product_summary+50',    'text' => __('After Images', 'apl_products_label_domain')],
+						['value' => 'woocommerce_single_product_summary+2',            'text' => __('Before Summary Data', 'apl_products_label_domain')],
+						['value' => 'woocommerce_single_product_summary+7',            'text' => __('After Title', 'apl_products_label_domain')],
+						['value' => 'woocommerce_single_product_summary+100',          'text' => __('After Summary Data', 'apl_products_label_domain')],
+						['value' => 'woocommerce_before_single_product_summary+5',     'text' => __('Before All', 'apl_products_label_domain')],
+						['value' => 'berocket_disabled_label_hook_labels+10',          'text' => __('{DISABLED}', 'apl_products_label_domain')],
 					],
-					'label'    => __('Product Hook Label', 'BeRocket_products_label_domain'),
-					'label_for'=> __('Where default labels will be displayed on product page. In different theme it can be different place(This means that it is supposed to be in this place)', 'BeRocket_products_label_domain'),
-					'name'     => 'product_hook_label',
+					'label'     => __('Product Hook Label', 'apl_products_label_domain'),
+					'label_for' => __('Where default labels will be displayed on product page. In different theme it can be different place(This means that it is supposed to be in this place)', 'apl_products_label_domain'),
+					'name'      => 'product_hook_label',
 					'value'     => $this->defaults['product_hook_label'],
 				],
 			],
@@ -1008,20 +1007,15 @@ class BeRocket_products_label extends BeRocket_Framework {
 //		}
 //
 //		$html = "<th>
-	//                    <div class='br_settings_vtab" . ((strpos($item['value'], 'css') !== false) ? ' active' : '') . "' data-tab='css-templates'>" . __('CSS Templates', 'BeRocket_products_label_domain') . "</div>
-	//                    <div class='br_settings_vtab" . ((strpos($item['value'], 'image') !== false) ? ' active' : '') . "' data-tab='image-templates'>" . __('Image Templates', 'BeRocket_products_label_domain') . "</div>
-	//                    <div class='br_settings_vtab" . ((strpos($item['value'], 'advanced') !== false) ? ' active' : '') . "' data-tab='advanced-templates'>" . __('Advanced Templates', 'BeRocket_products_label_domain') . "</div>
+	//                    <div class='br_settings_vtab" . ((strpos($item['value'], 'css') !== false) ? ' active' : '') . "' data-tab='css-templates'>" . __('CSS Templates', 'apl_products_label_domain') . "</div>
+	//                    <div class='br_settings_vtab" . ((strpos($item['value'], 'image') !== false) ? ' active' : '') . "' data-tab='image-templates'>" . __('Image Templates', 'apl_products_label_domain') . "</div>
+	//                    <div class='br_settings_vtab" . ((strpos($item['value'], 'advanced') !== false) ? ' active' : '') . "' data-tab='advanced-templates'>" . __('Advanced Templates', 'apl_products_label_domain') . "</div>
 	//                </th>
 	//                <td class='br_label_css_templates'>";
 //		$html .= $this->get_templates_section_html($item['value']);
 //		$html .= "</div></td>";
 //
 //		return $html;
-//	}
-
-//	public function menu_order_custom_post($compatibility) {
-//		$compatibility['br_labels'] = 'br_products_label';
-//		return $compatibility;
 //	}
 
 //	private function get_templates_section_html($current_template = 'css-1'): string {

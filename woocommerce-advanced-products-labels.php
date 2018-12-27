@@ -26,32 +26,24 @@ class BeRocket_products_label extends BeRocket_Framework {
 	 * @var array Metadata about the plugin
 	 */
 	public $info = [
-		'id'          => 18,
-		'lic_id'      => 35,
-		'version'     => BeRocket_products_label_version,
-		'plugin'      => '',
-		'slug'        => '',
-		'key'         => '',
 		'name'        => '',
 		'plugin_name' => 'products_label',
-		'full_name'   => 'WooCommerce Advanced Product Labels',
 		'norm_name'   => 'Product Labels',
-		'domain'      => 'apl_products_label_domain',
 		'templates'   => __DIR__ . '/templates/',
 		'plugin_file' => __FILE__,
 	];
 
 	public $defaults = [
-		'disable_labels'    => '0',
-		'disable_plabels'   => '0',
-		'disable_ppage'     => '0',
-		'remove_sale'       => '0',
-		'script'            => '',
-		'shop_hook'         => 'woocommerce_before_shop_loop_item_title+15',
-		'product_hook_image'=> 'woocommerce_product_thumbnails+15',
-		'product_hook_label'=> 'woocommerce_product_thumbnails+15',
-		'fontawesome_frontend_disable'    => '',
-		'fontawesome_frontend_version'    => '',
+		'disable_labels'               => '0',
+		'disable_plabels'              => '0',
+		'disable_ppage'                => '0',
+		'remove_sale'                  => '0',
+		'script'                       => '',
+		'shop_hook'                    => 'woocommerce_before_shop_loop_item_title+15',
+		'product_hook_image'           => 'woocommerce_product_thumbnails+15',
+		'product_hook_label'           => 'woocommerce_product_thumbnails+15',
+		'fontawesome_frontend_disable' => '',
+		'fontawesome_frontend_version' => '',
 	];
 
 	public $values = [
@@ -264,7 +256,6 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		parent::__construct($this);
 
-		add_action('init', [$this, 'init']);
 		add_action('admin_init', [$this, 'admin_init']);
 		add_action('admin_menu', [$this, 'admin_menu']);
 		add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
@@ -301,9 +292,11 @@ class BeRocket_products_label extends BeRocket_Framework {
 		load_plugin_textdomain('apl_products_label_domain', false, plugin_basename(__DIR__) . '/languages');
 
 		$options = $this->get_option();
-		$shop_hook = $options['shop_hook'];
-		$shop_hook = explode('+', $shop_hook);
-		add_action($shop_hook[0], [$this, 'set_all_label'], $shop_hook[1]);
+
+		$shop_hook = explode('+', $options['shop_hook']);
+
+		add_action($shop_hook[0], [$this, 'set_all_label'], intval($shop_hook[1]));
+
 		if (!empty($options['remove_sale'])) {
 			remove_action('woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10);
 			remove_action('woocommerce_before_single_product_summary', 'woocommerce_show_product_sale_flash', 10);
@@ -312,47 +305,28 @@ class BeRocket_products_label extends BeRocket_Framework {
 		add_action('product_of_day_before_thumbnail_widget', [$this, 'set_image_label'], 20);
 		add_action('product_of_day_before_title_widget', [$this, 'set_label_label_fix'], 20);
 		add_action('lgv_advanced_after_img', [$this, 'set_all_label'], 20);
-		if (! @ $options['disable_ppage']) {
-			$product_hook_image = $options['product_hook_image'];
-			$product_hook_image = explode('+', $product_hook_image);
-			add_action($product_hook_image[0], [$this, 'set_image_label'], $product_hook_image[1]);
+
+		if (!$options['disable_ppage']) {
+			$product_hook_image = explode('+', $options['product_hook_image']);
+			add_action($product_hook_image[0], [$this, 'set_image_label'], intval($product_hook_image[1]));
 			if ($product_hook_image[0] == 'woocommerce_product_thumbnails') {
 				add_action('woocommerce_product_thumbnails', [$this, 'move_labels_from_zoom'], 20);
 			}
 			$product_hook_label = $options['product_hook_label'];
 			$product_hook_label = explode('+', $product_hook_label);
-			add_action($product_hook_label[0], [$this, 'set_label_label'], $product_hook_label[1]);
+			add_action($product_hook_label[0], [$this, 'set_label_label'], intval($product_hook_label[1]));
 		}
 
-		wp_enqueue_style(
-			'berocket_products_label_style',
-			plugins_url('css/frontend.css', __FILE__),
-			[],
-			BeRocket_products_label_version
-		);
+		wp_enqueue_style('advanced_product_labels_style', $this->plugin_url() . 'css/frontend.css', [], BeRocket_products_label_version);
 
-		wp_register_style('berocket_tippy', plugins_url('css/tippy.css', __FILE__), [], BeRocket_products_label_version);
+		wp_register_style('berocket_tippy', $this->plugin_url() . 'css/tippy.css', [], BeRocket_products_label_version);
+		wp_register_script('berocket_tippy', $this->plugin_url() . 'js/tippy.min.js', ['jquery'], BeRocket_products_label_version);
 
-		wp_register_script('berocket_tippy', plugins_url('js/tippy.min.js', __FILE__), ['jquery'], $this->info['version']);
+		wp_enqueue_style('advanced_product_labels_templates_style', $this->plugin_url() . 'css/templates.css', [], BeRocket_products_label_version);
 
 		if (is_admin()) {
-			wp_register_style(
-				'berocket_products_label_admin_style',
-				plugins_url('css/admin.css', __FILE__),
-				[],
-				$this->info['version']
-			);
-			wp_enqueue_style('berocket_products_label_admin_style');
+			wp_enqueue_style('product_labels_admin_style', $this->plugin_url() . 'css/admin.css', [], BeRocket_products_label_version);
 		}
-
-		wp_register_style(
-			'berocket_products_label_templates_style',
-			plugins_url('css/templates.css', __FILE__),
-			[],
-			$this->info['version']
-		);
-
-		wp_enqueue_style('berocket_products_label_templates_style');
 	}
 
 	/**
@@ -367,21 +341,21 @@ class BeRocket_products_label extends BeRocket_Framework {
 			'berocket_framework_admin',
 			plugins_url('berocket/js/admin.js', __FILE__),
 			['jquery'],
-			$this->info['version']
+			BeRocket_products_label_version
 		);
 
 		wp_register_style(
 			'berocket_framework_admin_style',
 			plugins_url('berocket/css/admin.css', __FILE__),
 			[],
-			$this->info['version']
+			BeRocket_products_label_version
 		);
 
 		wp_register_style(
 			'berocket_framework_global_admin_style',
 			plugins_url('berocket/css/global-admin.css', __FILE__),
 			[],
-			$this->info['version']
+			BeRocket_products_label_version
 		);
 
 		wp_register_script(
@@ -485,21 +459,22 @@ class BeRocket_products_label extends BeRocket_Framework {
 	}
 
 	/**
-	 * @param string $type
 	 * @global WC_Product $product
 	 */
-	public function set_label($type = '') {
+	public function set_label(string $type = '') {
 		/** @var $product WC_Product */
 		global $product;
 
-		if (apply_filters('apl_set_label_prevent', false, $type, $product)) {
+		if (apply_filters('apl_prevent_all_labels', false, $type)) {
 			return;
 		}
 
 		do_action('apl_set_label_start', $product);
 
 		$product_post = br_wc_get_product_post($product);
+
 		$options = $this->get_option();
+
 		if (!$options['disable_plabels']) {
 			$label_type = $this->custom_post->get_option($product_post->ID);
 			if (!empty($label_type['label_from_post']) && is_array($label_type['label_from_post'])) {
@@ -861,8 +836,8 @@ class BeRocket_products_label extends BeRocket_Framework {
 	public function admin_menu() {
 		add_submenu_page(
 			'edit.php?post_type=br_labels',
-			__('Product Label Settings', $this->info['domain']),
-			__('Label Settings', $this->info['domain']),
+			__('Product Label Settings', 'apl_products_label_domain'),
+			__('Label Settings', 'apl_products_label_domain'),
 			'manage_options',
 			$this->values['option_page'],
 			[$this, 'option_form']
@@ -940,7 +915,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 						['value' => 'berocket_disabled_label_hook_shop+10',        'text' => __('{DISABLED}', 'apl_products_label_domain')],
 					],
 					'label'     => __('Shop Hook', 'apl_products_label_domain'),
-					'label_for' => __('Where labels will be displayed on shop page. In different theme it can be different place(This means that it is supposed to be in this place)', 'apl_products_label_domain'),
+					'label_for' => __('Where labels will be displayed on shop page. In different theme it can be different place. (This means that it is supposed to be in this place)', 'apl_products_label_domain'),
 					'name'      => 'shop_hook',
 					'value'     => $this->defaults['shop_hook'],
 				],

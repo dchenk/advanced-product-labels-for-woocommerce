@@ -502,9 +502,8 @@ class BeRocket_Framework {
 
 	/**
 	 * Getting plugin option values
-	 * @return array
 	 */
-	public function get_option() {
+	public function get_option(): array {
 		$options = get_option($this->cc->values['settings_name']);
 		if (!empty($options) && is_array($options)) {
 			$options = array_merge($this->cc->defaults, $options);
@@ -518,7 +517,7 @@ class BeRocket_Framework {
 			}
 		}
 
-		return apply_filters('apl_get_option_' . $this->cc->info['plugin_name'], $options, $this->cc->defaults);
+		return apply_filters('advanced_product_labels_get_option', $options, $this->cc->defaults);
 	}
 
 	public function get_global_option() {

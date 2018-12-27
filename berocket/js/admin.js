@@ -20,7 +20,6 @@ var br_something_changed = false;
                 var br_reload_page = $(this).is('.br_reload_form');
                 br_savin_ajax = true;
                 var form_data = $(this).serialize();
-                var plugin_name = $(this).data('plugin');
                 var url = $(this).attr('action');
                 clearTimeout(br_saved_timeout);
                 destroy_br_saved();

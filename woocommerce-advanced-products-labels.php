@@ -312,8 +312,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 			if ($product_hook_image[0] == 'woocommerce_product_thumbnails') {
 				add_action('woocommerce_product_thumbnails', [$this, 'move_labels_from_zoom'], 20);
 			}
-			$product_hook_label = $options['product_hook_label'];
-			$product_hook_label = explode('+', $product_hook_label);
+			$product_hook_label = explode('+', $options['product_hook_label']);
 			add_action($product_hook_label[0], [$this, 'set_label_label'], intval($product_hook_label[1]));
 		}
 
@@ -480,41 +479,22 @@ class BeRocket_products_label extends BeRocket_Framework {
 			if (!empty($label_type['label_from_post']) && is_array($label_type['label_from_post'])) {
 				foreach ($label_type['label_from_post'] as $label_from_post) {
 					$br_label = $this->custom_post->get_option($label_from_post);
-					if (! empty($br_label)) {
+					if (!empty($br_label)) {
 						$this->show_label_on_product($br_label, $product);
 					}
 				}
 			}
-			if ((!empty($label_type['text']) && $label_type['text'] != 'Label')
-				|| (!empty($label_type['content_type']) && $label_type['content_type'] != 'text')) {
+			if ((!empty($label_type['text']) && $label_type['text'] !== 'Label')
+				|| (!empty($label_type['content_type']) && $label_type['content_type'] !== 'text')) {
 				$this->show_label_on_product($label_type, $product);
 			}
 		}
 
 		if (!$options['disable_labels']) {
-			$args = [
-				'posts_per_page'   => -1,
-				'offset'           => 0,
-				'category'         => '',
-				'category_name'    => '',
-				'orderby'          => 'date',
-				'order'            => 'DESC',
-				'include'          => '',
-				'exclude'          => '',
-				'meta_key'         => '',
-				'meta_value'       => '',
-				'post_type'        => 'br_labels',
-				'post_mime_type'   => '',
-				'post_parent'      => '',
-				'author'           => '',
-				'post_status'      => 'publish',
-				'suppress_filters' => false,
-			];
-			$posts = get_posts($args);
-
-			foreach ($posts as $label) {
+			$labels = $this->getPublishedLabels();
+			foreach ($labels as $label) {
 				$br_label = $this->custom_post->get_option($label->ID);
-				if ($type === true || $type == $br_label['type']) {
+				if (!$type || $type === $br_label['type']) {
 					if (!isset($br_label['data']) || $this->check_label_on_post($label->ID, $br_label['data'], $product)) {
 						$this->show_label_on_product($br_label, $product);
 					}
@@ -563,32 +543,12 @@ class BeRocket_products_label extends BeRocket_Framework {
 		if (!strpos($pagenow, 'post-new.php')) {
 			$label = $custom_post->get_option($post->ID);
 		}
-
-		$args = [
-			'posts_per_page'   => -1,
-			'offset'           => 0,
-			'category'         => '',
-			'category_name'    => '',
-			'orderby'          => 'date',
-			'order'            => 'DESC',
-			'include'          => '',
-			'exclude'          => '',
-			'meta_key'         => '',
-			'meta_value'       => '',
-			'post_type'        => $custom_post->post_name,
-			'post_mime_type'   => '',
-			'post_parent'      => '',
-			'author'           => '',
-			'post_status'      => 'publish',
-			'suppress_filters' => false,
-		];
-		$posts = get_posts($args); ?>
-
+		$labels = $this->getPublishedLabels(); ?>
 		<div class="panel wc-metaboxes-wrapper" id="advanced-prod-label-edit">
 			<?php wp_nonce_field('br_labels_check', 'br_labels_nonce'); ?>
 			<h4><?php _e('Labels to display on this product', 'apl_products_label_domain'); ?></h4>
 			<?php
-			foreach ($posts as $labelPost) {
+			foreach ($labels as $labelPost) {
 				$post_title = get_the_title($labelPost->ID);
 				echo '<p><label><input name="br_labels[label_from_post][]" type="checkbox" value="' . $labelPost->ID . '"' .
 					(is_array($label['label_from_post']) && in_array($labelPost->ID, $label['label_from_post'], true) ? ' checked' : '') . '>(' . $labelPost->ID . ') ' . $post_title .
@@ -602,6 +562,19 @@ class BeRocket_products_label extends BeRocket_Framework {
 			</div>
 		</div>
 		<?php
+	}
+
+	private function getPublishedLabels(): array {
+		$args = [
+			'posts_per_page'   => -1,
+			'offset'           => 0,
+			'orderby'          => 'none',
+			'post_type'        => 'br_labels',
+			'post_parent'      => '',
+			'post_status'      => 'publish',
+			'suppress_filters' => false,
+		];
+		return get_posts($args);
 	}
 
 	/**

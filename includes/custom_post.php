@@ -562,10 +562,7 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		if ($this->post_name != $post->post_type && 'product' != $post->post_type) {
 			return false;
 		}
-		if (empty($_REQUEST[$this->post_name . '_nonce']) || ! wp_verify_nonce($_REQUEST[$this->post_name . '_nonce'], $this->post_name . '_check')) {
-			return false;
-		}
-		return true;
+		return !empty($_REQUEST[$this->post_name . '_nonce']) && wp_verify_nonce($_REQUEST[$this->post_name . '_nonce'], $this->post_name . '_check');
 	}
 
 	public function wc_save_product($post_id, $post) {

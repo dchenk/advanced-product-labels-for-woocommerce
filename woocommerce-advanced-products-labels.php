@@ -493,10 +493,11 @@ class BeRocket_products_label extends BeRocket_Framework {
 		/** @var $product WC_Product */
 		global $product;
 
-		do_action('berocket_apl_set_label_start', $product);
-		if (apply_filters('berocket_apl_set_label_prevent', false, $type, $product)) {
+		if (apply_filters('apl_set_label_prevent', false, $type, $product)) {
 			return;
 		}
+
+		do_action('apl_set_label_start', $product);
 
 		$product_post = br_wc_get_product_post($product);
 		$options = $this->get_option();
@@ -515,6 +516,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 				$this->show_label_on_product($label_type, $product);
 			}
 		}
+
 		if (!$options['disable_labels']) {
 			$args = [
 				'posts_per_page'   => -1,
@@ -530,31 +532,33 @@ class BeRocket_products_label extends BeRocket_Framework {
 				'post_type'        => 'br_labels',
 				'post_mime_type'   => '',
 				'post_parent'      => '',
-				'author'	   => '',
+				'author'           => '',
 				'post_status'      => 'publish',
 				'suppress_filters' => false,
 			];
-			$posts_array = get_posts($args);
-			foreach ($posts_array as $label) {
+			$posts = get_posts($args);
+
+			foreach ($posts as $label) {
 				$br_label = $this->custom_post->get_option($label->ID);
 				if ($type === true || $type == $br_label['type']) {
-					if (! isset($br_label['data']) || $this->check_label_on_post($label->ID, $br_label['data'], $product)) {
+					if (!isset($br_label['data']) || $this->check_label_on_post($label->ID, $br_label['data'], $product)) {
 						$this->show_label_on_product($br_label, $product);
 					}
 				}
 			}
 		}
-		do_action('berocket_apl_set_label_end', $product);
+
+		do_action('apl_set_label_end', $product);
 	}
 
 	public function ajax_get_label() {
 		if (current_user_can('manage_options')) {
-			do_action('berocket_apl_set_label_start', 'demo');
+			do_action('apl_set_label_start', 'demo');
 			if (!empty($_POST['br_labels']['tooltip_content'])) {
 				$_POST['br_labels']['tooltip_content'] = stripslashes($_POST['br_labels']['tooltip_content']);
 			}
 			$this->show_label_on_product($_POST['br_labels'], 'demo');
-			do_action('berocket_apl_set_label_end', 'demo');
+			do_action('apl_set_label_end', 'demo');
 		}
 		wp_die();
 	}
@@ -604,13 +608,13 @@ class BeRocket_products_label extends BeRocket_Framework {
 			'post_status'      => 'publish',
 			'suppress_filters' => false,
 		];
-		$posts_array = get_posts($args); ?>
+		$posts = get_posts($args); ?>
 
 		<div class="panel wc-metaboxes-wrapper" id="advanced-prod-label-edit">
 			<?php wp_nonce_field('br_labels_check', 'br_labels_nonce'); ?>
 			<h4><?php _e('Labels to display on this product', 'BeRocket_products_label_domain'); ?></h4>
 			<?php
-			foreach ($posts_array as $labelPost) {
+			foreach ($posts as $labelPost) {
 				$post_title = get_the_title($labelPost->ID);
 				echo '<p><label><input name="br_labels[label_from_post][]" type="checkbox" value="' . $labelPost->ID . '"' .
 					(is_array($label['label_from_post']) && in_array($labelPost->ID, $label['label_from_post'], true) ? ' checked' : '') . '>(' . $labelPost->ID . ') ' . $post_title .
@@ -848,19 +852,11 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 	public function check_label_on_post($label_id, $label_data, $product) {
 		$product_id = br_wc_get_product_id($product);
-		$show_label = wp_cache_get('WC_Product_' . $product_id, 'brapl_' . $label_id);
-		if ($show_label === false) {
-			$show_label = BeRocket_conditions::check($label_data, 'berocket_advanced_label_editor', [
-				'product' => $product,
-				'product_id' => $product_id,
-				'product_post' => br_wc_get_product_post($product),
-				'post_id' => $product_id,
-			]);
-			wp_cache_set('WC_Product_' . $product_id, ($show_label ? 1 : -1), 'brapl_' . $label_id, 60*60*24);
-		} else {
-			$show_label = $show_label == 1;
-		}
-		return $show_label;
+		return BeRocket_conditions::check($label_data, 'berocket_advanced_label_editor', [
+			'product'      => $product,
+			'product_id'   => $product_id,
+			'product_post' => br_wc_get_product_post($product),
+		]);
 	}
 
 	public function admin_menu() {

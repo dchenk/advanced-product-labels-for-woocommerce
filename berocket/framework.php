@@ -449,8 +449,6 @@ class BeRocket_Framework {
 
 	/**
 	 * Checking if we are on Settings page
-	 *
-	 * @return boolean
 	 */
 	public function check_screen(): bool {
 		$screen = get_current_screen();
@@ -470,7 +468,7 @@ class BeRocket_Framework {
 	 * Settings correct values for the array. If it exist in the input it will be used.
 	 * If not - default will be used.
 	 */
-	public function recursive_array_set($default, $options) {
+	public function recursive_array_set($default, $options): array {
 		$result = [];
 
 		foreach ($default as $key => $value) {
@@ -494,7 +492,7 @@ class BeRocket_Framework {
 		}
 
 		foreach ($options as $key => $value) {
-			if (! array_key_exists($key, $result)) {
+			if (!array_key_exists($key, $result)) {
 				$result[$key] = $value;
 			}
 		}
@@ -504,6 +502,7 @@ class BeRocket_Framework {
 
 	/**
 	 * Getting plugin option values
+	 * @return array
 	 */
 	public function get_option() {
 		$options = get_option($this->cc->values['settings_name']);
@@ -512,7 +511,6 @@ class BeRocket_Framework {
 		} else {
 			$options = $this->cc->defaults;
 		}
-		$options = apply_filters('brfr_get_option_cache_' . $this->cc->info['plugin_name'], $options, $this->cc->defaults);
 		$global_options = $this->get_global_option();
 		foreach ($this->global_settings as $global_setting) {
 			if (isset($global_options[$global_setting])) {
@@ -520,12 +518,12 @@ class BeRocket_Framework {
 			}
 		}
 
-		return apply_filters('brfr_get_option_' . $this->cc->info['plugin_name'], $options, $this->cc->defaults);
+		return apply_filters('apl_get_option_' . $this->cc->info['plugin_name'], $options, $this->cc->defaults);
 	}
 
 	public function get_global_option() {
 		$option = get_option('berocket_framework_option_global');
-		if (! is_array($option)) {
+		if (!is_array($option)) {
 			$option = [];
 		}
 		return $option;
@@ -536,7 +534,7 @@ class BeRocket_Framework {
 	}
 
 	public function is_settings_page($settings_page) {
-		if (! empty($_GET['page']) && $_GET['page'] == $this->cc->values['option_page']) {
+		if (!empty($_GET['page']) && $_GET['page'] == $this->cc->values['option_page']) {
 			$settings_page = true;
 		}
 		return $settings_page;

@@ -111,22 +111,21 @@ class BeRocket_conditions {
 		<?php
 	}
 
-	public static function check($conditions_data, $hook_name, $additional = []) {
+	public static function check($conditions_data, $hook_name, array $additional) {
 		if (!is_array($conditions_data) || count($conditions_data) == 0) {
-			$condition_status = true;
-		} else {
+			return true;
+		}
+		$condition_status = false;
+		foreach ($conditions_data as $conditions) {
 			$condition_status = false;
-			foreach ($conditions_data as $conditions) {
-				$condition_status = false;
-				foreach ($conditions as $condition) {
-					$condition_status = apply_filters($hook_name . '_check_type_' . $condition['type'], false, $condition, $additional);
-					if (!$condition_status) {
-						break;
-					}
-				}
-				if ($condition_status) {
+			foreach ($conditions as $condition) {
+				$condition_status = apply_filters($hook_name . '_check_type_' . $condition['type'], false, $condition, $additional);
+				if (!$condition_status) {
 					break;
 				}
+			}
+			if ($condition_status) {
+				break;
 			}
 		}
 		return $condition_status;
@@ -168,14 +167,9 @@ class BeRocket_conditions {
 			'condition_page_id' => ['func' => 'check_condition_page_id', 'type' => 'page_id', 'name' => __('Page ID', 'BeRocket_domain')],
 			'condition_page_woo_attribute' => ['func' => 'check_condition_page_woo_attribute', 'type' => 'woo_attribute', 'name' => __('Product Attribute', 'BeRocket_domain')],
 			'condition_page_woo_search' => ['func' => 'check_condition_page_woo_search', 'type' => 'woo_search', 'name' => __('Product Search', 'BeRocket_domain')],
-			'condition_page_woo_category' => ['func' => 'check_condition_page_woo_category', 'type' => 'woo_category', 'name' => __('Product Category', 'BeRocket_domain')],
+//			'condition_page_woo_category' => ['func' => 'check_condition_page_woo_category', 'type' => 'category', 'name' => __('Product Category', 'BeRocket_domain')],
 		];
 	}
-
-//	public static function get_condition($condition) {
-//		$conditions = static::get_conditions_product();
-//		return ($conditions[$condition] ?? '');
-//	}
 
 	public static function supcondition($name, $options, $extension = []) {
 		$equal = 'equal';
@@ -183,13 +177,13 @@ class BeRocket_conditions {
 			$equal = $options['equal'];
 		}
 		$equal_list = [
-			'equal' => __('Equal', 'BeRocket_domain'),
+			'equal'     => __('Equal', 'BeRocket_domain'),
 			'not_equal' => __('Not equal', 'BeRocket_domain'),
 		];
-		if (! empty($extension['equal_less'])) {
+		if (!empty($extension['equal_less'])) {
 			$equal_list['equal_less'] = __('Equal or less', 'BeRocket_domain');
 		}
-		if (! empty($extension['equal_more'])) {
+		if (!empty($extension['equal_more'])) {
 			$equal_list['equal_more'] = __('Equal or more', 'BeRocket_domain');
 		}
 		$html = '<select name="' . $name . '[equal]">';
@@ -225,7 +219,8 @@ class BeRocket_conditions {
 
 	// PRODUCT CONDITION
 
-	// HTML FOR PRODUCT CONDITIONS IN ADMIN PANEL
+	// HTML FOR PRODUCT CONDITIONS MANAGEMENT IN ADMIN PANEL
+
 	public static function condition_product($html, $name, $options) {
 		$def_options = ['product' => []];
 		$options = array_merge($def_options, $options);
@@ -449,6 +444,7 @@ class BeRocket_conditions {
 	}
 
 	// SAVE PRODUCT CONDITIONS
+
 	public static function save_condition_product($condition) {
 		if (isset($condition['product']) && is_array($condition['product'])) {
 			$condition['additional_product'] = [];
@@ -467,6 +463,7 @@ class BeRocket_conditions {
 	}
 
 	// CHECK PRODUCT CONDITIONS
+
 	public static function check_condition_product($show, $condition, $additional) {
 		if (isset($condition['product']) && is_array($condition['product'])) {
 			$show = in_array($additional['product_id'], $condition['product'], true);
@@ -558,15 +555,16 @@ class BeRocket_conditions {
 
 	public static function check_condition_product_type($show, $condition, $additional) {
 		$show = $additional['product']->is_type($condition['product_type']);
-		if ($condition['equal'] == 'not_equal') {
+		if ($condition['equal'] === 'not_equal') {
 			$show = ! $show;
 		}
 		return $show;
 	}
+
 	public static function check_condition_product_rating($show, $condition, $additional) {
 		$show = ($additional['product']->get_average_rating() > 0);
 		if ($condition['has_rating'] == 'no') {
-			$show = ! $show;
+			$show = !$show;
 		}
 		return $show;
 	}
@@ -598,31 +596,49 @@ class BeRocket_conditions {
 		return $show;
 	}
 
+	/**
+	 * Indicate whether the product has at least one required category.
+	 * @param bool $show
+	 * @param array $condition
+	 * @param $additional
+	 * @return bool
+	 */
 	public static function check_condition_product_category($show, $condition, $additional) {
+		if (!isset($condition['category'])) {
+			return $show;
+		}
 		if (!is_array($condition['category'])) {
 			$condition['category'] = [$condition['category']];
 		}
+
+		// $categories is the IDs of the categories of which the product must have at least one.
+		$categories = array_map('intval', $condition['category']);
+
 		$terms = get_the_terms($additional['product_id'], 'product_cat');
 		if (is_array($terms)) {
 			foreach ($terms as $term) {
-				if (in_array($term->term_id, $condition['category'], true)) {
+				if (in_array($term->term_id, $categories, true)) {
 					$show = true;
 				}
-				if (! empty($condition['subcats']) && ! $show) {
-					foreach ($condition['category'] as $category) {
-						$show = term_is_ancestor_of($category, $term->term_id, 'product_cat');
+				// In case the product does not match this category, then if the subcategory feature is used
+				// and if the desired category is a child category (subcategory) of the current term in the loop,
+				// which the product has, then apply showing.
+				if (!empty($condition['subcats']) && !$show) {
+					foreach ($categories as $cat) {
+						$show = term_is_ancestor_of($cat, $term->term_id, 'product_cat');
 						if ($show) {
 							break;
 						}
 					}
 				}
+				// If any of the desired categories are set on the product, show the label.
 				if ($show) {
 					break;
 				}
 			}
 		}
-		if ($condition['equal'] == 'not_equal') {
-			$show = ! $show;
+		if ($condition['equal'] === 'not_equal') {
+			$show = !$show;
 		}
 		return $show;
 	}
@@ -851,26 +867,37 @@ class BeRocket_conditions {
 		return $show;
 	}
 
+	/**
+	 * Indicate whether the product has at least one required category.
+	 * This filter is used only for pages listing products, not for single product pages.
+	 * @return bool
+	 */
 	public static function check_condition_page_woo_category($show, $condition, $additional) {
+		error_log('HELLO');
 		/** @var $wp_query WP_Query */
 		global $wp_query;
-		$show = false;
-		if (!empty($condition['category']) && ! is_array($condition['category'])) {
+		if (empty($condition['category'])) {
+			return $show;
+		}
+//		$show = false;
+		if (!is_array($condition['category'])) {
 			$condition['category'] = [$condition['category']];
 		}
+		error_log('got here');
+		$categories = array_map('intval', $condition['category']);
 		if ($wp_query->is_tax) {
-			$queried_object = $wp_query->get_queried_object();
-			if (!empty($condition['category'])
-				&& is_array($condition['category'])
-				&& is_object($queried_object)
-				&& property_exists($queried_object, 'term_id')
-				&& property_exists($queried_object, 'taxonomy')
-				&& $queried_object->taxonomy == 'product_cat'
+			$queried = $wp_query->get_queried_object();
+			error_log("Queried:" . print_r($queried, true));
+			if (
+				is_object($queried)
+				&& property_exists($queried, 'term_id')
+				&& property_exists($queried, 'taxonomy')
+				&& $queried->taxonomy == 'product_cat'
 			) {
-				$show = in_array($queried_object->term_id, $condition['category'], true);
-				if (empty($show) && ! empty($condition['subcats'])) {
-					foreach ($condition['category'] as $category) {
-						$show = term_is_ancestor_of($category, $queried_object, 'product_cat');
+				$show = in_array($queried->term_id, $categories, true);
+				if (!$show && !empty($condition['subcats'])) {
+					foreach ($categories as $category) {
+						$show = term_is_ancestor_of($category, $queried, 'product_cat');
 						if ($show) {
 							break;
 						}
@@ -878,7 +905,7 @@ class BeRocket_conditions {
 				}
 			}
 		}
-		if ($condition['equal'] == 'not_equal') {
+		if ($condition['equal'] === 'not_equal') {
 			$show = !$show;
 		}
 		return $show;

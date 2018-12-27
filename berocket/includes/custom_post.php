@@ -143,7 +143,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 			wp_enqueue_script('berocket_widget-colorpicker');
 			wp_enqueue_style('berocket_widget-colorpicker-style');
 			wp_enqueue_style('font-awesome');
-			wp_nonce_field($this->post_name . '_check', $this->post_name . '_nonce'); ?>
+			wp_nonce_field('br_labels_check', $this->post_name . '_nonce'); ?>
 			<div class="submitbox" id="submitpost">
 				<div id="minor-publishing">
 					<div id="major-publishing-actions">
@@ -171,7 +171,11 @@ if (!class_exists('BeRocket_custom_post_class')) {
 		}
 
 		public function wc_save_check($postID, $post): bool {
-			if ($this->post_name != $post->post_type) {
+			if ($this->post_name !== $post->post_type) {
+				return false;
+			}
+
+			if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
 				return false;
 			}
 
@@ -181,15 +185,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 				update_post_meta($postID, $this->post_name, $this->default_settings);
 			}
 
-			if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-				return false;
-			}
-
-			if (empty($_REQUEST[$this->post_name . '_nonce']) || ! wp_verify_nonce($_REQUEST[$this->post_name . '_nonce'], $this->post_name . '_check')) {
-				return false;
-			}
-
-			return true;
+			return !empty($_REQUEST[$this->post_name . '_nonce']) && wp_verify_nonce($_REQUEST[$this->post_name . '_nonce'], 'br_labels_check');
 		}
 
 		public function wc_save_product($post_id, $post) {

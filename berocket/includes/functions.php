@@ -21,12 +21,12 @@ if (!function_exists('br_wc_get_product_post')) {
 }
 
 /**
- * @param $product WC_Product
- * @param $attr
+ * @param WC_Product $product
+ * @param string $attr
  * @param string $data
  * @return mixed
  */
-function br_wc_get_product_attr($product, $attr, $data = '') {
+function br_wc_get_product_attr($product, string $attr, $data = '') {
 	if ($attr === 'child') {
 		if (function_exists('wc_get_product')) {
 			return wc_get_product($data);

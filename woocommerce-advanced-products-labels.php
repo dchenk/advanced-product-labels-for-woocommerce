@@ -422,13 +422,12 @@ class BeRocket_products_label extends BeRocket_Framework {
 				jQuery(o).hide().parents(".woocommerce-product-gallery").append(jQuery(o));
 			});
 			galleryReadyCheck = setInterval(function() {
-				if( jQuery(".woocommerce-product-gallery .woocommerce-product-gallery__trigger").length > 0 ) {
+				if (jQuery(".woocommerce-product-gallery .woocommerce-product-gallery__trigger").length > 0 ) {
 					clearTimeout(galleryReadyCheck);
 					jQuery(".woocommerce-product-gallery .br_alabel").each(function(i, o) {
 						jQuery(o).show().parents(".woocommerce-product-gallery").append(jQuery(o));
 					});
-				}
-				else if(jQuery('.woocommerce-product-gallery__wrapper').length > 0) {
+				} else if (jQuery('.woocommerce-product-gallery__wrapper').length > 0) {
 					clearTimeout(galleryReadyCheck);
 					jQuery(".woocommerce-product-gallery .br_alabel").each(function(i, o) {
 						jQuery(o).show().parents(".woocommerce-product-gallery").append(jQuery(o));
@@ -586,38 +585,43 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		$berocket_display_any_advanced_labels = true;
 
-//		error_log('ENTERED show_label_on_product FUNCTION');
-
 		if (empty($br_label) || !is_array($br_label)) {
 			return;
 		}
 
 //		error_log('MAYBE SHOWING LABEL: ' . print_r($br_label, true) . ' -- ' . print_r($product, true));
 
+		// Make sure the content_type property exists.
 		if (empty($br_label['content_type'])) {
 			$br_label['content_type'] = 'text';
 		}
+
 		if ($product === 'demo') {
 			$br_label['text'] = stripslashes($br_label['text']);
 		}
+
 		if ($br_label['color'][0] != '#') {
 			$br_label['color'] = '#' . $br_label['color'];
 		}
+
 		if (isset($br_label['font_color']) && $br_label['font_color'][0] != '#') {
 			$br_label['font_color'] = '#' . $br_label['font_color'];
 		}
-		if (@ $br_label['content_type'] == 'sale_p') {
+
+		switch ($br_label['content_type']) {
+		case 'sale_p':
 			$br_label['text'] = '';
-			if ($product == 'demo' || $product->is_on_sale()) {
+			if ($product === 'demo' || $product->is_on_sale()) {
 				$price_ratio = false;
-				if ($product == 'demo') {
+				if ($product === 'demo') {
 					$product_sale = '250.5';
 					$product_regular = '430.25';
 					$price_ratio = $product_sale / $product_regular;
 				} else {
+					/** @var WC_Product $product */
 					$product_sale = br_wc_get_product_attr($product, 'sale_price');
 					$product_regular = br_wc_get_product_attr($product, 'regular_price');
-					if (! empty($product_sale) && $product_sale != $product_regular) {
+					if (!empty($product_sale) && $product_sale != $product_regular) {
 						$price_ratio = $product_sale / $product_regular;
 					}
 					if ($product->has_child()) {
@@ -647,14 +651,11 @@ class BeRocket_products_label extends BeRocket_Framework {
 			if (empty($br_label['text'])) {
 				$br_label['text'] = false;
 			}
-		} elseif (@ $br_label['content_type'] == 'price') {
+			break;
+		case 'price':
 			$br_label['text'] = '';
-			if ($product == 'demo') {
-				if (@ $br_label['content_type'] != 'regular_price') {
-					$price = '250.5';
-				} else {
-					$price = '430.25';
-				}
+			if ($product === 'demo') {
+				$price = '250.5';
 				$br_label['text'] = wc_price($price);
 			} else {
 				if ($product->is_type('variable') || $product->is_type('grouped')) {
@@ -664,14 +665,16 @@ class BeRocket_products_label extends BeRocket_Framework {
 					$br_label['text'] = wc_price($price);
 				}
 			}
-		} elseif (@ $br_label['content_type'] == 'stock_status') {
+			break;
+		case 'stock_status':
 			$br_label['text'] = '';
-			if ($product == 'demo') {
+			if ($product === 'demo') {
 				$br_label['text'] = sprintf(__('%s in stock', 'woocommerce'), 24);
 			} else {
 				$br_label['text'] = $product->get_availability()['availability'];
 			}
 		}
+
 		$label_style = '';
 		if (!empty($br_label['image_height'])) {
 			$label_style .= 'height: ' . $br_label['image_height'] . 'px;';
@@ -687,7 +690,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 			$background_color = $br_label['color'];
 		}
 		if (!empty($br_label['font_color'])) {
-			$label_style .= 'color:' . @ $br_label['font_color'] . ';';
+			$label_style .= 'color:' . $br_label['font_color'] . ';';
 		}
 		if (isset($br_label['border_radius'])) {
 			if (strpos($br_label['border_radius'], 'px') === false
@@ -709,10 +712,10 @@ class BeRocket_products_label extends BeRocket_Framework {
 		}
 		$div_class = 'br_alabel br_alabel_' . $br_label['type'] . ' br_alabel_type_' . @ $br_label['content_type'] . ' br_alabel_' . $br_label['position'];
 
-		$br_label['text'] = apply_filters('berocket_apl_label_show_text', (! isset($br_label['text']) ? '' : $br_label['text']), $br_label, $product);
-		$label_style = apply_filters('berocket_apl_label_show_label_style', (empty($label_style) ? '' : $label_style), $br_label, $product);
-		$div_style = apply_filters('berocket_apl_label_show_div_style', (empty($div_style) ? '' : $div_style), $br_label, $product);
-		$div_class = apply_filters('berocket_apl_label_show_div_class', (empty($div_class) ? '' : $div_class), $br_label, $product);
+		$br_label['text'] = apply_filters('berocket_apl_label_show_text', $br_label['text'] ?? '', $br_label, $product);
+		$label_style = apply_filters('berocket_apl_label_show_label_style', $label_style ?? '', $br_label, $product);
+		$div_style = apply_filters('berocket_apl_label_show_div_style', $div_style ?? '', $br_label, $product);
+		$div_class = apply_filters('berocket_apl_label_show_div_class', $div_class ?? '', $br_label, $product);
 		if ($br_label['content_type'] == 'text' && empty($br_label['text'])) {
 			$br_label['text'] = false;
 		}

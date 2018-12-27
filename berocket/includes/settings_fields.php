@@ -40,7 +40,7 @@ class BeRocket_framework_settings_fields {
 		  . '<input type="radio" name="' . $field_name
 		  . '" value="' . $field_item['value'] . '"'
 		  . ($field_item['value'] == $radio_default ? ' checked="checked" ' : '')
-		  . $class . $extra . '/>'
+		  . $class . $extra . '>'
 		  . $field_item['label_for'] . '</label>';
 		return $html;
 	}

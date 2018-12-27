@@ -572,8 +572,8 @@ class BeRocket_conditions {
 	public static function check_condition_product_price($show, $condition, $additional) {
 		$product_price = br_wc_get_product_attr($additional['product'], 'price');
 		$show = self::check_any_price_for_variations($additional['product'], 'price', $condition['price']['from'], $condition['price']['to']);
-		if ($condition['equal'] == 'not_equal') {
-			$show = ! $show;
+		if ($condition['equal'] === 'not_equal') {
+			$show = !$show;
 		}
 		return $show;
 	}
@@ -686,8 +686,9 @@ class BeRocket_conditions {
 		return $show;
 	}
 
-	public static function check_any_price_for_variations($product, $price_field = 'price', $price_from = 1, $price_to = 10) {
+	public static function check_any_price_for_variations(WC_Product $product, string $price_field = 'price', $price_from = 1, $price_to = 10) {
 		if ($product->is_type('variable')) {
+			/** @var WC_Product_Variable $product */
 			$show = false;
 			$product_variations = $product->get_available_variations();
 			foreach ($product_variations as $product_variation) {

@@ -3,20 +3,13 @@
 	const condsList = document.getElementById("apl-conditions-list");
 
 	function addGroup(id) {
-		let html = window.condGroupTemplate.
-			replace("SELECT_TEMPLATE", window.condSelectTemplate).
-			replace(/%id%/g, id).
-			replace("DATA_CURRENT", id);
 		const elem = document.createElement("DIV");
 		elem.classList.add("br_html_condition");
 		elem.dataset.id = id;
 		elem.dataset.current = "1";
-		elem.innerHTML = html;
-		condsList.appendChild(elem);
 		elem.insertAdjacentHTML("beforeend", window.condButtons);
-		setCondType(elem, data.type);
-		const selectElem = elem.querySelector("select.br_cond_type");
-		selectElem.addEventListener("change", setCondType.bind(selectElem, elem));
+		addCondition(elem);
+		condsList.appendChild(elem);
 		elem.querySelector(".berocket_add_condition").addEventListener("click", addCondition.bind(null, elem));
 		elem.querySelector(".br_remove_group").addEventListener("click", elem.remove);
 	}
@@ -27,40 +20,59 @@
 		addGroup(lastCondID);
 	});
 
+	/**
+	 * @param groupElement HTMLElement
+	 */
 	function addCondition(groupElement) {
-		const id = groupElement.data("id");
-		const position = parent.data("current");
-		const tmpl = window.condTypeTemplates["product"].replace(/%id%/g, id).replace(/%current_pos%/g, position);
-		parent.find(".apl-cond-options").html(tmpl);
+		const id = groupElement.dataset.id;
+		const currentPos = groupElement.dataset.current;
+		const newCurrent = (Number(currentPos) + 1).toString();
+		groupElement.dataset.current = newCurrent;
+
+		const tmpl = window.condTypeTemplates["product"].replace(/%id%/g, id).replace(/%current_pos%/g, newCurrent);
+
+		const addButton = groupElement.querySelector(".berocket_add_condition");
+		addButton.insertAdjacentHTML("beforebegin", tmpl);
+		const inserted = addButton.previousSibling;
+		inserted.dataset.current = newCurrent;
+		const selectElem = inserted.querySelector("select.br_cond_type");
+		selectElem.addEventListener("change", setCondType.bind(selectElem, inserted));
 	}
 
-	function setCondType(selectElem, groupElement) {
-		// Remove the wrapper containing the condition options.
-		groupElement.querySelector(".br_cond").remove();
+	/**
+	 * @this HTMLSelectElement The <select> element that was changed
+	 * @param condWrapper HTMLElement The condition wrapper
+	 */
+	function setCondType(condWrapper) {
+		const group = jQuery(condWrapper).parents(".br_html_condition")[0];
+		const parentID = group.dataset.id;
+		let position = Number(group.dataset.current);
+		const newCurrent = (Number(position) + 1).toString();
+		group.dataset.current = newCurrent;
 
-		const parentID = groupElement.dataset.id;
-		let position = Number(groupElement.dataset.current);
-		position++;
-		selectElem.data("current", position);
-		const tmpl = window.condTypeTemplates[selectElem.value];
+		let tmpl = window.condTypeTemplates[this.value];
 		if (!tmpl) {
+			condWrapper.remove();
 			return;
 		}
-		let html = window.condSelectTemplate.
-		replace(/%id%/g, parentID).
-		replace("DATA_CURRENT", position);
-		jQuery(this).before(html);
-		jQuery(this).prev().find(".br_cond_type").trigger("change");
+
+		tmpl = tmpl.replace(/%id%/g, parentID).replace(/%current_pos%/g, position);
+		condWrapper.insertAdjacentHTML("afterend", tmpl);
+		const inserted = condWrapper.nextSibling;
+		inserted.dataset.current = newCurrent;
+		const selectElem = inserted.querySelector("select.br_cond_type");
+		selectElem.addEventListener("change", setCondType.bind(selectElem, inserted));
+		condWrapper.remove();
 	}
 
 	// Specify the type of a condition.
 	// Register the listener on existing conditions on page load, and all other listeners are attached when created.
 	jQuery("select.br_cond_type").on("change", function() {
-		setCondType.call(this, jQuery(this).parents(".apl-condition"));
+		setCondType.call(this, jQuery(this).parents(".apl-condition")[0]);
 	});
 
 	jQuery(".berocket_add_condition").on("click", function() {
-		addCondition(jQuery(this).parents(".br_html_condition"));
+		addCondition(jQuery(this).parents(".br_html_condition")[0]);
 	});
 
 	jQuery(document).on("click", ".berocket_remove_condition", function() {

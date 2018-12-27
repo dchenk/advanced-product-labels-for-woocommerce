@@ -79,13 +79,6 @@ class BeRocket_conditions {
 		wp_enqueue_script('apl-conditions-builder', $inst->plugin_url() . 'berocket/js/conditions-admin.js', ['jquery'], BeRocket_products_label_version, true);
 		wp_enqueue_style('apl-conditions-builder', $inst->plugin_url() . 'berocket/css/conditions-admin.css', [], BeRocket_products_label_version);
 
-		$largestID = 0;
-		foreach ($value as $id => $v) {
-			if ($id > $largestID) {
-				$largestID = $id;
-			}
-		}
-
 		$conditionGroupButtons = '<span class="button berocket_add_condition"><i class="fa fa-plus"></i></span>
 			<span class="button br_remove_group"><i class="fa fa-minus"></i></span>';
 
@@ -93,28 +86,28 @@ class BeRocket_conditions {
 		$typeTemplates = [];
 		foreach ($condition_types as $typeSlug => $typeName) {
 			$typeTemplates[$typeSlug] = $this->conditionTemplate($condition_types, $typeSlug);
-		} ?>
-		<script>
-			window.largestCondGroupID = <?php echo $largestID; ?>;
-			window.condTypeTemplates = <?php echo json_encode($typeTemplates); ?>
-			window.condButtons = <?php echo json_encode($conditionGroupButtons); ?>;
-		</script>
-		<div id="apl-conditions-list">
-			<?php
+		}
+
+		$largestCondID = 1; ?>
+		<div id="apl-conditions-list"><?php
 			foreach ($value as $id => $condGroup) {
-				$lastCondPosition = 1;
-				echo '<div class="br_html_condition" data-id="' . $id . '" data-current="' . $lastCondPosition . '">';
-				foreach ($condGroup as $currentPosition => $condition) {
-					if ($currentPosition > $lastCondPosition) {
-						$lastCondPosition = $currentPosition;
-					}
-					echo $this->conditionTemplate($condition_types, $condition['type'] ?? '', $id, $currentPosition, $condition);
+				if (count($condGroup) > $largestCondID) {
+					$largestCondID = count($condGroup);
+				}
+				echo '<div class="br_html_condition" data-id="' . $id . '" data-current="' . $largestCondID . '">';
+				foreach ($condGroup as $i => $condition) {
+					echo $this->conditionTemplate($condition_types, $condition['type'] ?? '', $id, $i, $condition);
 				}
 				echo $conditionGroupButtons;
 				echo '</div>';
 			} ?>
 		</div>
 		<span class="button" id="apl-add-cond-group"><i class="fa fa-plus"></i></span>
+		<script>
+			window.largestCondGroupID = <?php echo $largestCondID; ?>;
+			window.condTypeTemplates = <?php echo json_encode($typeTemplates); ?>;
+			window.condButtons = <?php echo json_encode($conditionGroupButtons); ?>;
+		</script>
 		<?php
 	}
 
@@ -214,18 +207,18 @@ class BeRocket_conditions {
 		}
 		$check = true;
 		switch ($equal) {
-			case 'equal':
-				$check = $value1 == $value2;
-				break;
-			case 'not_equal':
-				$check = $value1 != $value2;
-				break;
-			case 'equal_less':
-				$check = $value1 <= $value2;
-				break;
-			case 'equal_more':
-				$check = $value1 >= $value2;
-				break;
+		case 'equal':
+			$check = $value1 == $value2;
+			break;
+		case 'not_equal':
+			$check = $value1 != $value2;
+			break;
+		case 'equal_less':
+			$check = $value1 <= $value2;
+			break;
+		case 'equal_more':
+			$check = $value1 >= $value2;
+			break;
 		}
 		return $check;
 	}
@@ -894,8 +887,7 @@ class BeRocket_conditions {
 	private function conditionTemplate(array $condition_types, string $type, int $groupID = 0, int $currentPosition = 0, array $condition = []): string {
 		return '<div class="apl-condition" data-current=' . $currentPosition . '">' .
 				$this->condSelectTemplate($condition_types, $type) .
-				'<span class="button berocket_remove_condition"><i class="fa fa-minus"></i></span>
-				<div class="apl-cond-options"></div>' .
+				'<span class="button berocket_remove_condition"><i class="fa fa-minus"></i></span>' .
 				$this->condInputHTML($type, $groupID, $currentPosition, $condition) .
 			'</div>';
 	}

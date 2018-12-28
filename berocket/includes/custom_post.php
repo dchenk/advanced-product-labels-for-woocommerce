@@ -148,7 +148,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 				<div id="minor-publishing">
 					<div id="major-publishing-actions">
 						<div id="delete-action"><?php
-						if (!in_array($pagenow, ['post-new.php'], true) && current_user_can("delete_post", $post->ID)) {
+						if (strpos($pagenow, 'post-new.php') === false && current_user_can('delete_post', $post->ID)) {
 							if (!EMPTY_TRASH_DAYS) {
 								$delete_text = __('Delete Permanently', 'BeRocket_domain');
 							} else {
@@ -158,7 +158,6 @@ if (!class_exists('BeRocket_custom_post_class')) {
 							<?php
 						} ?>
 						</div>
-
 						<div id="publishing-action">
 							<span class="spinner"></span>
 							<input type="submit" class="button button-primary tips" name="publish" value="<?php _e('Save', 'BeRocket_domain'); ?>">

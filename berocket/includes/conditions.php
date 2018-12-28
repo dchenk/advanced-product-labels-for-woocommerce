@@ -465,11 +465,11 @@ class BeRocket_conditions {
 
 	public static function check_condition_product($show, $condition, $additional) {
 		if (isset($condition['product']) && is_array($condition['product'])) {
-			$show = in_array($additional['product_id'], $condition['product'], true);
-			if (! empty($condition['additional_product']) && is_array($condition['additional_product'])) {
-				$show = $show || in_array($additional['product_id'], $condition['additional_product'], true);
+			$show = in_array($additional['product_id'], $condition['product']);
+			if (!empty($condition['additional_product']) && is_array($condition['additional_product'])) {
+				$show = $show || in_array($additional['product_id'], $condition['additional_product']);
 			}
-			if ($condition['equal'] == 'not_equal') {
+			if ($condition['equal'] === 'not_equal') {
 				$show = !$show;
 			}
 		}
@@ -874,7 +874,6 @@ class BeRocket_conditions {
 	 * @return bool
 	 */
 	public static function check_condition_page_woo_category($show, $condition, $additional) {
-		error_log('HELLO');
 		/** @var $wp_query WP_Query */
 		global $wp_query;
 		if (empty($condition['category'])) {
@@ -883,11 +882,9 @@ class BeRocket_conditions {
 		if (!is_array($condition['category'])) {
 			$condition['category'] = [$condition['category']];
 		}
-		error_log('got here');
 		$categories = array_map('intval', $condition['category']);
 		if ($wp_query->is_tax) {
 			$queried = $wp_query->get_queried_object();
-			error_log("Queried:" . print_r($queried, true));
 			if (
 				is_object($queried)
 				&& property_exists($queried, 'term_id')

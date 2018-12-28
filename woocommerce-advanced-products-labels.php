@@ -534,23 +534,24 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		$custom_post = BeRocket_advanced_labels_custom_post::getInstance();
 
-		$label = [
+		$prodOptions = [
 			'label_from_post' => '',
 		];
 
 		// If we're not creating a new product now, get the possibly existing label.
 		if (!strpos($pagenow, 'post-new.php')) {
-			$label = $custom_post->get_option($post->ID);
+			$prodOptions = $custom_post->get_option($post->ID);
 		}
+
 		$labels = $this->getPublishedLabels(); ?>
 		<div class="panel wc-metaboxes-wrapper" id="advanced-prod-label-edit">
 			<?php wp_nonce_field('br_labels_check', 'br_labels_nonce'); ?>
 			<h4><?php _e('Labels to display on this product', 'apl_products_label_domain'); ?></h4>
 			<?php
 			foreach ($labels as $labelPost) {
-				$post_title = get_the_title($labelPost->ID);
-				echo '<p><label><input name="br_labels[label_from_post][]" type="checkbox" value="' . $labelPost->ID . '"' .
-					(is_array($label['label_from_post']) && in_array($labelPost->ID, $label['label_from_post'], true) ? ' checked' : '') . '>(' . $labelPost->ID . ') ' . $post_title .
+				$checked = checked(is_array($prodOptions['label_from_post']) && in_array($labelPost->ID, $prodOptions['label_from_post']), true, false);
+				echo '<p><label><input name="br_labels[label_from_post][]" type="checkbox" value="' . $labelPost->ID . '"' . $checked . '>(' . $labelPost->ID . ') ' .
+						$labelPost->post_title .
 					'</label></p>';
 			} ?>
 			<?php $custom_post->settings($post); ?>
@@ -715,6 +716,9 @@ class BeRocket_products_label extends BeRocket_Framework {
 		<?php
 	}
 
+	/**
+	 * @return WP_Post[]
+	 */
 	private function getPublishedLabels(): array {
 		$args = [
 			'posts_per_page'   => -1,

@@ -16,6 +16,7 @@ class BeRocket_Framework {
 	public $defaults = [];
 
 	protected static $instance;
+	protected const options_page = '';
 	protected $plugin_version_capability = 0;
 
 	protected $framework_data = [
@@ -105,7 +106,7 @@ class BeRocket_Framework {
 	 * Action links on the Plugins page
 	 */
 	public function plugin_action_links(array $links): array {
-		array_unshift($links, '<a href="' . admin_url('admin.php?page=' . $this->cc->values['option_page']) .
+		array_unshift($links, '<a href="' . admin_url('admin.php?page=' . $this::options_page) .
 			'" title="' . __('Settings', 'BeRocket_domain') . '">' .
 			__('Settings', 'BeRocket_domain') . '</a>');
 		return $links;
@@ -388,7 +389,7 @@ class BeRocket_Framework {
 			if (!$setup_style['hide_form']) {
 				echo '<form data-plugin="' . $this->cc->info['plugin_name'] . '" class="br_framework_submit_form ' . $this->cc->info['plugin_name'] . '_submit_form ' . ((isset($this->plugin_version_capability) && $this->plugin_version_capability <= 5) ? 'show_premium' : '') .
 						 '" method="post" action="options.php">';
-				settings_fields($this->cc->values['option_page']);
+				settings_fields($this::options_page);
 			}
 			echo $page_content;
 			echo '<div class="clear-both"></div>';
@@ -533,7 +534,7 @@ class BeRocket_Framework {
 	}
 
 	public function is_settings_page($settings_page) {
-		if (!empty($_GET['page']) && $_GET['page'] == $this->cc->values['option_page']) {
+		if (!empty($_GET['page']) && $_GET['page'] == $this::options_page) {
 			$settings_page = true;
 		}
 		return $settings_page;

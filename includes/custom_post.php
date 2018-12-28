@@ -39,7 +39,6 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		'tooltip_close_on_click'=> '0',
 		'tooltip_use_arrow'     => '0',
 		'tooltip_max_width'     => '300',
-		'template'              => '',
 		'div_custom_class'      => '',
 		'div_custom_css'        => '',
 		'span_custom_class'     => '',
@@ -274,12 +273,6 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 				],
 				'Style'     => [
-					/*'templates' => array(
-						"section"  => "templates",
-						"label"    => __('Templates', 'apl_products_label_domain'),
-						"name"     => "css_template",
-						"value"    => $options['template'],
-					),*/
 					'color_use' => [
 						"type"     => "checkbox",
 						"label"    => __('Use background color', 'apl_products_label_domain'),
@@ -493,25 +486,25 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 					],
 					'i1_custom_class' => [
 						"type"     => "text",
-						"label"    => __('1) &lt;i&gt; block custom class', 'apl_products_label_domain'),
+						"label"    => __('First &lt;i&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "i1_custom_class",
 						"value"    => $options['i1_custom_class'],
 					],
 					'i2_custom_class' => [
 						"type"     => "text",
-						"label"    => __('2) &lt;i&gt; block custom class', 'apl_products_label_domain'),
+						"label"    => __('Second &lt;i&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "i2_custom_class",
 						"value"    => $options['i2_custom_class'],
 					],
 					'i3_custom_class' => [
 						"type"     => "text",
-						"label"    => __('3) &lt;i&gt; block custom class', 'apl_products_label_domain'),
+						"label"    => __('Third &lt;i&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "i3_custom_class",
 						"value"    => $options['i3_custom_class'],
 					],
 					'i4_custom_class' => [
 						"type"     => "text",
-						"label"    => __('4) &lt;i&gt; block custom class', 'apl_products_label_domain'),
+						"label"    => __('Fourth &lt;i&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "i4_custom_class",
 						"value"    => $options['i4_custom_class'],
 					],

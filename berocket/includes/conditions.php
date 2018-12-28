@@ -146,27 +146,27 @@ class BeRocket_conditions {
 	public static function get_conditions(): array {
 		return [
 			// PRODUCTS
-			'condition_product' => ['save' => 'save_condition_product', 'func' => 'check_condition_product', 'type' => 'product', 'name' => __('Product', 'BeRocket_domain')],
-			'condition_product_sale' => ['func' => 'check_condition_product_sale', 'type' => 'sale', 'name' => __('On Sale', 'BeRocket_domain')],
-			'condition_product_bestsellers' => ['func' => 'check_condition_product_bestsellers', 'type' => 'bestsellers', 'name' => __('Bestsellers', 'BeRocket_domain')],
-			'condition_product_price' => ['func' => 'check_condition_product_price', 'type' => 'price', 'name' => __('Price', 'BeRocket_domain')],
-			'condition_product_stockstatus' => ['func' => 'check_condition_product_stockstatus', 'type' => 'stockstatus', 'name' => __('Stock status', 'BeRocket_domain')],
-			'condition_product_totalsales' => ['func' => 'check_condition_product_totalsales', 'type' => 'totalsales', 'name' => __('Total sales', 'BeRocket_domain')],
-			'condition_product_category' => ['func' => 'check_condition_product_category', 'type' => 'category', 'name' => __('Category', 'BeRocket_domain')],
-			'condition_product_attribute' => ['func' => 'check_condition_product_attribute', 'type' => 'attribute', 'name' => __('Product attribute', 'BeRocket_domain')],
-			'condition_product_age' => ['func' => 'check_condition_product_age', 'type' => 'age', 'name' => __('Product age', 'BeRocket_domain')],
-			'condition_product_saleprice' => ['func' => 'check_condition_product_saleprice', 'type' => 'saleprice', 'name' => __('Sale price', 'BeRocket_domain')],
-			'condition_product_regularprice' => ['func' => 'check_condition_product_regularprice', 'type' => 'regularprice', 'name' => __('Regular price', 'BeRocket_domain')],
-			'condition_product_stockquantity' => ['func' => 'check_condition_product_stockquantity', 'type' => 'stockquantity', 'name' => __('Stock quantity', 'BeRocket_domain')],
-			'condition_product_featured' => ['func' => 'check_condition_product_featured', 'type' => 'featured', 'name' => __('Featured', 'BeRocket_domain')],
-			'condition_product_shippingclass' => ['func' => 'check_condition_product_shippingclass', 'type' => 'shippingclass', 'name' => __('Shipping Class', 'BeRocket_domain')],
-			'condition_product_type' => ['func' => 'check_condition_product_type', 'type' => 'product_type', 'name' => __('Product Type', 'BeRocket_domain')],
-			'condition_product_rating' => ['func' => 'check_condition_product_rating', 'type' => 'product_rating', 'name' => __('Product Rating', 'BeRocket_domain')],
+			'condition_product' => ['save' => 'save_condition_product', 'func' => 'check_condition_product', 'type' => 'product', 'name' => __('Product', 'apl_products_label_domain')],
+			'condition_product_sale' => ['func' => 'check_condition_product_sale', 'type' => 'sale', 'name' => __('On Sale', 'apl_products_label_domain')],
+			'condition_product_bestsellers' => ['func' => 'check_condition_product_bestsellers', 'type' => 'bestsellers', 'name' => __('Bestsellers', 'apl_products_label_domain')],
+			'condition_product_price' => ['func' => 'check_condition_product_price', 'type' => 'price', 'name' => __('Price', 'apl_products_label_domain')],
+			'condition_product_stockstatus' => ['func' => 'check_condition_product_stockstatus', 'type' => 'stockstatus', 'name' => __('Stock status', 'apl_products_label_domain')],
+			'condition_product_totalsales' => ['func' => 'check_condition_product_totalsales', 'type' => 'totalsales', 'name' => __('Total sales', 'apl_products_label_domain')],
+			'condition_product_category' => ['func' => 'check_condition_product_category', 'type' => 'category', 'name' => __('Category', 'apl_products_label_domain')],
+			'condition_product_attribute' => ['func' => 'check_condition_product_attribute', 'type' => 'attribute', 'name' => __('Product attribute', 'apl_products_label_domain')],
+			'condition_product_age' => ['func' => 'check_condition_product_age', 'type' => 'age', 'name' => __('Product age', 'apl_products_label_domain')],
+			'condition_product_saleprice' => ['func' => 'check_condition_product_saleprice', 'type' => 'saleprice', 'name' => __('Sale price', 'apl_products_label_domain')],
+			'condition_product_regularprice' => ['func' => 'check_condition_product_regularprice', 'type' => 'regularprice', 'name' => __('Regular price', 'apl_products_label_domain')],
+			'condition_product_stockquantity' => ['func' => 'check_condition_product_stockquantity', 'type' => 'stockquantity', 'name' => __('Stock quantity', 'apl_products_label_domain')],
+			'condition_product_featured' => ['func' => 'check_condition_product_featured', 'type' => 'featured', 'name' => __('Featured', 'apl_products_label_domain')],
+			'condition_product_shippingclass' => ['func' => 'check_condition_product_shippingclass', 'type' => 'shippingclass', 'name' => __('Shipping Class', 'apl_products_label_domain')],
+			'condition_product_type' => ['func' => 'check_condition_product_type', 'type' => 'product_type', 'name' => __('Product Type', 'apl_products_label_domain')],
+			'condition_product_rating' => ['func' => 'check_condition_product_rating', 'type' => 'product_rating', 'name' => __('Product Rating', 'apl_products_label_domain')],
 
 			// PAGES
-			'condition_page_id' => ['func' => 'check_condition_page_id', 'type' => 'page_id', 'name' => __('Page ID', 'BeRocket_domain')],
-			'condition_page_woo_attribute' => ['func' => 'check_condition_page_woo_attribute', 'type' => 'woo_attribute', 'name' => __('Product Attribute', 'BeRocket_domain')],
-			'condition_page_woo_search' => ['func' => 'check_condition_page_woo_search', 'type' => 'woo_search', 'name' => __('Product Search', 'BeRocket_domain')],
+			'condition_page_id' => ['func' => 'check_condition_page_id', 'type' => 'page_id', 'name' => __('Page ID', 'apl_products_label_domain')],
+			'condition_page_woo_attribute' => ['func' => 'check_condition_page_woo_attribute', 'type' => 'woo_attribute', 'name' => __('Product Attribute', 'apl_products_label_domain')],
+			'condition_page_woo_search' => ['func' => 'check_condition_page_woo_search', 'type' => 'woo_search', 'name' => __('Product Search', 'apl_products_label_domain')],
 //			'condition_page_woo_category' => ['func' => 'check_condition_page_woo_category', 'type' => 'category', 'name' => __('Product Category', 'BeRocket_domain')],
 		];
 	}
@@ -327,9 +327,8 @@ class BeRocket_conditions {
 	}
 
 	public static function condition_product_category($html, $name, $options) {
-		$def_options = ['category' => []];
-		$options = array_merge($def_options, $options);
-		if (! is_array($options['category'])) {
+		$options = array_merge(['category' => []], $options);
+		if (!is_array($options['category'])) {
 			$options['category'] = [$options['category']];
 		}
 		$product_categories = get_terms([
@@ -340,13 +339,14 @@ class BeRocket_conditions {
 			$def_options = ['category' => ''];
 			$options = array_merge($def_options, $options);
 			$html .= static::supcondition($name, $options);
-			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' . __('Include subcategories', 'BeRocket_domain') . '</label>';
-			$html .= '<div style="max-height:70px;overflow:auto;border:1px solid #ccc;padding: 5px;">';
+			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' .
+				__('Include subcategories', 'BeRocket_domain') . '</label>';
+			$html .= '<div style="max-height: 70px; overflow: auto; border: 1px solid #ccc; padding: 5px; margin-top: 4px;">';
 			foreach ($product_categories as $category) {
-				$html .= '<div><label>
-				<input type="checkbox" name="' . $name . '[category][]" value="' . $category->term_id . '"' . ((! empty($options['category']) && is_array($options['category']) && in_array($category->term_id, $options['category'], true)) ? ' checked' : '') . '>
-				' . $category->name . '
-				</label></div>';
+				$html .= '<label style="display: block;">
+					<input type="checkbox" name="' . $name . '[category][]" value="' . $category->term_id . '"' . checked(in_array($category->term_id, $options['category']), true, false) . '>' .
+					$category->name .
+					'</label>';
 			}
 			$html .= '</div>';
 		}
@@ -742,10 +742,10 @@ class BeRocket_conditions {
 			'tags' => '[PRODUCT TAGS]',
 		];
 		foreach ($woo_pages as $page_id => $page_name) {
-			$html .= '<div><label><input name="' . $name . '[pages][]" type="checkbox" value="' . $page_id . '"' . (in_array($page_id, $options['pages'], true) ? ' checked' : '') . '>' . $page_name . '</label></div>';
+			$html .= '<div><label><input name="' . $name . '[pages][]" type="checkbox" value="' . $page_id . '"' . checked(in_array($page_id, $options['pages']), true, false) . '>' . $page_name . '</label></div>';
 		}
 		foreach ($pages as $page) {
-			$html .= '<div><label><input name="' . $name . '[pages][]" type="checkbox" value="' . $page->ID . '"' . (in_array($page->ID, $options['pages'], true) ? ' checked' : '') . '>' . $page->post_title . ' (ID: ' . $page->ID . ')</label></div>';
+			$html .= '<div><label><input name="' . $name . '[pages][]" type="checkbox" value="' . $page->ID . '"' . checked(in_array($page->ID, $options['pages']), true, false) . '>' . $page->post_title . ' (ID: ' . $page->ID . ')</label></div>';
 		}
 		$html .= '</div>';
 		return $html;
@@ -806,13 +806,14 @@ class BeRocket_conditions {
 			$def_options = ['category' => ''];
 			$options = array_merge($def_options, $options);
 			$html .= br_supcondition_equal($name, $options);
-			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' . __('Include subcategories', 'apl_products_label_domain') . '</label>';
-			$html .= '<div style="max-height:150px;overflow:auto;border:1px solid #ccc;padding: 5px;">';
+			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' .
+				__('Include subcategories', 'apl_products_label_domain') . '</label>';
+			$html .= '<div style="max-height: 150px; overflow: auto; border: 1px solid #ccc; padding: 5px; margin-top: 4px;">';
 			foreach ($product_categories as $category) {
-				$html .= '<div><label>
-				<input type="checkbox" name="' . $name . '[category][]" value="' . $category->term_id . '"' . ((! empty($options['category']) && is_array($options['category']) && in_array($category->term_id, $options['category'], true)) ? ' checked' : '') . '>
-				' . $category->name . '
-				</label></div>';
+				$html .= '<label style="display: block;">
+					<input type="checkbox" name="' . $name . '[category][]" value="' . $category->term_id . '"' . checked(is_array($options['category']) && in_array($category->term_id, $options['category']), true, false) . '>' .
+					$category->name .
+					'</label>';
 			}
 			$html .= '</div>';
 		}
@@ -880,7 +881,6 @@ class BeRocket_conditions {
 		if (empty($condition['category'])) {
 			return $show;
 		}
-//		$show = false;
 		if (!is_array($condition['category'])) {
 			$condition['category'] = [$condition['category']];
 		}

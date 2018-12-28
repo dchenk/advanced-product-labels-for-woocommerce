@@ -107,8 +107,8 @@ class BeRocket_Framework {
 	 */
 	public function plugin_action_links(array $links): array {
 		array_unshift($links, '<a href="' . admin_url('admin.php?page=' . $this::options_page) .
-			'" title="' . __('Settings', 'BeRocket_domain') . '">' .
-			__('Settings', 'BeRocket_domain') . '</a>');
+			'" title="' . __('Settings', 'apl_products_label_domain') . '">' .
+			__('Settings', 'apl_products_label_domain') . '</a>');
 		return $links;
 	}
 
@@ -394,7 +394,7 @@ class BeRocket_Framework {
 			echo $page_content;
 			echo '<div class="clear-both"></div>';
 			if (!$setup_style['hide_form']) {
-				echo '<input type="submit" class="button-primary button" value="' . __('Save Changes', 'BeRocket_domain') . '">';
+				echo '<input type="submit" class="button-primary button" value="' . __('Save Changes', 'apl_products_label_domain') . '">';
 				echo '<div class="br_save_error"></div>';
 				echo '</form>';
 			}

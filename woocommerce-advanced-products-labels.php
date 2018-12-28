@@ -707,7 +707,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 		?>
 		<div class="wrap br_framework_settings">
 			<div id="icon-themes" class="icon32"></div>
-			<h1><?php _e('Settings for Advanced Product Labels', 'BeRocket_domain'); ?></h1>
+			<h1><?php _e('Settings for Advanced Product Labels', 'apl_products_label_domain'); ?></h1>
 			<h4 class="sub-head">Customize labels placed on products.</h4>
 			<a href="https://github.com/dchenk/advanced-product-labels-for-woocommerce" title="Plugin Support" target="_blank">Support</a>
 			<?php settings_errors(); ?>

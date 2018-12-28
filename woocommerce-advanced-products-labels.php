@@ -3,16 +3,16 @@
  * Plugin Name: WooCommerce Advanced Product Labels
  * Plugin URI: https://github.com/dchenk/advanced-product-labels-for-woocommerce
  * Description: Promote your products! Show “Free Shipping” or other special attributes with your products.
- * Version: 1.1.11
+ * Version: 3.0.0
  * Author: widerwebs
- * Requires at least: 4.0
+ * Requires at least: 5.0
  * Author URI: https://github.com/dchenk
  * Text Domain: advanced_product_labels
  * Domain Path: /languages
- * WC tested up to: 3.4.6
+ * WC tested up to: 3.5.3
  */
 
-define('BeRocket_products_label_version', '1.1.11');
+define('BeRocket_products_label_version', '3.0.0');
 
 require_once(__DIR__ . '/berocket/framework.php');
 

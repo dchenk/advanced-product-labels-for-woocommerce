@@ -2,9 +2,9 @@
 Plugin Name: Advanced Product Labels for WooCommerce
 Contributors: dholovnia, berocket
 Tags: labels, tag, mark, product labels, product tags, product marks, product sign, new product label, sale product label, new product badge, sale product badge, advanced product labels, woocommerce labels, woocommerce product labels, woocommerce tags, woocommerce marks, woo labels, woo product labels, wc labels, wc product labels, marked produc, add more labels, add more tags, custom product labels, custom product tags, custom product marks, custom labels, custom product badges, custom badges, per product type, per product label, single product label, single product page label, shop page label, shop page badges, change button label, change label, button label, simple label, variable product label, grouped product label, external product label, berocket, berocket advanced product labels for woocommerce
-Requires at least: 4.9
-Tested up to: 4.9.8
-Stable tag: 1.1.11
+Requires at least: 5.0
+Tested up to: 5.0.2
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,16 +12,17 @@ Promote exclusive discounts, new products or free shipping. Create labels easily
 
 == Description ==
 
-With Advanced Product Labels plugin you can create labels easily and quickly. Promote your free products, show “Free Shipping” or other special attributes of products. By using conditions you can add each labels to specific products in your shop.
+With Advanced Product Labels, you can create labels easily and quickly. Promote your free products, show “Free Shipping” or other special attributes of products. By using conditions you can add each labels to specific products in your shop.
 
 
 = Features: =
-* Custom notices labels on products
-* Label for products by specific conditions
-* Label by: product name, product category, sale status, stock status, bestsellers position, price, total sales count
-* Custom text and discount percentage type of label
-* Custom background color and text color for each labels
-* Custom position for each labels
+* Custom notice labels on products
+* Specify conditions for labels to be applied
+* Label by product name, product category, sale status, stock status, bestsellers position, price, total sales count
+* Custom text and discount percentage label type
+* Custom background color and text color for each label
+* Custom position for each label
+* Tooltips can be shown when a label is clicked or hovered over
 * Multiple labels for one product
 
 
@@ -46,6 +47,10 @@ If none of the previous listed actions helps you solve the problem, then, submit
 
 
 == Changelog ==
+
+= 3.0.0 =
+* A complete revision of the codebase for performance and reliability
+* Removed all upsells for a pro version of the plugin
 
 = 1.1.11 =
 * Fix - WooCommerce image gallery

@@ -47,13 +47,9 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 		'b_custom_class'        => '',
 		'b_custom_css'          => '',
 		'i1_custom_class'       => '',
-		'i1_custom_css'         => '',
 		'i2_custom_class'       => '',
-		'i2_custom_css'         => '',
 		'i3_custom_class'       => '',
-		'i3_custom_css'         => '',
 		'i4_custom_class'       => '',
-		'i4_custom_css'         => '',
 	];
 
 	/**
@@ -501,23 +497,11 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 						"name"     => "i1_custom_class",
 						"value"    => $options['i1_custom_class'],
 					],
-					'i1_custom_css' => [
-						"type"     => "textarea",
-						"label"    => __('1) &lt;i&gt; block custom CSS', 'apl_products_label_domain'),
-						"name"     => "i1_custom_css",
-						"value"    => $options['i1_custom_css'],
-					],
 					'i2_custom_class' => [
 						"type"     => "text",
 						"label"    => __('2) &lt;i&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "i2_custom_class",
 						"value"    => $options['i2_custom_class'],
-					],
-					'i2_custom_css' => [
-						"type"     => "textarea",
-						"label"    => __('2) &lt;i&gt; block custom CSS', 'apl_products_label_domain'),
-						"name"     => "i2_custom_css",
-						"value"    => $options['i2_custom_css'],
 					],
 					'i3_custom_class' => [
 						"type"     => "text",
@@ -525,23 +509,11 @@ class BeRocket_advanced_labels_custom_post extends BeRocket_custom_post_class {
 						"name"     => "i3_custom_class",
 						"value"    => $options['i3_custom_class'],
 					],
-					'i3_custom_css' => [
-						"type"     => "textarea",
-						"label"    => __('3) &lt;i&gt; block custom CSS', 'apl_products_label_domain'),
-						"name"     => "i3_custom_css",
-						"value"    => $options['i3_custom_css'],
-					],
 					'i4_custom_class' => [
 						"type"     => "text",
 						"label"    => __('4) &lt;i&gt; block custom class', 'apl_products_label_domain'),
 						"name"     => "i4_custom_class",
 						"value"    => $options['i4_custom_class'],
-					],
-					'i4_custom_css' => [
-						"type"     => "textarea",
-						"label"    => __('4) &lt;i&gt; block custom CSS', 'apl_products_label_domain'),
-						"name"     => "i4_custom_css",
-						"value"    => $options['i4_custom_css'],
 					],
 				],
 			],

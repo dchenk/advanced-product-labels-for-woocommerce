@@ -318,10 +318,10 @@ class BeRocket_products_label extends BeRocket_Framework {
 
 		wp_enqueue_style('advanced_product_labels_style', $this->plugin_url() . 'css/frontend.css', [], BeRocket_products_label_version);
 
-		wp_register_style('berocket_tippy', $this->plugin_url() . 'css/tippy.css', [], BeRocket_products_label_version);
-		wp_register_script('berocket_tippy', $this->plugin_url() . 'js/tippy.min.js', ['jquery'], BeRocket_products_label_version);
-
 		wp_enqueue_style('advanced_product_labels_templates_style', $this->plugin_url() . 'css/templates.css', [], BeRocket_products_label_version);
+
+		wp_register_style('berocket_tippy', $this->plugin_url() . 'css/tippy.css', [], BeRocket_products_label_version);
+		wp_register_script('berocket_tippy', $this->plugin_url() . 'js/tippy.min.js', ['jquery'], BeRocket_products_label_version, true);
 
 		if (is_admin()) {
 			wp_enqueue_style('product_labels_admin_style', $this->plugin_url() . 'css/admin.css', [], BeRocket_products_label_version);
@@ -589,8 +589,6 @@ class BeRocket_products_label extends BeRocket_Framework {
 			return;
 		}
 
-//		error_log('MAYBE SHOWING LABEL: ' . print_r($br_label, true) . ' -- ' . print_r($product, true));
-
 		// Make sure the content_type property exists.
 		if (empty($br_label['content_type'])) {
 			$br_label['content_type'] = 'text';
@@ -639,11 +637,11 @@ class BeRocket_products_label extends BeRocket_Framework {
 					}
 				}
 				if ($price_ratio !== false) {
-					$price_ratio = ($price_ratio * 100);
+					$price_ratio = $price_ratio * 100;
 					$price_ratio = number_format($price_ratio, 0, '', '');
 					$price_ratio = $price_ratio * 1;
 					$br_label['text'] = (100 - $price_ratio) . "%";
-					if (! empty($br_label['discount_minus'])) {
+					if (!empty($br_label['discount_minus'])) {
 						$br_label['text'] = '-' . $br_label['text'];
 					}
 				}
@@ -685,10 +683,11 @@ class BeRocket_products_label extends BeRocket_Framework {
 		if (empty($br_label['image_height']) && empty($br_label['image_width'])) {
 			$label_style .= 'padding: 0.2em 0.5em;';
 		}
-		if (!empty($br_label['color']) && ! empty($br_label['color_use'])) {
+
+		if (!empty($br_label['color']) && !empty($br_label['color_use'])) {
 			$label_style .= 'background-color:' . $br_label['color'] . ';';
-			$background_color = $br_label['color'];
 		}
+
 		if (!empty($br_label['font_color'])) {
 			$label_style .= 'color:' . $br_label['font_color'] . ';';
 		}
@@ -703,6 +702,7 @@ class BeRocket_products_label extends BeRocket_Framework {
 		if (isset($br_label['line_height'])) {
 			$label_style .= 'line-height:' . $br_label['line_height'] . 'px;';
 		}
+
 		$div_style = '';
 		if (isset($br_label['padding_top'])) {
 			$div_style .= 'top:' . $br_label['padding_top'] . 'px;';
@@ -710,28 +710,36 @@ class BeRocket_products_label extends BeRocket_Framework {
 		if (isset($br_label['padding_horizontal']) && $br_label['position'] != 'center') {
 			$div_style .= ($br_label['position'] == 'left' ? 'left:' : 'right:') . $br_label['padding_horizontal'] . 'px;';
 		}
-		$div_class = 'br_alabel br_alabel_' . $br_label['type'] . ' br_alabel_type_' . @ $br_label['content_type'] . ' br_alabel_' . $br_label['position'];
 
-		$br_label['text'] = apply_filters('berocket_apl_label_show_text', $br_label['text'] ?? '', $br_label, $product);
-		$label_style = apply_filters('berocket_apl_label_show_label_style', $label_style ?? '', $br_label, $product);
-		$div_style = apply_filters('berocket_apl_label_show_div_style', $div_style ?? '', $br_label, $product);
-		$div_class = apply_filters('berocket_apl_label_show_div_class', $div_class ?? '', $br_label, $product);
+		// $div_classes is the classes set on the outer div element.
+		$div_classes = [
+			'br_alabel',
+			'br_alabel_' . $br_label['type'],
+			'br_label_type_' . $br_label['content_type'],
+			'br_alabel_' . $br_label['position'],
+		];
+
+		$br_label['text'] = apply_filters('advanced_product_labels_label_text', $br_label['text'] ?? '', $br_label, $product);
+		$div_style = apply_filters('advanced_product_labels_div_style', $div_style, $br_label, $product);
+		$div_classes = apply_filters('advanced_product_labels_div_class', $div_classes, $br_label, $product);
+		$label_style = apply_filters('advanced_product_labels_label_style', $label_style, $br_label, $product);
+
 		if ($br_label['content_type'] == 'text' && empty($br_label['text'])) {
-			$br_label['text'] = false;
-		}
-		if ($br_label['text'] === false) {
 			return;
 		}
+
 		if (!is_array($br_label['text'])) {
 			$br_label['text'] = [$br_label['text']];
 		}
-		if (in_array($br_label['content_type'], apply_filters('berocket_apl_content_type_with_before_after', ['sale_p']), true)) {
+
+		if (in_array($br_label['content_type'], apply_filters('apl_content_type_with_before_after', ['sale_p']), true)) {
 			foreach ($br_label['text'] as &$br_label_text) {
 				$br_label_text = (empty($br_label['text_before']) ? '' : $br_label['text_before'] . (empty($br_label['text_before_nl']) ? '' : '<br>'))
 					. $br_label_text
 					. (empty($br_label['text_after']) ? '' : (empty($br_label['text_after_nl']) ? '' : '<br>') . $br_label['text_after']);
 			}
 		}
+
 		foreach ($br_label['text'] as $text) {
 			if (! empty($text) && $text[0] == '#') {
 				$label_style = $label_style . ' background-color:' . $text . ';';
@@ -757,42 +765,49 @@ class BeRocket_products_label extends BeRocket_Framework {
 				$tooltip_data .= ' data-tippy-hideOnClick="' . (empty($br_label['tooltip_close_on_click']) ? 'false' : 'true') . '"';
 				$tooltip_data .= ' data-tippy-arrow="' . (empty($br_label['tooltip_use_arrow']) ? 'false' : 'true') . '"';
 			}
-			$custom_css_elements = [
-				'div_custom_class', 'div_custom_css',
-				'span_custom_class', 'span_custom_css',
-				'b_custom_class', 'b_custom_css',
-				'i1_custom_class', 'i1_custom_css',
-				'i2_custom_class', 'i2_custom_css',
-				'i3_custom_class', 'i3_custom_css',
-				'i4_custom_class', 'i4_custom_css',
+
+			$custom_styling = [
+				'div_custom_class',
+				'div_custom_css',
+				'span_custom_class',
+				'b_custom_class',
+				'i1_custom_class',
+				'i2_custom_class',
+				'i3_custom_class',
+				'i4_custom_class',
 			];
-			foreach ($custom_css_elements as $element) {
-				if (empty($br_label[$element])) {
-					$br_label[$element] = '';
+
+			// Make sure that each possible attribute value is a string.
+			foreach ($custom_styling as $cs) {
+				if (empty($br_label[$cs])) {
+					$br_label[$cs] = '';
 				}
 			}
-			$div_class .= ' ' . $br_label['div_custom_class'];
-			$div_style .= $br_label['div_custom_css'];
+
+			if ($br_label['div_custom_class']) {
+				array_push($div_classes, $br_label['div_custom_class']);
+			}
+
+			if (!empty($br_label['template'])) {
+				array_push($div_classes, 'template-' . $br_label['template']);
+			}
+
 			$label_style .= $br_label['span_custom_css'];
-			$i1_style = $i2_style = $i3_style = $i4_style = (empty($background_color) ? '' : 'background-color:' . $background_color . '; border-color:' . $background_color . ';');
-			$i1_style .= $br_label['i1_custom_css'];
-			$i2_style .= $br_label['i2_custom_css'];
-			$i3_style .= $br_label['i3_custom_css'];
-			$i4_style .= $br_label['i4_custom_css'];
-			$html = '<div class="' . $div_class . ' ' .
-				(empty($br_label['template']) ? '' : 'template-' . $br_label['template']) .
-				'" style="' . $div_style . '">';
-			$html .= '<span' . $tooltip_data . ' style="' . $label_style . '"' . (empty($br_label['div_custom_class']) ? '' : ' class="' . $br_label['div_custom_class'] . '"') . '>';
-			$html .= '<i style="' . $i1_style . '" class="template-span-before ' . $br_label['i1_custom_class'] . '"></i>';
-			$html .= '<i style="' . $i2_style . '" class="template-i ' . $br_label['i2_custom_class'] . '"></i>';
-			$html .= '<i style="' . $i3_style . '" class="template-i-before ' . $br_label['i3_custom_class'] . '"></i>';
-			$html .= '<i style="' . $i4_style . '" class="template-i-after ' . $br_label['i4_custom_class'] . '"></i>';
-			$html .= '<b' . (empty($br_label['b_custom_class']) ? '' : ' class="' . $br_label['b_custom_class'] . '"') . ' style="' . $br_label['b_custom_css'] . '">' . $text . '</b>';
-			if (! empty($br_label['tooltip_content'])) {
+
+			$html = '<div class="' . esc_attr(implode(' ', $div_classes)) . '" style="' . esc_attr($div_style) . '">';
+			$html .= '<span' . $tooltip_data . ' style="' . esc_attr($label_style) . '"' . (empty($br_label['span_custom_class']) ? '' : ' class="' . esc_attr($br_label['div_custom_class']) . '"') . '>';
+			$html .= '<i class="template-span-before ' . $br_label['i1_custom_class'] . '"></i>';
+			$html .= '<i class="template-i ' . $br_label['i2_custom_class'] . '"></i>';
+			$html .= '<i class="template-i-before ' . $br_label['i3_custom_class'] . '"></i>';
+			$html .= '<i class="template-i-after ' . $br_label['i4_custom_class'] . '"></i>';
+			$html .= '<b' . (empty($br_label['b_custom_class']) ? '' : ' class="' . esc_attr($br_label['b_custom_class']) . '"') . '>' . $text . '</b>';
+
+			if (!empty($br_label['tooltip_content'])) {
 				$html .= '<div style="display: none;" class="br_tooltip">' . $br_label['tooltip_content'] . '</div>';
 				wp_enqueue_style('berocket_tippy');
 				wp_enqueue_script('berocket_tippy');
 			}
+
 			$html .= '</span>';
 			$html .= '</div>';
 			$html = apply_filters('apl_show_label_on_product_html', $html, $br_label, $product);

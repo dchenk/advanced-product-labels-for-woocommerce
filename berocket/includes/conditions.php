@@ -6,14 +6,14 @@ function br_supcondition_equal($name, $options, $extension = []) {
 		$equal = $options['equal'];
 	}
 	$equal_list = [
-		'equal' => __('Equal', 'apl_products_label_domain'),
-		'not_equal' => __('Not equal', 'apl_products_label_domain'),
+		'equal' => __('Equal', 'advanced_product_labels'),
+		'not_equal' => __('Not equal', 'advanced_product_labels'),
 	];
 	if (! empty($extension['equal_less'])) {
-		$equal_list['equal_less'] = __('Equal or less', 'apl_products_label_domain');
+		$equal_list['equal_less'] = __('Equal or less', 'advanced_product_labels');
 	}
 	if (! empty($extension['equal_more'])) {
-		$equal_list['equal_more'] = __('Equal or more', 'apl_products_label_domain');
+		$equal_list['equal_more'] = __('Equal or more', 'advanced_product_labels');
 	}
 	$html = '<select name="' . $name . '[equal]">';
 	foreach ($equal_list as $equal_slug => $equal_name) {
@@ -146,28 +146,28 @@ class BeRocket_conditions {
 	public static function get_conditions(): array {
 		return [
 			// PRODUCTS
-			'condition_product' => ['save' => 'save_condition_product', 'func' => 'check_condition_product', 'type' => 'product', 'name' => __('Product', 'apl_products_label_domain')],
-			'condition_product_sale' => ['func' => 'check_condition_product_sale', 'type' => 'sale', 'name' => __('On Sale', 'apl_products_label_domain')],
-			'condition_product_bestsellers' => ['func' => 'check_condition_product_bestsellers', 'type' => 'bestsellers', 'name' => __('Bestsellers', 'apl_products_label_domain')],
-			'condition_product_price' => ['func' => 'check_condition_product_price', 'type' => 'price', 'name' => __('Price', 'apl_products_label_domain')],
-			'condition_product_stockstatus' => ['func' => 'check_condition_product_stockstatus', 'type' => 'stockstatus', 'name' => __('Stock status', 'apl_products_label_domain')],
-			'condition_product_totalsales' => ['func' => 'check_condition_product_totalsales', 'type' => 'totalsales', 'name' => __('Total sales', 'apl_products_label_domain')],
-			'condition_product_category' => ['func' => 'check_condition_product_category', 'type' => 'category', 'name' => __('Category', 'apl_products_label_domain')],
-			'condition_product_attribute' => ['func' => 'check_condition_product_attribute', 'type' => 'attribute', 'name' => __('Product attribute', 'apl_products_label_domain')],
-			'condition_product_age' => ['func' => 'check_condition_product_age', 'type' => 'age', 'name' => __('Product age', 'apl_products_label_domain')],
-			'condition_product_saleprice' => ['func' => 'check_condition_product_saleprice', 'type' => 'saleprice', 'name' => __('Sale price', 'apl_products_label_domain')],
-			'condition_product_regularprice' => ['func' => 'check_condition_product_regularprice', 'type' => 'regularprice', 'name' => __('Regular price', 'apl_products_label_domain')],
-			'condition_product_stockquantity' => ['func' => 'check_condition_product_stockquantity', 'type' => 'stockquantity', 'name' => __('Stock quantity', 'apl_products_label_domain')],
-			'condition_product_featured' => ['func' => 'check_condition_product_featured', 'type' => 'featured', 'name' => __('Featured', 'apl_products_label_domain')],
-			'condition_product_shippingclass' => ['func' => 'check_condition_product_shippingclass', 'type' => 'shippingclass', 'name' => __('Shipping Class', 'apl_products_label_domain')],
-			'condition_product_type' => ['func' => 'check_condition_product_type', 'type' => 'product_type', 'name' => __('Product Type', 'apl_products_label_domain')],
-			'condition_product_rating' => ['func' => 'check_condition_product_rating', 'type' => 'product_rating', 'name' => __('Product Rating', 'apl_products_label_domain')],
+			'condition_product' => ['save' => 'save_condition_product', 'func' => 'check_condition_product', 'type' => 'product', 'name' => __('Product', 'advanced_product_labels')],
+			'condition_product_sale' => ['func' => 'check_condition_product_sale', 'type' => 'sale', 'name' => __('On Sale', 'advanced_product_labels')],
+			'condition_product_bestsellers' => ['func' => 'check_condition_product_bestsellers', 'type' => 'bestsellers', 'name' => __('Bestsellers', 'advanced_product_labels')],
+			'condition_product_price' => ['func' => 'check_condition_product_price', 'type' => 'price', 'name' => __('Price', 'advanced_product_labels')],
+			'condition_product_stockstatus' => ['func' => 'check_condition_product_stockstatus', 'type' => 'stockstatus', 'name' => __('Stock status', 'advanced_product_labels')],
+			'condition_product_totalsales' => ['func' => 'check_condition_product_totalsales', 'type' => 'totalsales', 'name' => __('Total sales', 'advanced_product_labels')],
+			'condition_product_category' => ['func' => 'check_condition_product_category', 'type' => 'category', 'name' => __('Category', 'advanced_product_labels')],
+			'condition_product_attribute' => ['func' => 'check_condition_product_attribute', 'type' => 'attribute', 'name' => __('Product attribute', 'advanced_product_labels')],
+			'condition_product_age' => ['func' => 'check_condition_product_age', 'type' => 'age', 'name' => __('Product age', 'advanced_product_labels')],
+			'condition_product_saleprice' => ['func' => 'check_condition_product_saleprice', 'type' => 'saleprice', 'name' => __('Sale price', 'advanced_product_labels')],
+			'condition_product_regularprice' => ['func' => 'check_condition_product_regularprice', 'type' => 'regularprice', 'name' => __('Regular price', 'advanced_product_labels')],
+			'condition_product_stockquantity' => ['func' => 'check_condition_product_stockquantity', 'type' => 'stockquantity', 'name' => __('Stock quantity', 'advanced_product_labels')],
+			'condition_product_featured' => ['func' => 'check_condition_product_featured', 'type' => 'featured', 'name' => __('Featured', 'advanced_product_labels')],
+			'condition_product_shippingclass' => ['func' => 'check_condition_product_shippingclass', 'type' => 'shippingclass', 'name' => __('Shipping Class', 'advanced_product_labels')],
+			'condition_product_type' => ['func' => 'check_condition_product_type', 'type' => 'product_type', 'name' => __('Product Type', 'advanced_product_labels')],
+			'condition_product_rating' => ['func' => 'check_condition_product_rating', 'type' => 'product_rating', 'name' => __('Product Rating', 'advanced_product_labels')],
 
 			// PAGES
-			'condition_page_id' => ['func' => 'check_condition_page_id', 'type' => 'page_id', 'name' => __('Page ID', 'apl_products_label_domain')],
-			'condition_page_woo_attribute' => ['func' => 'check_condition_page_woo_attribute', 'type' => 'woo_attribute', 'name' => __('Product Attribute', 'apl_products_label_domain')],
-			'condition_page_woo_search' => ['func' => 'check_condition_page_woo_search', 'type' => 'woo_search', 'name' => __('Product Search', 'apl_products_label_domain')],
-//			'condition_page_woo_category' => ['func' => 'check_condition_page_woo_category', 'type' => 'woo_category', 'name' => __('Product Category', 'BeRocket_domain')],
+			'condition_page_id' => ['func' => 'check_condition_page_id', 'type' => 'page_id', 'name' => __('Page ID', 'advanced_product_labels')],
+			'condition_page_woo_attribute' => ['func' => 'check_condition_page_woo_attribute', 'type' => 'woo_attribute', 'name' => __('Product Attribute', 'advanced_product_labels')],
+			'condition_page_woo_search' => ['func' => 'check_condition_page_woo_search', 'type' => 'woo_search', 'name' => __('Product Search', 'advanced_product_labels')],
+//			'condition_page_woo_category' => ['func' => 'check_condition_page_woo_category', 'type' => 'woo_category', 'name' => __('Product Category', 'advanced_product_labels')],
 		];
 	}
 
@@ -177,14 +177,14 @@ class BeRocket_conditions {
 			$equal = $options['equal'];
 		}
 		$equal_list = [
-			'equal'     => __('Equal', 'BeRocket_domain'),
-			'not_equal' => __('Not equal', 'BeRocket_domain'),
+			'equal'     => __('Equal', 'advanced_product_labels'),
+			'not_equal' => __('Not equal', 'advanced_product_labels'),
 		];
 		if (!empty($extension['equal_less'])) {
-			$equal_list['equal_less'] = __('Equal or less', 'BeRocket_domain');
+			$equal_list['equal_less'] = __('Equal or less', 'advanced_product_labels');
 		}
 		if (!empty($extension['equal_more'])) {
-			$equal_list['equal_more'] = __('Equal or more', 'BeRocket_domain');
+			$equal_list['equal_more'] = __('Equal or more', 'advanced_product_labels');
 		}
 		$html = '<select name="' . $name . '[equal]">';
 		foreach ($equal_list as $equal_slug => $equal_name) {
@@ -232,9 +232,9 @@ class BeRocket_conditions {
 	public static function condition_product_sale($html, $name, $options) {
 		$def_options = ['sale' => 'yes'];
 		$options = array_merge($def_options, $options);
-		$html .= '<label>' . __('Is on sale', 'BeRocket_domain') . '<select name="' . $name . '[sale]">
-			<option value="yes"' . ($options['sale'] == 'yes' ? ' selected' : '') . '>' . __('Yes', 'BeRocket_domain') . '</option>
-			<option value="no"' . ($options['sale'] == 'no' ? ' selected' : '') . '>' . __('No', 'BeRocket_domain') . '</option>
+		$html .= '<label>' . __('Is on sale', 'advanced_product_labels') . '<select name="' . $name . '[sale]">
+			<option value="yes"' . ($options['sale'] == 'yes' ? ' selected' : '') . '>' . __('Yes', 'advanced_product_labels') . '</option>
+			<option value="no"' . ($options['sale'] == 'no' ? ' selected' : '') . '>' . __('No', 'advanced_product_labels') . '</option>
 		</select></label>';
 		return $html;
 	}
@@ -242,7 +242,7 @@ class BeRocket_conditions {
 	public static function condition_product_bestsellers($html, $name, $options) {
 		$def_options = ['bestsellers' => '1'];
 		$options = array_merge($def_options, $options);
-		$html .= '<label>' . __('Count of product', 'BeRocket_domain') . '<input type="number" min="1" name="' . $name . '[bestsellers]" value="' . $options['bestsellers'] . '"></label>';
+		$html .= '<label>' . __('Count of product', 'advanced_product_labels') . '<input type="number" min="1" name="' . $name . '[bestsellers]" value="' . $options['bestsellers'] . '"></label>';
 		return $html;
 	}
 
@@ -285,10 +285,10 @@ class BeRocket_conditions {
 	public static function condition_product_rating($html, $name, $options) {
 		$def_options = ['has_rating' => ''];
 		$options = array_merge($def_options, $options);
-		$html .= __('Has Rating:', 'BeRocket_domain');
+		$html .= __('Has Rating:', 'advanced_product_labels');
 		$html .= '<select name="' . $name . '[has_rating]">';
-		$html .= '<option value=""' . ($options['has_rating'] == '' ? ' selected' : '') . '>' . __('Yes', 'BeRocket_domain') . '</option>';
-		$html .= '<option value="no"' . ($options['has_rating'] == 'no' ? ' selected' : '') . '>' . __('No', 'BeRocket_domain') . '</option>';
+		$html .= '<option value=""' . ($options['has_rating'] == '' ? ' selected' : '') . '>' . __('Yes', 'advanced_product_labels') . '</option>';
+		$html .= '<option value="no"' . ($options['has_rating'] == 'no' ? ' selected' : '') . '>' . __('No', 'advanced_product_labels') . '</option>';
 		$html .= '</select>';
 		return $html;
 	}
@@ -301,8 +301,8 @@ class BeRocket_conditions {
 		}
 		$options['price'] = array_merge($def_options['price'], $options['price']);
 		$html .= static::supcondition($name, $options);
-		$html .= __('From:', 'BeRocket_domain') . '<input class="price_from" type="number" min="0" name="' . $name . '[price][from]" value="' . $options['price']['from'] . '">' .
-				 __('To:', 'BeRocket_domain') . '<input class="price_to" type="number" min="1" name="' . $name . '[price][to]" value="' . $options['price']['to'] . '">';
+		$html .= __('From:', 'advanced_product_labels') . '<input class="price_from" type="number" min="0" name="' . $name . '[price][from]" value="' . $options['price']['from'] . '">' .
+				 __('To:', 'advanced_product_labels') . '<input class="price_to" type="number" min="1" name="' . $name . '[price][to]" value="' . $options['price']['to'] . '">';
 		return $html;
 	}
 
@@ -311,9 +311,9 @@ class BeRocket_conditions {
 		$options = array_merge($def_options, $options);
 		$html .= '
 		<select name="' . $name . '[stockstatus]">
-			<option value="in_stock"' . ($options['stockstatus'] == 'in_stock' ? ' selected' : '') . '>' . __('In stock', 'BeRocket_domain') . '</option>
-			<option value="out_of_stock"' . ($options['stockstatus'] == 'out_of_stock' ? ' selected' : '') . '>' . __('Out of stock', 'BeRocket_domain') . '</option>
-			<option value="is_on_backorder"' . ($options['stockstatus'] == 'out_of_stock' ? ' selected' : '') . '>' . __('On Backorder', 'BeRocket_domain') . '</option>
+			<option value="in_stock"' . ($options['stockstatus'] == 'in_stock' ? ' selected' : '') . '>' . __('In stock', 'advanced_product_labels') . '</option>
+			<option value="out_of_stock"' . ($options['stockstatus'] == 'out_of_stock' ? ' selected' : '') . '>' . __('Out of stock', 'advanced_product_labels') . '</option>
+			<option value="is_on_backorder"' . ($options['stockstatus'] == 'out_of_stock' ? ' selected' : '') . '>' . __('On Backorder', 'advanced_product_labels') . '</option>
 		</select>';
 		return $html;
 	}
@@ -322,7 +322,7 @@ class BeRocket_conditions {
 		$def_options = ['totalsales' => '1'];
 		$options = array_merge($def_options, $options);
 		$html .= static::supcondition($name, $options, ['equal_less' => true, 'equal_more' => true]);
-		$html .= '<label>' . __('Count of product', 'BeRocket_domain') . '<input type="number" min="0" name="' . $name . '[totalsales]" value="' . $options['totalsales'] . '"></label>';
+		$html .= '<label>' . __('Count of product', 'advanced_product_labels') . '<input type="number" min="0" name="' . $name . '[totalsales]" value="' . $options['totalsales'] . '"></label>';
 		return $html;
 	}
 
@@ -339,7 +339,7 @@ class BeRocket_conditions {
 			}
 			$html .= static::supcondition($name, $options);
 			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' .
-				__('Include subcategories', 'BeRocket_domain') . '</label>';
+				__('Include subcategories', 'advanced_product_labels') . '</label>';
 			$html .= '<div style="max-height: 70px; overflow: auto; border: 1px solid #ccc; padding: 5px; margin-top: 4px;">';
 			foreach ($product_categories as $category) {
 				$html .= '<label style="display: block;">
@@ -372,7 +372,7 @@ class BeRocket_conditions {
 			$product_attributes[] = $attribute_i;
 		}
 		$html .= static::supcondition($name, $options);
-		$html .= '<label>' . __('Select attribute', 'BeRocket_domain') . '</label>';
+		$html .= '<label>' . __('Select attribute', 'advanced_product_labels') . '</label>';
 		$html .= '<select name="' . $name . '[attribute]" class="br_cond_attr_select">';
 		$has_selected_attr = false;
 		foreach ($product_attributes as $attribute) {
@@ -398,7 +398,7 @@ class BeRocket_conditions {
 		$def_options = ['age' => '1'];
 		$options = array_merge($def_options, $options);
 		$html .= br_supcondition_equal($name, $options, ['equal_less' => true, 'equal_more' => true]);
-		$html .= '<input type="number" min="0" name="' . $name . '[age]" value="' . $options['age'] . '">' . __('day(s)', 'BeRocket_domain');
+		$html .= '<input type="number" min="0" name="' . $name . '[age]" value="' . $options['age'] . '">' . __('day(s)', 'advanced_product_labels');
 		return $html;
 	}
 
@@ -410,8 +410,8 @@ class BeRocket_conditions {
 		}
 		$options['price'] = array_merge($def_options['saleprice'], $options['saleprice']);
 		$html .= br_supcondition_equal($name, $options);
-		$html .= __('From:', 'BeRocket_domain') . '<input class="price_from" type="number" min="0" name="' . $name . '[saleprice][from]" value="' . $options['saleprice']['from'] . '">' .
-				 __('To:', 'BeRocket_domain') . '<input class="price_to" type="number" min="1" name="' . $name . '[saleprice][to]" value="' . $options['saleprice']['to'] . '">';
+		$html .= __('From:', 'advanced_product_labels') . '<input class="price_from" type="number" min="0" name="' . $name . '[saleprice][from]" value="' . $options['saleprice']['from'] . '">' .
+				 __('To:', 'advanced_product_labels') . '<input class="price_to" type="number" min="1" name="' . $name . '[saleprice][to]" value="' . $options['saleprice']['to'] . '">';
 		return $html;
 	}
 
@@ -423,8 +423,8 @@ class BeRocket_conditions {
 		}
 		$options['price'] = array_merge($def_options['regularprice'], $options['regularprice']);
 		$html .= br_supcondition_equal($name, $options);
-		$html .= __('From:', 'BeRocket_domain') . '<input class="price_from" type="number" min="0" name="' . $name . '[regularprice][from]" value="' . $options['regularprice']['from'] . '">' .
-				 __('To:', 'BeRocket_domain') . '<input class="price_to" type="number" min="1" name="' . $name . '[regularprice][to]" value="' . $options['regularprice']['to'] . '">';
+		$html .= __('From:', 'advanced_product_labels') . '<input class="price_from" type="number" min="0" name="' . $name . '[regularprice][from]" value="' . $options['regularprice']['from'] . '">' .
+				 __('To:', 'advanced_product_labels') . '<input class="price_to" type="number" min="1" name="' . $name . '[regularprice][to]" value="' . $options['regularprice']['to'] . '">';
 		return $html;
 	}
 
@@ -432,12 +432,12 @@ class BeRocket_conditions {
 		$def_options = ['stockquantity' => '1', 'backorder' => 'any'];
 		$options = array_merge($def_options, $options);
 		$html .= br_supcondition_equal($name, $options, ['equal_less' => true, 'equal_more' => true]);
-		$html .= __('Products in stock', 'BeRocket_domain');
+		$html .= __('Products in stock', 'advanced_product_labels');
 		$html .= '<input type="number" min="0" name="' . $name . '[stockquantity]" value="' . $options['stockquantity'] . '">';
-		$html .= '<label>' . __('Backorder allowed', 'BeRocket_domain') . ' <select name="' . $name . '[backorder]">
-			<option value="any"' . ($options['backorder'] == 'any' ? ' selected' : '') . '>' . __('Any', 'BeRocket_domain') . '</option>
-			<option value="yes"' . ($options['backorder'] == 'yes' ? ' selected' : '') . '>' . __('Yes', 'BeRocket_domain') . '</option>
-			<option value="no"' . ($options['backorder'] == 'no' ? ' selected' : '') . '>' . __('No', 'BeRocket_domain') . '</option>
+		$html .= '<label>' . __('Backorder allowed', 'advanced_product_labels') . ' <select name="' . $name . '[backorder]">
+			<option value="any"' . ($options['backorder'] == 'any' ? ' selected' : '') . '>' . __('Any', 'advanced_product_labels') . '</option>
+			<option value="yes"' . ($options['backorder'] == 'yes' ? ' selected' : '') . '>' . __('Yes', 'advanced_product_labels') . '</option>
+			<option value="no"' . ($options['backorder'] == 'no' ? ' selected' : '') . '>' . __('No', 'advanced_product_labels') . '</option>
 		</select></label>';
 		return $html;
 	}
@@ -770,7 +770,7 @@ class BeRocket_conditions {
 			$product_attributes[] = $attribute_i;
 		}
 		$html .= br_supcondition_equal($name, $options);
-		$html .= '<label>' . __('Select attribute', 'BeRocket_domain') . '</label>';
+		$html .= '<label>' . __('Select attribute', 'advanced_product_labels') . '</label>';
 		$html .= '<select name="' . $name . '[attribute]" class="br_cond_attr_select">';
 		$has_selected_attr = false;
 		foreach ($product_attributes as $attribute) {
@@ -806,7 +806,7 @@ class BeRocket_conditions {
 			$options = array_merge($def_options, $options);
 			$html .= br_supcondition_equal($name, $options);
 			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' .
-				__('Include subcategories', 'apl_products_label_domain') . '</label>';
+				__('Include subcategories', 'advanced_product_labels') . '</label>';
 			$html .= '<div style="max-height: 150px; overflow: auto; border: 1px solid #ccc; padding: 5px; margin-top: 4px;">';
 			foreach ($product_categories as $category) {
 				$html .= '<label style="display: block;">

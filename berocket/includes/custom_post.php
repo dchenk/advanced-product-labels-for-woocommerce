@@ -93,8 +93,8 @@ if (!class_exists('BeRocket_custom_post_class')) {
 		}
 
 		public function add_meta_boxes() {
-			add_meta_box('submitdiv', __('Status', 'BeRocket_domain'), [$this, 'save_meta_box'], $this->post_name, 'side', 'high');
-			add_meta_box('copysettingsfromdiv', __('Copy settings from', 'BeRocket_domain'), [$this, 'copy_settings_from'], $this->post_name, 'side', 'high');
+			add_meta_box('submitdiv', __('Status', 'advanced_product_labels'), [$this, 'save_meta_box'], $this->post_name, 'side', 'high');
+			add_meta_box('copysettingsfromdiv', __('Copy settings from', 'advanced_product_labels'), [$this, 'copy_settings_from'], $this->post_name, 'side', 'high');
 			foreach ($this->meta_boxes as $meta_box) {
 				add_meta_box($meta_box['slug'], $meta_box['name'], $meta_box['callback'], $this->post_name, $meta_box['position'], $meta_box['priority']);
 			}
@@ -105,7 +105,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 			<div class="berocket_copy_from_custom_post_block">
 				<?php do_action('berocket_copy_from_custom_post_block', $this->post_name, $post); ?>
 				<select id="berocket_copy_from_custom_post_select">
-					<option value="0"><?php _e('Do not copy', 'BeRocket_domain'); ?></option>
+					<option value="0"><?php _e('Do not copy', 'advanced_product_labels'); ?></option>
 					<?php
 					if (!empty($posts_array) && is_array($posts_array)) {
 						foreach ($posts_array as $postID) {
@@ -116,7 +116,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 					} ?>
 				</select>
 				<input name="berocket_copy_from_custom_post" type="hidden">
-				<button type="button" class="button" disabled><?php _e('Copy', 'BeRocket_domain'); ?></button>
+				<button type="button" class="button" disabled><?php _e('Copy', 'advanced_product_labels'); ?></button>
 			</div>
 			<script>
 				const copyPostSelect = jQuery("#berocket_copy_from_custom_post_select");
@@ -150,9 +150,9 @@ if (!class_exists('BeRocket_custom_post_class')) {
 						<div id="delete-action"><?php
 						if (strpos($pagenow, 'post-new.php') === false && current_user_can('delete_post', $post->ID)) {
 							if (!EMPTY_TRASH_DAYS) {
-								$delete_text = __('Delete Permanently', 'BeRocket_domain');
+								$delete_text = __('Delete Permanently', 'advanced_product_labels');
 							} else {
-								$delete_text = __('Move to Trash', 'BeRocket_domain');
+								$delete_text = __('Move to Trash', 'advanced_product_labels');
 							} ?>
 							<a class="submitdelete deletion" href="<?php echo esc_url(get_delete_post_link($post->ID)); ?>"><?php echo esc_attr($delete_text); ?></a>
 							<?php
@@ -160,7 +160,7 @@ if (!class_exists('BeRocket_custom_post_class')) {
 						</div>
 						<div id="publishing-action">
 							<span class="spinner"></span>
-							<input type="submit" class="button button-primary tips" name="publish" value="<?php _e('Save', 'BeRocket_domain'); ?>">
+							<input type="submit" class="button button-primary tips" name="publish" value="<?php _e('Save', 'advanced_product_labels'); ?>">
 						</div>
 						<div class="clear"></div>
 					</div>

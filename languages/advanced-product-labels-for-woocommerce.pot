@@ -1,4 +1,4 @@
-# Copyright (C) 2018 BeRocket
+# Copyright (C) 2018 widerwebs
 # This file is distributed under the same license as the WooCommerce Advanced Product Labels plugin.
 msgid ""
 msgstr ""
@@ -9,10 +9,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-12-23T23:02:01+00:00\n"
-"PO-Revision-Date: 2018-12-23T23:02:01+00:00\n"
+"POT-Creation-Date: 2018-12-28T19:44:10+00:00\n"
+"PO-Revision-Date: 2018-12-28T19:44:10+00:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
-"X-Domain: BeRocket_products_label_domain\n"
+"X-Domain: advanced_product_labels\n"
 
 #. Plugin Name of the plugin
 msgid "WooCommerce Advanced Product Labels"
@@ -27,467 +27,683 @@ msgid "Promote your products! Show “Free Shipping” or other special attribut
 msgstr ""
 
 #. Author of the plugin
-msgid "BeRocket"
+msgid "widerwebs"
 msgstr ""
 
 #. Author URI of the plugin
 msgid "https://github.com/dchenk"
 msgstr ""
 
+#: berocket/includes/functions.php:67
+msgid "Default"
+msgstr ""
+
+#: berocket/includes/functions.php:94
+#: berocket/includes/functions.php:144
+msgid "Upload"
+msgstr ""
+
+#: berocket/includes/functions.php:96
+#: berocket/includes/functions.php:147
+#: berocket/includes/functions.php:178
+msgid "Remove"
+msgstr ""
+
+#: berocket/includes/functions.php:145
+#: berocket/includes/functions.php:176
+msgid "Font Awesome"
+msgstr ""
+
+#: berocket/includes/functions.php:205
+msgid "Enter 3 or more characters"
+msgstr ""
+
 #: berocket/includes/conditions.php:9
+#: berocket/includes/conditions.php:180
 msgid "Equal"
 msgstr ""
 
 #: berocket/includes/conditions.php:10
+#: berocket/includes/conditions.php:181
 msgid "Not equal"
 msgstr ""
 
 #: berocket/includes/conditions.php:13
+#: berocket/includes/conditions.php:184
 msgid "Equal or less"
 msgstr ""
 
 #: berocket/includes/conditions.php:16
+#: berocket/includes/conditions.php:187
 msgid "Equal or more"
 msgstr ""
 
-#: includes/compatibility/product_preview.php:20
-msgid "Hide BeRocket Advanced Labels"
+#: berocket/includes/conditions.php:149
+msgid "Product"
 msgstr ""
 
-#: includes/custom_post.php:16
-#: includes/custom_post.php:18
-#: includes/custom_post.php:19
-msgid "Advanced Label"
+#: berocket/includes/conditions.php:150
+msgid "On Sale"
 msgstr ""
 
-#: includes/custom_post.php:20
-msgctxt "Admin menu name"
-msgid "Advanced Labels"
+#: berocket/includes/conditions.php:151
+msgid "Bestsellers"
 msgstr ""
 
-#: includes/custom_post.php:21
-msgid "Add Label"
-msgstr ""
-
-#: includes/custom_post.php:22
-msgid "Add New Label"
-msgstr ""
-
-#: includes/custom_post.php:23
-msgid "Edit"
-msgstr ""
-
-#: includes/custom_post.php:24
-msgid "Edit Label"
-msgstr ""
-
-#: includes/custom_post.php:25
-msgid "New Label"
-msgstr ""
-
-#: includes/custom_post.php:26
-msgid "View Labels"
-msgstr ""
-
-#: includes/custom_post.php:27
-msgid "View Label"
-msgstr ""
-
-#: includes/custom_post.php:28
-msgid "Search Advanced Labels"
-msgstr ""
-
-#: includes/custom_post.php:29
-msgid "No Advanced Labels found"
-msgstr ""
-
-#: includes/custom_post.php:30
-msgid "No Advanced Labels found in trash"
-msgstr ""
-
-#: includes/custom_post.php:32
-msgid "This is where you can add advanced labels."
-msgstr ""
-
-#: includes/custom_post.php:97
-msgid "Conditions"
-msgstr ""
-
-#: includes/custom_post.php:98
-msgid "Advanced Labels Settings"
-msgstr ""
-
-#: includes/custom_post.php:99
-msgid "Description"
-msgstr ""
-
-#: includes/custom_post.php:100
-msgid "Preview"
-msgstr ""
-
-#: includes/custom_post.php:131
-msgid "Label without any condition will be displayed on all products"
-msgstr ""
-
-#: includes/custom_post.php:132
-msgid "Connection between condition can be AND and OR"
-msgstr ""
-
-#: includes/custom_post.php:133
-msgid "uses between condition in one section"
-msgstr ""
-
-#: includes/custom_post.php:134
-msgid "uses between different sections with conditions"
-msgstr ""
-
-#: includes/custom_post.php:206
-#: includes/custom_post.php:218
-#: includes/custom_post.php:229
-#: includes/custom_post.php:248
-msgid "Text"
-msgstr ""
-
-#: includes/custom_post.php:207
-#: includes/custom_post.php:635
-msgid "Discount percentage"
-msgstr ""
-
-#: includes/custom_post.php:208
+#: berocket/includes/conditions.php:152
+#: includes/custom_post.php:213
 msgid "Price"
 msgstr ""
 
-#: includes/custom_post.php:209
-msgid "Stock Status"
+#: berocket/includes/conditions.php:153
+msgid "Stock status"
+msgstr ""
+
+#: berocket/includes/conditions.php:154
+msgid "Total sales"
+msgstr ""
+
+#: berocket/includes/conditions.php:155
+msgid "Category"
+msgstr ""
+
+#: berocket/includes/conditions.php:156
+msgid "Product attribute"
+msgstr ""
+
+#: berocket/includes/conditions.php:157
+msgid "Product age"
+msgstr ""
+
+#: berocket/includes/conditions.php:158
+msgid "Sale price"
+msgstr ""
+
+#: berocket/includes/conditions.php:159
+msgid "Regular price"
+msgstr ""
+
+#: berocket/includes/conditions.php:160
+msgid "Stock quantity"
+msgstr ""
+
+#: berocket/includes/conditions.php:161
+msgid "Featured"
+msgstr ""
+
+#: berocket/includes/conditions.php:162
+msgid "Shipping Class"
+msgstr ""
+
+#: berocket/includes/conditions.php:163
+msgid "Product Type"
+msgstr ""
+
+#: berocket/includes/conditions.php:164
+msgid "Product Rating"
+msgstr ""
+
+#: berocket/includes/conditions.php:167
+msgid "Page ID"
+msgstr ""
+
+#: berocket/includes/conditions.php:168
+msgid "Product Attribute"
+msgstr ""
+
+#: berocket/includes/conditions.php:169
+msgid "Product Search"
+msgstr ""
+
+#: berocket/includes/conditions.php:235
+msgid "Is on sale"
+msgstr ""
+
+#: berocket/includes/conditions.php:236
+#: berocket/includes/conditions.php:290
+#: berocket/includes/conditions.php:439
+msgid "Yes"
+msgstr ""
+
+#: berocket/includes/conditions.php:237
+#: berocket/includes/conditions.php:291
+#: berocket/includes/conditions.php:440
+msgid "No"
+msgstr ""
+
+#: berocket/includes/conditions.php:245
+#: berocket/includes/conditions.php:325
+msgid "Count of product"
+msgstr ""
+
+#: berocket/includes/conditions.php:288
+msgid "Has Rating:"
+msgstr ""
+
+#: berocket/includes/conditions.php:304
+#: berocket/includes/conditions.php:413
+#: berocket/includes/conditions.php:426
+msgid "From:"
+msgstr ""
+
+#: berocket/includes/conditions.php:305
+#: berocket/includes/conditions.php:414
+#: berocket/includes/conditions.php:427
+msgid "To:"
+msgstr ""
+
+#: berocket/includes/conditions.php:314
+msgid "In stock"
+msgstr ""
+
+#: berocket/includes/conditions.php:315
+msgid "Out of stock"
+msgstr ""
+
+#: berocket/includes/conditions.php:316
+msgid "On Backorder"
+msgstr ""
+
+#: berocket/includes/conditions.php:342
+#: berocket/includes/conditions.php:809
+msgid "Include subcategories"
+msgstr ""
+
+#: berocket/includes/conditions.php:375
+#: berocket/includes/conditions.php:773
+msgid "Select attribute"
+msgstr ""
+
+#: berocket/includes/conditions.php:401
+msgid "day(s)"
+msgstr ""
+
+#: berocket/includes/conditions.php:435
+msgid "Products in stock"
+msgstr ""
+
+#: berocket/includes/conditions.php:437
+msgid "Backorder allowed"
+msgstr ""
+
+#: berocket/includes/conditions.php:438
+msgid "Any"
+msgstr ""
+
+#: berocket/includes/custom_post.php:96
+msgid "Status"
+msgstr ""
+
+#: berocket/includes/custom_post.php:97
+msgid "Copy settings from"
+msgstr ""
+
+#: berocket/includes/custom_post.php:108
+msgid "Do not copy"
+msgstr ""
+
+#: berocket/includes/custom_post.php:119
+msgid "Copy"
+msgstr ""
+
+#: berocket/includes/custom_post.php:153
+msgid "Delete Permanently"
+msgstr ""
+
+#: berocket/includes/custom_post.php:155
+msgid "Move to Trash"
+msgstr ""
+
+#: berocket/includes/custom_post.php:163
+msgid "Save"
+msgstr ""
+
+#: berocket/framework.php:110
+#: berocket/framework.php:111
+msgid "Settings"
+msgstr ""
+
+#: berocket/framework.php:397
+msgid "Save Changes"
+msgstr ""
+
+#: includes/compatibility/product_preview.php:21
+msgid "Hide Advanced Labels"
+msgstr ""
+
+#: includes/custom_post.php:66
+#: includes/custom_post.php:70
+msgid "Product Labels"
+msgstr ""
+
+#: includes/custom_post.php:68
+msgid "Labels"
+msgstr ""
+
+#: includes/custom_post.php:69
+#: includes/custom_post.php:338
+#: includes/custom_post.php:574
+msgid "Label"
+msgstr ""
+
+#: includes/custom_post.php:71
+msgid "Add Label"
+msgstr ""
+
+#: includes/custom_post.php:72
+msgid "Add New Label"
+msgstr ""
+
+#: includes/custom_post.php:73
+msgid "Edit"
+msgstr ""
+
+#: includes/custom_post.php:74
+msgid "Edit Label"
+msgstr ""
+
+#: includes/custom_post.php:75
+msgid "New Label"
+msgstr ""
+
+#: includes/custom_post.php:76
+msgid "View Labels"
+msgstr ""
+
+#: includes/custom_post.php:77
+msgid "View Label"
+msgstr ""
+
+#: includes/custom_post.php:78
+msgid "Search Product Labels"
+msgstr ""
+
+#: includes/custom_post.php:79
+msgid "No Labels found"
+msgstr ""
+
+#: includes/custom_post.php:80
+msgid "No Labels found in trash"
+msgstr ""
+
+#: includes/custom_post.php:82
+msgid "Add and manage product labels."
+msgstr ""
+
+#: includes/custom_post.php:99
+msgid "Conditions"
+msgstr ""
+
+#: includes/custom_post.php:100
+msgid "Advanced Labels Settings"
+msgstr ""
+
+#: includes/custom_post.php:101
+msgid "Description"
+msgstr ""
+
+#: includes/custom_post.php:102
+msgid "Preview"
+msgstr ""
+
+#: includes/custom_post.php:135
+msgid "Label without any condition will be displayed on all products"
+msgstr ""
+
+#: includes/custom_post.php:136
+msgid "Connection between condition can be AND and OR"
+msgstr ""
+
+#: includes/custom_post.php:137
+msgid "uses between condition in one section"
+msgstr ""
+
+#: includes/custom_post.php:138
+msgid "uses between different sections with conditions"
+msgstr ""
+
+#: includes/custom_post.php:211
+#: includes/custom_post.php:223
+#: includes/custom_post.php:234
+#: includes/custom_post.php:253
+msgid "Text"
 msgstr ""
 
 #: includes/custom_post.php:212
+#: includes/custom_post.php:568
+msgid "Discount percentage"
+msgstr ""
+
+#: includes/custom_post.php:214
+msgid "Stock Status"
+msgstr ""
+
+#: includes/custom_post.php:217
 msgid "Content type"
 msgstr ""
 
-#: includes/custom_post.php:224
+#: includes/custom_post.php:229
 msgid "Text Before"
 msgstr ""
 
-#: includes/custom_post.php:235
-#: includes/custom_post.php:254
+#: includes/custom_post.php:240
+#: includes/custom_post.php:259
 msgid "New Line"
 msgstr ""
 
-#: includes/custom_post.php:243
+#: includes/custom_post.php:248
 msgid "Text After"
 msgstr ""
 
-#: includes/custom_post.php:263
+#: includes/custom_post.php:268
 msgid "Use minus symbol"
 msgstr ""
 
-#: includes/custom_post.php:279
+#: includes/custom_post.php:278
 msgid "Use background color"
 msgstr ""
 
-#: includes/custom_post.php:288
+#: includes/custom_post.php:287
 msgid "Background color"
 msgstr ""
 
-#: includes/custom_post.php:296
+#: includes/custom_post.php:295
 msgid "Font color"
 msgstr ""
 
-#: includes/custom_post.php:304
+#: includes/custom_post.php:303
 msgid "Border radius"
 msgstr ""
 
-#: includes/custom_post.php:312
+#: includes/custom_post.php:311
 msgid "Line height"
 msgstr ""
 
-#: includes/custom_post.php:320
+#: includes/custom_post.php:319
 msgid "Height"
 msgstr ""
 
-#: includes/custom_post.php:328
+#: includes/custom_post.php:327
 msgid "Width"
 msgstr ""
 
 #: includes/custom_post.php:339
-#: includes/custom_post.php:641
-msgid "Label"
-msgstr ""
-
-#: includes/custom_post.php:340
-#: includes/custom_post.php:641
+#: includes/custom_post.php:574
 msgid "On image"
 msgstr ""
 
-#: includes/custom_post.php:343
+#: includes/custom_post.php:342
 msgid "Type"
 msgstr ""
 
-#: includes/custom_post.php:349
+#: includes/custom_post.php:348
 msgid "Padding from top"
 msgstr ""
 
-#: includes/custom_post.php:357
+#: includes/custom_post.php:356
 msgid "Padding from left: "
 msgstr ""
 
-#: includes/custom_post.php:357
+#: includes/custom_post.php:356
 msgid "Padding from right: "
 msgstr ""
 
-#: includes/custom_post.php:366
-#: includes/custom_post.php:400
-#: includes/custom_post.php:640
+#: includes/custom_post.php:365
+#: includes/custom_post.php:399
+#: includes/custom_post.php:573
 msgid "Left"
 msgstr ""
 
-#: includes/custom_post.php:367
-#: includes/custom_post.php:640
+#: includes/custom_post.php:366
+#: includes/custom_post.php:573
 msgid "Center"
 msgstr ""
 
-#: includes/custom_post.php:368
-#: includes/custom_post.php:401
-#: includes/custom_post.php:640
+#: includes/custom_post.php:367
+#: includes/custom_post.php:400
+#: includes/custom_post.php:573
 msgid "Right"
 msgstr ""
 
-#: includes/custom_post.php:371
-#: includes/custom_post.php:403
-#: includes/custom_post.php:620
+#: includes/custom_post.php:370
+#: includes/custom_post.php:402
+#: includes/custom_post.php:551
 msgid "Position"
 msgstr ""
 
-#: includes/custom_post.php:378
+#: includes/custom_post.php:377
 msgid "Content"
 msgstr ""
 
-#: includes/custom_post.php:387
+#: includes/custom_post.php:386
 msgid "Dark"
 msgstr ""
 
-#: includes/custom_post.php:388
+#: includes/custom_post.php:387
 msgid "Light"
 msgstr ""
 
-#: includes/custom_post.php:389
+#: includes/custom_post.php:388
 msgid "Translucent"
 msgstr ""
 
-#: includes/custom_post.php:391
+#: includes/custom_post.php:390
 msgid "Style"
 msgstr ""
 
-#: includes/custom_post.php:398
+#: includes/custom_post.php:397
 msgid "Top"
 msgstr ""
 
-#: includes/custom_post.php:399
+#: includes/custom_post.php:398
 msgid "Bottom"
 msgstr ""
 
-#: includes/custom_post.php:409
+#: includes/custom_post.php:408
 msgid "Open delay"
 msgstr ""
 
-#: includes/custom_post.php:416
+#: includes/custom_post.php:415
 msgid "Close delay"
 msgstr ""
 
-#: includes/custom_post.php:424
+#: includes/custom_post.php:423
 msgid "Hover"
 msgstr ""
 
-#: includes/custom_post.php:425
+#: includes/custom_post.php:424
 msgid "Click"
 msgstr ""
 
-#: includes/custom_post.php:427
+#: includes/custom_post.php:426
 msgid "Open on"
 msgstr ""
 
-#: includes/custom_post.php:433
+#: includes/custom_post.php:432
 msgid "Close on click everywhere"
 msgstr ""
 
-#: includes/custom_post.php:439
+#: includes/custom_post.php:438
 msgid "Use arrow"
 msgstr ""
 
-#: includes/custom_post.php:445
+#: includes/custom_post.php:444
 msgid "Max width"
 msgstr ""
 
-#: includes/custom_post.php:457
+#: includes/custom_post.php:453
 msgid "&lt;div&gt; block custom class"
 msgstr ""
 
-#: includes/custom_post.php:463
+#: includes/custom_post.php:459
 msgid "&lt;div&gt; block custom CSS"
 msgstr ""
 
-#: includes/custom_post.php:469
+#: includes/custom_post.php:465
 msgid "&lt;span&gt; block custom class"
 msgstr ""
 
-#: includes/custom_post.php:475
+#: includes/custom_post.php:471
 msgid "&lt;span&gt; block custom CSS"
 msgstr ""
 
-#: includes/custom_post.php:481
+#: includes/custom_post.php:477
 msgid "&lt;b&gt; block custom class"
 msgstr ""
 
-#: includes/custom_post.php:487
+#: includes/custom_post.php:483
 msgid "&lt;b&gt; block custom CSS"
 msgstr ""
 
-#: includes/custom_post.php:493
-msgid "1) &lt;i&gt; block custom class"
+#: includes/custom_post.php:489
+msgid "First &lt;i&gt; block custom class"
 msgstr ""
 
-#: includes/custom_post.php:499
-msgid "1) &lt;i&gt; block custom CSS"
+#: includes/custom_post.php:495
+msgid "Second &lt;i&gt; block custom class"
 msgstr ""
 
-#: includes/custom_post.php:505
-msgid "2) &lt;i&gt; block custom class"
+#: includes/custom_post.php:501
+msgid "Third &lt;i&gt; block custom class"
 msgstr ""
 
-#: includes/custom_post.php:511
-msgid "2) &lt;i&gt; block custom CSS"
+#: includes/custom_post.php:507
+msgid "Fourth &lt;i&gt; block custom class"
 msgstr ""
 
-#: includes/custom_post.php:517
-msgid "3) &lt;i&gt; block custom class"
-msgstr ""
-
-#: includes/custom_post.php:523
-msgid "3) &lt;i&gt; block custom CSS"
-msgstr ""
-
-#: includes/custom_post.php:529
-msgid "4) &lt;i&gt; block custom class"
-msgstr ""
-
-#: includes/custom_post.php:535
-msgid "4) &lt;i&gt; block custom CSS"
-msgstr ""
-
-#: includes/custom_post.php:619
+#: includes/custom_post.php:550
 msgid "Label text"
 msgstr ""
 
-#: templates/label.php:17
-msgid "Label to display on this product"
+#: woocommerce-advanced-products-labels.php:520
+msgid "Advanced Label"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:756
+#: woocommerce-advanced-products-labels.php:549
+msgid "Labels to display on this product"
+msgstr ""
+
+#: woocommerce-advanced-products-labels.php:579
+msgid "Product Label Settings"
+msgstr ""
+
+#: woocommerce-advanced-products-labels.php:580
+msgid "Label Settings"
+msgstr ""
+
+#: woocommerce-advanced-products-labels.php:601
 msgid "Disable global labels"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:763
+#: woocommerce-advanced-products-labels.php:608
 msgid "Disable product labels"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:770
+#: woocommerce-advanced-products-labels.php:615
 msgid "Disable labels on product page"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:777
+#: woocommerce-advanced-products-labels.php:622
 msgid "Remove default sale label"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:804
-msgid "Custom CSS"
+#: woocommerce-advanced-products-labels.php:628
+msgid "Disable Font Awesome"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:813
+#: woocommerce-advanced-products-labels.php:632
+msgid "Disable loading CSS file for Font Awesome icons; recommended only if you do not use Font Awesome icons in widgets or you have Font Awesome in your theme."
+msgstr ""
+
+#: woocommerce-advanced-products-labels.php:635
+msgid "Font Awesome Version"
+msgstr ""
+
+#: woocommerce-advanced-products-labels.php:639
+msgid "Font Awesome 4"
+msgstr ""
+
+#: woocommerce-advanced-products-labels.php:640
+msgid "Font Awesome 5"
+msgstr ""
+
+#: woocommerce-advanced-products-labels.php:643
+msgid "Version of Font Awesome that will be used. Please select a version that you have in your theme"
+msgstr ""
+
+#: woocommerce-advanced-products-labels.php:650
 msgid "Before Title 1"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:814
+#: woocommerce-advanced-products-labels.php:651
 msgid "Before Title 2"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:815
-#: woocommerce-advanced-products-labels.php:846
+#: woocommerce-advanced-products-labels.php:652
+#: woocommerce-advanced-products-labels.php:683
 msgid "After Title"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:816
-#: woocommerce-advanced-products-labels.php:832
-#: woocommerce-advanced-products-labels.php:848
+#: woocommerce-advanced-products-labels.php:653
+#: woocommerce-advanced-products-labels.php:669
+#: woocommerce-advanced-products-labels.php:685
 msgid "Before All"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:817
+#: woocommerce-advanced-products-labels.php:654
 msgid "After All"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:818
-#: woocommerce-advanced-products-labels.php:833
-#: woocommerce-advanced-products-labels.php:849
-msgid "=DISABLED="
+#: woocommerce-advanced-products-labels.php:655
+#: woocommerce-advanced-products-labels.php:670
+#: woocommerce-advanced-products-labels.php:686
+msgid "{DISABLED}"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:820
+#: woocommerce-advanced-products-labels.php:657
 msgid "Shop Hook"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:821
-msgid "Where labels will be displayed on shop page. In different theme it can be different place(This means that it is supposed to be in this place)"
+#: woocommerce-advanced-products-labels.php:658
+msgid "Where labels will be displayed on shop page. In different theme it can be different place. (This means that it is supposed to be in this place)"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:828
-#: woocommerce-advanced-products-labels.php:843
+#: woocommerce-advanced-products-labels.php:665
+#: woocommerce-advanced-products-labels.php:680
 msgid "Under thumbnails"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:829
-#: woocommerce-advanced-products-labels.php:844
+#: woocommerce-advanced-products-labels.php:666
+#: woocommerce-advanced-products-labels.php:681
 msgid "After Images"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:830
-#: woocommerce-advanced-products-labels.php:845
+#: woocommerce-advanced-products-labels.php:667
+#: woocommerce-advanced-products-labels.php:682
 msgid "Before Summary Data"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:831
-#: woocommerce-advanced-products-labels.php:847
+#: woocommerce-advanced-products-labels.php:668
+#: woocommerce-advanced-products-labels.php:684
 msgid "After Summary Data"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:835
+#: woocommerce-advanced-products-labels.php:672
 msgid "Product Hook Image"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:836
+#: woocommerce-advanced-products-labels.php:673
 msgid "Where on image labels will be displayed on product page. In different theme it can be different place(This means that it is supposed to be in this place)"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:851
+#: woocommerce-advanced-products-labels.php:688
 msgid "Product Hook Label"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:852
+#: woocommerce-advanced-products-labels.php:689
 msgid "Where default labels will be displayed on product page. In different theme it can be different place(This means that it is supposed to be in this place)"
 msgstr ""
 
-#: woocommerce-advanced-products-labels.php:860
-msgid "On Page Load"
-msgstr ""
-
-#: woocommerce-advanced-products-labels.php:876
-msgid "CSS Templates"
-msgstr ""
-
-#: woocommerce-advanced-products-labels.php:877
-msgid "Image Templates"
-msgstr ""
-
-#: woocommerce-advanced-products-labels.php:878
-msgid "Advanced Templates"
+#: woocommerce-advanced-products-labels.php:710
+msgid "Settings for Advanced Product Labels"
 msgstr ""

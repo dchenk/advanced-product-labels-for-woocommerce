@@ -64,7 +64,7 @@ if (!function_exists('br_color_picker')) {
 		$return .= '<div class="berocket_color"><div class="br_colorpicker" data-default="' . $default . '" data-color="' . $value . '" style="background-color:' . $value . ';"></div>
             <input class="br_colorpicker_value' . $class . '" type="hidden" value="' . $value . '" name="' . $name . '"' . $extra . '/>';
 		if ($default_button) {
-			$return .= '<input type="button" value="' . __('Default', 'BeRocket_domain') . '" class="br_colorpicker_default button">';
+			$return .= '<input type="button" value="' . __('Default', 'advanced_product_labels') . '" class="br_colorpicker_default button">';
 		}
 		$return .= '</div>';
 		return $return;
@@ -91,9 +91,9 @@ if (! function_exists('br_upload_image')) {
 		$result = '<div>';
 		$result .= '<input type="hidden" name="' . $name . '" value="' . $value . '" readonly class="berocket_image_value ' . $class . '"' . $extra . '/>
         <span class="berocket_selected_image">' . (empty($value) ? '' : '<image src="' . $value . '">') . '</span>
-        <input type="button" class="berocket_upload_image button" value="' . __('Upload', 'BeRocket_domain') . '"/> ';
+        <input type="button" class="berocket_upload_image button" value="' . __('Upload', 'advanced_product_labels') . '"> ';
 		if ($remove_button) {
-			$result .= '<input type="button" class="berocket_remove_image button" value="' . __('Remove', 'BeRocket_domain') . '"/>';
+			$result .= '<input type="button" class="berocket_remove_image button" value="' . __('Remove', 'advanced_product_labels') . '"/>';
 		}
 		$result .= '</div>';
 
@@ -141,10 +141,10 @@ if (! function_exists('br_fontawesome_image')) {
 		$result .= berocket_fa_dark();
 		$result .= '<input type="hidden" name="' . $name . '" value="' . $value . '" readonly class="berocket_image_value berocket_fa_value ' . $class . '"' . $extra . '/>
         <span class="berocket_selected_image berocket_selected_fa">' . (empty($value) ? '' : (substr($value, 0, 3) == 'fa-' ? '<i class="fa ' . $value . '"></i>' : '<image src="' . $value . '">')) . '</span>
-        <input type="button" class="berocket_upload_image button" value="' . __('Upload', 'BeRocket_domain') . '"/>
-        <input type="button" class="berocket_select_fa button" value="' . __('Font Awesome', 'BeRocket_domain') . '"/>';
+        <input type="button" class="berocket_upload_image button" value="' . __('Upload', 'advanced_product_labels') . '"/>
+        <input type="button" class="berocket_select_fa button" value="' . __('Font Awesome', 'advanced_product_labels') . '"/>';
 		if ($remove_button) {
-			$result .= '<input type="button" class="berocket_remove_image button" value="' . __('Remove', 'BeRocket_domain') . '"/>';
+			$result .= '<input type="button" class="berocket_remove_image button" value="' . __('Remove', 'advanced_product_labels') . '"/>';
 		}
 		$result .= '</div>';
 
@@ -173,9 +173,9 @@ if (! function_exists('br_select_fontawesome')) {
 		$result .= berocket_fa_dark();
 		$result .= '<input type="hidden" name="' . $name . '" value="' . $value . '" readonly class="berocket_fa_value ' . $class . '"' . $extra . '/>
         <span class="berocket_selected_fa">' . (empty($value) ? '' : '<i class="fa ' . $value . '"></i>') . '</span>
-        <input type="button" class="berocket_select_fa button" value="' . __('Font Awesome', 'BeRocket_domain') . '"/> ';
+        <input type="button" class="berocket_select_fa button" value="' . __('Font Awesome', 'advanced_product_labels') . '"/> ';
 		if ($remove_button) {
-			$result .= '<input type="button" class="berocket_remove_fa button" value="' . __('Remove', 'BeRocket_domain') . '"/>';
+			$result .= '<input type="button" class="berocket_remove_fa button" value="' . __('Remove', 'advanced_product_labels') . '"/>';
 		}
 		$result .= '</div>';
 
@@ -202,7 +202,7 @@ if (!function_exists('br_products_selector')) {
 		foreach ($product_objects as $product_object) {
 			$html .= '<li class="berocket_product_selected button"><input name="' . $name . '" type="hidden" value="' . $product_object->get_id() . '"><i class="fa fa-times"></i> ' . $product_object->get_formatted_name() . '</li>';
 		}
-		$html .= '<li class="berocket_product_search"' . (! $multiple && count($product_objects) > 0 ? ' style="display: none;"' : '') . '><input type="text" data-action="' . $action . '" class="berocket_search_input" placeholder="' . __('Enter 3 or more characters', 'BeRocket_domain') . '"></li>
+		$html .= '<li class="berocket_product_search"' . (! $multiple && count($product_objects) > 0 ? ' style="display: none;"' : '') . '><input type="text" data-action="' . $action . '" class="berocket_search_input" placeholder="' . __('Enter 3 or more characters', 'advanced_product_labels') . '"></li>
             </ul>
         </div>';
 		return $html;

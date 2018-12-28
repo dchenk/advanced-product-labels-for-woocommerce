@@ -18,7 +18,7 @@ class BeRocket_Labels_compat_product_preview {
 	public static function settings($name, $options) {
 		?>
 		<tr>
-			<th><?php _e('Hide Advanced Labels', 'apl_products_label_domain'); ?></th>
+			<th><?php _e('Hide Advanced Labels', 'advanced_product_labels'); ?></th>
 			<td>
 				<input type="checkbox" name="<?php echo $name; ?>[hide_berocket_labels]"<?php checked(!empty($options['hide_berocket_labels'])); ?>>
 			</td>

@@ -167,7 +167,7 @@ class BeRocket_conditions {
 			'condition_page_id' => ['func' => 'check_condition_page_id', 'type' => 'page_id', 'name' => __('Page ID', 'apl_products_label_domain')],
 			'condition_page_woo_attribute' => ['func' => 'check_condition_page_woo_attribute', 'type' => 'woo_attribute', 'name' => __('Product Attribute', 'apl_products_label_domain')],
 			'condition_page_woo_search' => ['func' => 'check_condition_page_woo_search', 'type' => 'woo_search', 'name' => __('Product Search', 'apl_products_label_domain')],
-//			'condition_page_woo_category' => ['func' => 'check_condition_page_woo_category', 'type' => 'category', 'name' => __('Product Category', 'BeRocket_domain')],
+//			'condition_page_woo_category' => ['func' => 'check_condition_page_woo_category', 'type' => 'woo_category', 'name' => __('Product Category', 'BeRocket_domain')],
 		];
 	}
 
@@ -327,17 +327,16 @@ class BeRocket_conditions {
 	}
 
 	public static function condition_product_category($html, $name, $options) {
-		$options = array_merge(['category' => []], $options);
-		if (!is_array($options['category'])) {
-			$options['category'] = [$options['category']];
-		}
 		$product_categories = get_terms([
 			'taxonomy' => 'product_cat',
 			'hide_empty' => false,
 		]);
 		if (is_array($product_categories) && count($product_categories) > 0) {
-			$def_options = ['category' => ''];
+			$def_options = ['category' => []];
 			$options = array_merge($def_options, $options);
+			if (!is_array($options['category'])) {
+				$options['category'] = [$options['category']];
+			}
 			$html .= static::supcondition($name, $options);
 			$html .= '<label><input type="checkbox" name="' . $name . '[subcats]" value="1"' . (empty($options['subcats']) ? '' : ' checked') . '>' .
 				__('Include subcategories', 'BeRocket_domain') . '</label>';
